@@ -42,7 +42,7 @@ gem 'bootstrap-kaminari-views'
 gem 'datetimepicker-rails', :require => 'datetimepicker-rails', :git => 'git://github.com/zpaulovics/datetimepicker-rails.git'
 # image upload + manipulation
 gem 'carrierwave'
-gem 'rmagick'
+gem 'rmagick', :git => 'https://github.com/rmagick/rmagick.git', :ref => '79e1708c7f6792a3a90cb8cb3ffaeb74c58e092e', :require => 'RMagick'
 # handling foreign keys
 gem 'foreigner', '~>1.4.2'
 gem 'immigrant'

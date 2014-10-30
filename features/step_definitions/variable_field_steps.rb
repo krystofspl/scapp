@@ -208,6 +208,8 @@ Then(/^I should see "([^"]*)" containing "([^"]*)"$/) do |element, text|
       found = exists_element_with_text? "p", text
     when "link"
       found = exists_element_with_text? "a", text
+    when "radio_button"
+      found = page.has_field?(text, :type => 'radio')
     when "alert message"
       found = exists_element_with_text? "div.alert", text
     when "error message"

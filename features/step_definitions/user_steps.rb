@@ -23,6 +23,10 @@ Given /^I exist as an unconfirmed user$/ do
   create_unconfirmed_user(1)
 end
 
+Given(/^I am logged in as User test(\d+)$/) do |id|
+  sign_in(id)
+end
+
 ### WHEN ###
 When /^I sign in with valid credentials$/ do
   create_visitor(1)
