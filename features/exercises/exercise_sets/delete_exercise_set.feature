@@ -14,7 +14,6 @@ Feature: Delete an existing exercise set
       | set1 | set1 desc   | private       | test1 | exc1     |
       | set2 | set2 desc   | global        | test1 | exc2     |
 
-  #TODO muze se exercise set urcite mazat?
   Scenario: As a coach who owns the private set, I can delete it, I should be warned before doing so
     Given I have "coach" role
     When I am at the "/exercise_sets" page

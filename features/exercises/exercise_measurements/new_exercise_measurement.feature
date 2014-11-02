@@ -31,11 +31,11 @@ Feature: Add exercise measurement to an existing exercise
     When I fill in all required exercise setup fields
       | name           | description |
       | uroven laktatu | desc        |
-    And I select option "higher" from the "optimal_value" menu
-    And I select option "mililitr" from the "unit" menu
-    And I click "Add measurement"
+      And I select option "higher" from the "optimal_value" menu
+      And I select option "mililitr" from the "unit" menu
+      And I click "Add measurement"
     Then I should see "uroven laktatu" in table "exercise_measurements"
-    And I should see "ml" in table "exercise_measurements"
+      And I should see "ml" in table "exercise_measurements"
 
   Scenario: As a coach I can't add exercise measurements to other than mine exercises
     Given I am at the "/exercises/exc2" page
@@ -48,8 +48,8 @@ Feature: Add exercise measurement to an existing exercise
     When I fill in all required exercise setup fields
       | name             | description  |
       | tepova frekvence | jaky mam tep |
-    And I select option "lower" from the "optimal_value" menu
-    And I select option "beats per minute" from the "unit" menu
-    And I click "Add measurement"
+      And I select option "lower" from the "optimal_value" menu
+      And I select option "beats per minute" from the "unit" menu
+      And I click "Add measurement"
     Then I should see "tepova frekvence" in table "exercise_measurements"
-    And I should see "bpm" in table "exercise_measurements"
+      And I should see "bpm" in table "exercise_measurements"

@@ -3,6 +3,8 @@ Feature: Add exercise setup to an existing exercise
   I want to add a new exercise setup to an existing exercise
   #TODO ?doplnit setupTypes
 
+  #TODO !!! neni mozne aby uzivatel mohl zadat mereni s required = true pokud jiz nejaky setup existuje
+  # !!!   -> je to z duvodu, ze by potom povine parametry u nekterych realizaci cviku zadanych v minulosti mohly chybet
   Background:
     Given I am logged in
     And User "test1" has "coach" role

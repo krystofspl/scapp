@@ -18,6 +18,8 @@ Feature: Edit exercise setup
       | name  | description | required | unit | exercise |
       | setup | setup desc  | false    | kg   | exc1     |
 
+  #TODO !!! neni mozne aby uzivatel menil setup z required = false na required = true pokud jiz nejaky setup existuje
+  # !!!   -> je to z duvodu, ze by potom povine parametry u nekterych realizaci cviku zadanych v minulosti mohly chybet
   Scenario: As a coach I can edit my exercise setup, I should be warned
     Given I have "coach" role
     When I visit page "/exercises/exc1"

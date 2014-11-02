@@ -22,15 +22,16 @@ Feature: Delete exercise measurement that is not in use
 
   Scenario: Exercise measurement that is in use can't be removed
     Given I am logged in as User test1
-    And Exercise measurement "measurement" is in use
+      And Exercise measurement "measurement" is in use
     When I visit page "/exercises/exc1"
     Then I shouldn't see "link" containing "Delete"
 
+  @javascript
   Scenario: As a coach I can delete my exercise measurement that is not in use
     Given I am logged in as User test1
-    And Exercise measurement "measurement" is not in use
+      And Exercise measurement "measurement" is not in use
     When I visit page "/exercises/exc1"
     Then I should see "link" containing "Delete"
     When I click "Delete"
-    And I confirm popup
+      And I confirm popup
     Then I shouldn't see "measurement" in section "exercise_measurements"

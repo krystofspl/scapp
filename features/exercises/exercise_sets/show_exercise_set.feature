@@ -26,31 +26,30 @@ Feature: View exercise sets
     Given I am logged in as User "test2"
     When I visit page "/exercise_sets/"
     Then I should see "set1" in table "exercise_sets"
-    And I should see "set2" in table "exercise_sets"
-    And I shouldn't see "set3" in the table "exercise_sets"
+      And I should see "set2" in table "exercise_sets"
+      And I shouldn't see "set3" in the table "exercise_sets"
 
   Scenario: As a coach I want to view all my exercise sets on a single page
     Given I am logged in as User "test2"
     When I visit page "/users/test2/exercise_sets/"
     Then I should see "set1" in table "exercise_sets"
-    And I shouldn't see "set2" in table "exercise_sets"
-    And I shouldn't see "set3" in the table "exercise_sets"
+      And I shouldn't see "set2" in table "exercise_sets"
+      And I shouldn't see "set3" in the table "exercise_sets"
 
-  Scenario: As admin I want to view all my private + global exercise sets on a single page
+  Scenario: As admin I want to view all my private + my global exercise sets on a single page
     Given I am logged in as User "test1"
     When I visit page "/users/test1/exercise_sets/"
     Then I shouldn't see "set1" in the table "exercise_sets"
-    And I should see "set2" in table "exercise_sets"
-    And I should see "set3" in table "exercise_sets"
+      And I should see "set2" in table "exercise_sets"
+      And I should see "set3" in table "exercise_sets"
 
   # Sets in Exercise detail /exercise/id/sets
   Scenario: As a coach I want to view any sets connected to my private exercise
     Given I am logged in as User "test2"
-    And I am at the "/exercises/exc1" page
-    When I click "View sets"
+      And I am at the "/exercises/exc1" page
     Then I should see "set1" in the table
-    And I should see "set2" in the table
-    And I shouldn't see "set3" in the table
+      And I should see "set2" in the table
+      And I shouldn't see "set3" in the table
 
   # Details
   Scenario: As a coach I want to view my private exercise set details

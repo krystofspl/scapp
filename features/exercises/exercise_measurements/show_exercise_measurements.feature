@@ -29,6 +29,9 @@ Feature: Show exercise measurements
       | teplota | teplota     | higher        | °C   | exc2     |
       | neco    | neco        | higher        | kg   | exc3     |
 
+  # TODO complete
+  Scenario: As player who has exercise assigned in his training realization can see exercise detail
+
   # List = detail (detail bude rovnou na detailu exercise, jinde ne)
   Scenario: As a coach I can view exercise measurements connected to my exercise
     Given I have "coach" role

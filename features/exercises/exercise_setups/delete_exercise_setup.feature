@@ -19,15 +19,15 @@ Feature: Delete exercise setup that is not in use
 
   Scenario: Exercise setup that is in use can't be removed
     Given I am logged in as User test1
-    And Exercise setup "setup" is in use
+      And Exercise setup "setup" is in use
     When I visit page "/exercises/exc1"
     Then I shouldn't see "link" containing "Delete"
 
   Scenario: As a coach I can delete my exercise setup that is not in use
     Given I am logged in as User test1
-    And Exercise setup "setup" is not in use
+      And Exercise setup "setup" is not in use
     When I visit page "/exercises/exc1"
     Then I should see "link" containing "Delete"
     When I click "Delete"
-    And I confirm popup
+      And I confirm popup
     Then I shouldn't see "setup" in section "exercise_setups"

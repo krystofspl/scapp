@@ -1,4 +1,3 @@
-#TODO dopsat funkcionalitu verzovani
 Feature: Edit exercise
   In order to manage exercises
   As admin or coach who owns the private exercise
@@ -15,8 +14,8 @@ Feature: Edit exercise
   # Zde je fork: kosmeticka uprava -> povolit upravu; vetsi uprava -> clone na novou verzi
   Scenario: As a coach I can edit my private exercise, I should be warned before doing so
     Given I have "coach" role
-    And I am at the "/users/test1/exercises" page
-    And I should see "excprivate" in the table
+      And I am at the "/users/test1/exercises" page
+      And I should see "excprivate" in the table
     When I click "Edit" for "excprivate" in table row
     Then I should see an exercise fork dialog
     When I choose to edit the current version
@@ -24,18 +23,37 @@ Feature: Edit exercise
     When I fill in all necessary exercise fields
       | name          | description      |
       | modexcprivate | mod private desc |
-    And I click "Save changes"
+      And I click "Save changes"
+      Then I should be prompted for a verification code
+    When I fill in the verification code correctly
     Then I should see "Exercise was successfully updated." message
+      And I shouldn't see "excprivate" in the table
+      And I should see "modexcprivate" in the table
+      And I should see "mod private desc" in the table
+
+  Scenario: As a coach I can make a new version of my private exercise
+    Given I have "coach" role
+    And I am at the "/users/test1/exercises" page
+    And I should see "excprivate" in the table
+    When I click "Edit" for "excprivate" in table row
+    Then I should see an exercise fork dialog
+    When I choose to make a new version
+    Then I shouldn't see "code" field
+    When I fill in all necessary exercise fields
+      | name          | description      |
+      | modexcprivate | mod private desc |
+    And I click "Create a new version"
+    Then I should be prompted for a verification code
+    When I fill in the verification code correctly
+    Then I should see "New exercise version successfully created." message
     And I shouldn't see "excprivate" in the table
     And I should see "modexcprivate" in the table
     And I should see "mod private desc" in the table
 
-  Scenario: As a coach I can make a new version of my private exercise
-
   Scenario: As an admin I can edit any exercise, I should be warned before doing so
     Given I have "admin" role
-    And I am at the "/users/test2/exercises" page
-    And I should see "exc2" in the table
+      And I am at the "/users/test2/exercises" page
+      And I should see "exc2" in the table
     When I click "Edit" for "exc2" in table row
     Then I should see warning alert message
     When I confirm popup
@@ -43,8 +61,8 @@ Feature: Edit exercise
     When I fill in all necessary exercise fields
       | name    | description    |
       | modexc2 | moddescription |
-    And I click "Save changes"
+      And I click "Save changes"
     Then I should see "Exercise was successfully updated." message
-    And I shouldn't see "exc2" in the table
-    And I should see "modexc2" in the table
-    And I should see "moddescription" in the table
+      And I shouldn't see "exc2" in the table
+      And I should see "modexc2" in the table
+      And I should see "moddescription" in the table
