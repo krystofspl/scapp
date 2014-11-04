@@ -1,3 +1,12 @@
 language: ruby
 rvm:
   - "2.1.0"
+env:
+  - DB=mysql2
+script:
+  - RAILS_ENV=test bundle exec rake db:migrate
+  - bundle exec rake db:test:prepare
+  - bundle exec rake
+before_script:
+  - cp config/database.travis.yml config/database.yml
+  - mysql -e 'create database scapp_test
