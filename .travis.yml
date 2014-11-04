@@ -9,4 +9,5 @@ script:
   - bundle exec rake
 before_script:
   - cp config/database.travis.yml config/database.yml
-  - mysql -e 'create database scapp_test
+  - mysql -e 'create database scapp_test'
+  
