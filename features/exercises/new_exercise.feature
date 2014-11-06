@@ -23,8 +23,8 @@ Feature: Add new exercise
       # Pro coache bude "private" implicitni
       And I should see "Create exercise and add details" action button
     When I fill in all required fields for exercise
-      | name     | description | exercise_type |
-      | exc1 abc | exc1 desc   | simple        |
+      | name     | description | type |
+      | exc1 abc | exc1 desc   | Exercise      |
       And I click "Generate code"
     #TODO !!! pokud generovani pojede dynamicky melo by to zvladat i kolize kodu (pokud jiz cvik s danym kodem existuje)
     Then I should see "exc1_abc" in "code" field
@@ -42,8 +42,8 @@ Feature: Add new exercise
       # Pro admina bude "global" implicitni
       And Radio button "accessibility_global" should be selected
     When I fill in all required fields for exercise
-      | name     | description | exercise_type |
-      | exc2 abc | exc2 desc   | with_series   |
+      | name     | description | type |
+      | exc2 abc | exc2 desc   | ExerciseWithSets   |
     And I click "Generate code"
     Then I should see "exc2_abc" in "code" field
     When I click "Create exercise"
