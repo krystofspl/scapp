@@ -7,7 +7,7 @@ class CreateExerciseBundleExercises < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :exercise_bundle_exercises, :exercise_code
+    add_index :exercise_bundle_exercises, :exercise_bundle_code
   end
-  add_index :exercise_bundle_exercises, :exercise_code
-  add_index :exercise_bundle_exercises, :exercise_set_code
 end

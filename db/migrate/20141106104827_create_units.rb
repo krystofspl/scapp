@@ -1,5 +1,5 @@
 class CreateUnits < ActiveRecord::Migration
-  def change
+  def up
     create_table :units, id: false do |t|
       t.string :code, null: false, unique: true
       t.string :name, null: false
@@ -11,5 +11,9 @@ class CreateUnits < ActiveRecord::Migration
     end
     add_index :units, :code
     execute "ALTER TABLE units ADD PRIMARY KEY (code);"
+  end
+
+  def down
+    drop_table :units
   end
 end

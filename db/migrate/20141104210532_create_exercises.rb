@@ -1,5 +1,5 @@
 class CreateExercises < ActiveRecord::Migration
-  def change
+  def up
     create_table :exercises, id: false do |t|
       t.string :code, null: false
       t.integer :version, null: false, :default => 1
@@ -17,5 +17,9 @@ class CreateExercises < ActiveRecord::Migration
     end
     add_index :exercises, :code
     execute "ALTER TABLE exercises ADD PRIMARY KEY (code,version);"
+  end
+
+  def down
+    drop_table :exercises
   end
 end

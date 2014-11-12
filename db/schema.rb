@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140515123627) do
+ActiveRecord::Schema.define(version: 20141106193439) do
 
   create_table "attendances", force: true do |t|
     t.string   "participation",                  limit: 9
@@ -57,6 +57,114 @@ ActiveRecord::Schema.define(version: 20140515123627) do
   end
 
   add_index "currencies", ["slug"], name: "index_currencies_on_slug", unique: true, using: :btree
+
+  create_table "exercise_bundle_exercises", force: true do |t|
+    t.string   "exercise_code",        null: false
+    t.string   "exercise_bundle_code", null: false
+    t.integer  "exercise_version",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exercise_bundle_exercises", ["exercise_bundle_code"], name: "index_exercise_bundle_exercises_on_exercise_bundle_code", using: :btree
+  add_index "exercise_bundle_exercises", ["exercise_code"], name: "index_exercise_bundle_exercises_on_exercise_code", using: :btree
+
+  create_table "exercise_bundles", primary_key: "code", force: true do |t|
+    t.string   "name",                                        null: false
+    t.string   "description"
+    t.string   "accessibility", limit: 7, default: "private", null: false
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exercise_bundles", ["code"], name: "index_exercise_bundles_on_code", using: :btree
+  add_index "exercise_bundles", ["user_id"], name: "index_exercise_bundles_on_user_id", using: :btree
+
+  create_table "exercise_images", force: true do |t|
+    t.string   "name"
+    t.string   "path",                       null: false
+    t.string   "description"
+    t.string   "correctness",      limit: 5, null: false
+    t.integer  "exercise_step_id"
+    t.integer  "exercise_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exercise_images", ["exercise_id"], name: "index_exercise_images_on_exercise_id", using: :btree
+  add_index "exercise_images", ["exercise_step_id"], name: "index_exercise_images_on_exercise_step_id", using: :btree
+
+  create_table "exercise_measurements", primary_key: "code", force: true do |t|
+    t.string   "name",                                                    null: false
+    t.string   "description"
+    t.string   "type",                    default: "ExerciseMeasurement", null: false
+    t.string   "optimal_value", limit: 6, default: "higher",              null: false
+    t.integer  "unit_id"
+    t.integer  "exercise_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exercise_measurements", ["code"], name: "index_exercise_measurements_on_code", using: :btree
+  add_index "exercise_measurements", ["exercise_id"], name: "index_exercise_measurements_on_exercise_id", using: :btree
+  add_index "exercise_measurements", ["unit_id"], name: "index_exercise_measurements_on_unit_id", using: :btree
+
+  create_table "exercise_setup_types", primary_key: "code", force: true do |t|
+    t.string   "name",        null: false
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exercise_setup_types", ["code"], name: "index_exercise_setup_types_on_code", using: :btree
+
+  create_table "exercise_setups", primary_key: "code", force: true do |t|
+    t.string   "name",                                             null: false
+    t.string   "description"
+    t.string   "type",                   default: "ExerciseSetup", null: false
+    t.boolean  "required",               default: false,           null: false
+    t.integer  "exercise_setup_type_id"
+    t.integer  "unit_id"
+    t.integer  "exercise_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exercise_setups", ["code"], name: "index_exercise_setups_on_code", using: :btree
+  add_index "exercise_setups", ["exercise_id"], name: "index_exercise_setups_on_exercise_id", using: :btree
+  add_index "exercise_setups", ["exercise_setup_type_id"], name: "index_exercise_setups_on_exercise_setup_type_id", using: :btree
+  add_index "exercise_setups", ["unit_id"], name: "index_exercise_setups_on_unit_id", using: :btree
+
+  create_table "exercise_steps", force: true do |t|
+    t.string   "name",                    null: false
+    t.string   "description"
+    t.integer  "step_number", default: 1, null: false
+    t.integer  "exercise_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exercise_steps", ["exercise_id"], name: "index_exercise_steps_on_exercise_id", using: :btree
+
+  create_table "exercises", id: false, force: true do |t|
+    t.string   "code",                                             null: false
+    t.integer  "version",                     default: 1,          null: false
+    t.string   "name",                                             null: false
+    t.string   "author_name"
+    t.string   "description"
+    t.string   "sources"
+    t.string   "youtube_url"
+    t.string   "type",                        default: "Exercise", null: false
+    t.string   "accessibility",     limit: 7, default: "private",  null: false
+    t.integer  "user_id"
+    t.integer  "exercise_image_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exercises", ["code"], name: "index_exercises_on_code", using: :btree
+  add_index "exercises", ["user_id"], name: "index_exercises_on_user_id", using: :btree
 
   create_table "friendly_id_slugs", force: true do |t|
     t.string   "slug",                      null: false
@@ -201,6 +309,17 @@ ActiveRecord::Schema.define(version: 20140515123627) do
   add_index "training_lessons", ["regular_training_id"], name: "index_training_lessons_on_regular_training_id", using: :btree
   add_index "training_lessons", ["rental_vat_id"], name: "index_training_lessons_on_rental_vat_id", using: :btree
   add_index "training_lessons", ["training_vat_id"], name: "index_training_lessons_on_training_vat_id", using: :btree
+
+  create_table "units", primary_key: "code", force: true do |t|
+    t.string   "name",                                       null: false
+    t.string   "description"
+    t.string   "abbreviation",                               null: false
+    t.string   "unit_type",    limit: 7, default: "integer", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "units", ["code"], name: "index_units_on_code", using: :btree
 
   create_table "user_groups", force: true do |t|
     t.string   "name"

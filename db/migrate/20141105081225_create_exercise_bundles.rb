@@ -1,5 +1,5 @@
 class CreateExerciseBundles < ActiveRecord::Migration
-  def change
+  def up
     create_table :exercise_bundles, id: false do |t|
       t.string :code, null: false, unique: true
       t.string :name, null: false
@@ -11,5 +11,9 @@ class CreateExerciseBundles < ActiveRecord::Migration
     end
     add_index :exercise_bundles, :code
     execute "ALTER TABLE exercise_bundles ADD PRIMARY KEY (code);"
+  end
+
+  def down
+    drop_table :exercise_bundles
   end
 end
