@@ -1,0 +1,27 @@
+class ExerciseImage < ActiveRecord::Base
+  CORRECTNESS = %w('right','wrong')
+
+  # =================== ASSOCIATIONS =================================
+  belongs_to :exercise_step
+  belongs_to :exercise
+
+  # =================== VALIDATIONS ==================================
+  validates :path, presence: true
+  validates :correctness, inclusion: { in: CORRECTNESS }
+
+  # =================== GETTERS / SETTERS ============================
+
+  # Read correctness
+  # @return [Symbol] correctness
+  def correctness
+    read_attribute(:correctness).to_sym unless read_attribute(:correctness).blank?
+  end
+
+  # Set correctness
+  # @param correctness
+  #   @option :right
+  #   @option :wrong
+  def correctness=(correctness)
+    write_attribute(:correctness, correctness.to_s)
+  end
+end
