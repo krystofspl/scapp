@@ -48,6 +48,8 @@ gem 'foreigner', '~>1.4.2'
 gem 'immigrant'
 # configuration
 gem 'settingslogic'
+# composite primary keys
+gem 'composite_primary_keys', '~> 6.0.6'
 
 group :development do
   gem 'better_errors'

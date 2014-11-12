@@ -1,5 +1,5 @@
 class ExerciseImage < ActiveRecord::Base
-  CORRECTNESS = %w('right','wrong')
+  CORRECTNESS = [:right, :wrong]
 
   # =================== ASSOCIATIONS =================================
   belongs_to :exercise_step

@@ -1,6 +1,7 @@
 class ExerciseMeasurement < ActiveRecord::Base
-  OPTIMAL_VALUES = %w('higher','lower')
-  
+  OPTIMAL_VALUES = [:higher, :lower]
+
+  self.primary_key = :code
   extend FriendlyId
   friendly_id :name, :use => :slugged, :slug_column => :code
   

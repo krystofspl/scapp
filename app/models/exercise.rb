@@ -1,6 +1,7 @@
 class Exercise < ActiveRecord::Base
-  ACCESSIBILITY = %w('private','global')
+  ACCESSIBILITY = [:private, :global]
 
+  self.primary_keys = :code, :version
   extend FriendlyId
   friendly_id :name, :use => :slugged, :slug_column => :code
 

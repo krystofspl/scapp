@@ -1,6 +1,7 @@
 class Unit < ActiveRecord::Base
-  UNIT_TYPES = %w('integer','decimal','time')
+  UNIT_TYPES = [:integer, :decimal, :time]
 
+  self.primary_key = :code
   extend FriendlyId
   friendly_id :name, :use => :slugged, :slug_column => :code
 
