@@ -23,6 +23,12 @@ module ApplicationHelper
     object[field]
   end
 
+  # Get _object_ or dash when nil
+  def dash_or_object(obj)
+    return "-" if obj.nil?
+    obj
+  end
+
   # Wraps public status into label with specific color
   # @param [String] label label to labelize
   # @return [String] label wrapped in label span
@@ -32,6 +38,17 @@ module ApplicationHelper
         return '<span class="label label-success">✓</span>'
       when false, nil
         return '<span class="label label-danger">✗</span>'
+    end
+  end
+
+  def self.labelize_optimal_value(label)
+    case label.to_s
+      when "higher"
+        return '<span class="label label-info">&uarr;</span>'
+      when "lower"
+        return '<span class="label label-info">&darr;</span>'
+      else
+        return label
     end
   end
 
