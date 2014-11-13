@@ -214,6 +214,7 @@ en:
     listing: &listing Listing
     following_errors_occured: 'Following errors occurred: %{errors}'
 
+    accessibility: "Accessibility"
   alerts:
     not_authorized: 'You do not have required permissions for this action.'
 

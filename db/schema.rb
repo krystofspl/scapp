@@ -87,28 +87,27 @@ ActiveRecord::Schema.define(version: 20141106193439) do
     t.string   "description"
     t.string   "correctness",      limit: 5, null: false
     t.integer  "exercise_step_id"
-    t.integer  "exercise_id"
+    t.string   "exercise_code"
+    t.integer  "exercise_version"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "exercise_images", ["exercise_id"], name: "index_exercise_images_on_exercise_id", using: :btree
   add_index "exercise_images", ["exercise_step_id"], name: "index_exercise_images_on_exercise_step_id", using: :btree
 
   create_table "exercise_measurements", primary_key: "code", force: true do |t|
-    t.string   "name",                                                    null: false
+    t.string   "name",                                                       null: false
     t.string   "description"
-    t.string   "type",                    default: "ExerciseMeasurement", null: false
-    t.string   "optimal_value", limit: 6, default: "higher",              null: false
-    t.integer  "unit_id"
-    t.integer  "exercise_id"
+    t.string   "type",                       default: "ExerciseMeasurement", null: false
+    t.string   "optimal_value",    limit: 6, default: "higher",              null: false
+    t.string   "unit_code"
+    t.string   "exercise_code"
+    t.integer  "exercise_version"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "exercise_measurements", ["code"], name: "index_exercise_measurements_on_code", using: :btree
-  add_index "exercise_measurements", ["exercise_id"], name: "index_exercise_measurements_on_exercise_id", using: :btree
-  add_index "exercise_measurements", ["unit_id"], name: "index_exercise_measurements_on_unit_id", using: :btree
 
   create_table "exercise_setup_types", primary_key: "code", force: true do |t|
     t.string   "name",        null: false
@@ -120,32 +119,29 @@ ActiveRecord::Schema.define(version: 20141106193439) do
   add_index "exercise_setup_types", ["code"], name: "index_exercise_setup_types_on_code", using: :btree
 
   create_table "exercise_setups", primary_key: "code", force: true do |t|
-    t.string   "name",                                             null: false
+    t.string   "name",                                               null: false
     t.string   "description"
-    t.string   "type",                   default: "ExerciseSetup", null: false
-    t.boolean  "required",               default: false,           null: false
-    t.integer  "exercise_setup_type_id"
-    t.integer  "unit_id"
-    t.integer  "exercise_id"
+    t.string   "type",                     default: "ExerciseSetup", null: false
+    t.boolean  "required",                 default: false,           null: false
+    t.string   "exercise_setup_type_code"
+    t.string   "unit_code"
+    t.string   "exercise_code"
+    t.integer  "exercise_version"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "exercise_setups", ["code"], name: "index_exercise_setups_on_code", using: :btree
-  add_index "exercise_setups", ["exercise_id"], name: "index_exercise_setups_on_exercise_id", using: :btree
-  add_index "exercise_setups", ["exercise_setup_type_id"], name: "index_exercise_setups_on_exercise_setup_type_id", using: :btree
-  add_index "exercise_setups", ["unit_id"], name: "index_exercise_setups_on_unit_id", using: :btree
 
   create_table "exercise_steps", force: true do |t|
-    t.string   "name",                    null: false
+    t.string   "name",                         null: false
     t.string   "description"
-    t.integer  "step_number", default: 1, null: false
-    t.integer  "exercise_id"
+    t.integer  "step_number",      default: 1, null: false
+    t.string   "exercise_code"
+    t.integer  "exercise_version"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "exercise_steps", ["exercise_id"], name: "index_exercise_steps_on_exercise_id", using: :btree
 
   create_table "exercises", id: false, force: true do |t|
     t.string   "code",                                             null: false

@@ -7,6 +7,13 @@ Scapp::Application.routes.draw do
   get '/help/:locale/:theme' => 'helps#show', as: 'show_help'
   get '/help_modal/:locale/:theme' => 'helps#show_ajax', as: 'show_modal_help'
 
+  resources :exercise_setups
+
+  resources :exercises
+
+  resources :units
+
+  resources :exercise_bundles
 
   resources :payments
 
