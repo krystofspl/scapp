@@ -24,7 +24,7 @@ Given /^I exist as an unconfirmed user$/ do
 end
 
 Given(/^I am logged in as User test(\d+)$/) do |id|
-  sign_in(id)
+  sign_in(id.to_i)
 end
 
 ### WHEN ###

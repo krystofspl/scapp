@@ -63,5 +63,5 @@ Feature: View exercises
     Given I am logged in as User test2
     When I visit page "/exercises"
     Then I should see "exc5" in table "exercises"
-      And I should see "exc1" in the table "exercises"
+      And I should see "exc1" in table "exercises"
       And I shouldn't see "exc2" in the table "exercises"
