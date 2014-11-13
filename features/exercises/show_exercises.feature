@@ -37,7 +37,7 @@ Feature: View exercises
     Then I should see "heading" containing "exercise detail"
 
   Scenario: As admin I can view any exercise
-    Given I have "admin" role
+    Given I am logged in as User test1
     #private
     When I visit page "/exercises/exc1"
     Then I should see "heading" containing "exercise detail"
