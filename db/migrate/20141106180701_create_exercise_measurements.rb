@@ -6,8 +6,9 @@ class CreateExerciseMeasurements < ActiveRecord::Migration
       t.string :description
       t.string :type, null: false, default: 'ExerciseMeasurement'
       t.column :optimal_value, "ENUM('higher','lower')", default: 'higher', null: false
-      t.references :unit, index: true
-      t.references :exercise, index: true
+      t.string :unit_code, index: true
+      t.string :exercise_code, index: true
+      t.integer :exercise_version, index: true
 
       t.timestamps
     end

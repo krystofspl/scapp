@@ -6,9 +6,10 @@ class CreateExerciseSetups < ActiveRecord::Migration
       t.string :description
       t.string :type, null: false, default: 'ExerciseSetup'
       t.boolean :required, null: false, default: false
-      t.references :exercise_setup_type, index: true
-      t.references :unit, index: true
-      t.references :exercise, index: true
+      t.string :exercise_setup_type_code, index: true
+      t.string :unit_code, index: true
+      t.string :exercise_code, index: true
+      t.integer :exercise_version, index: true
 
       t.timestamps
     end

@@ -4,7 +4,8 @@ class CreateExerciseSteps < ActiveRecord::Migration
       t.string :name, null: false
       t.string :description
       t.integer :step_number, null: false, default: 1
-      t.references :exercise, index: true
+      t.string :exercise_code, index: true
+      t.integer :exercise_version, index: true
 
       t.timestamps
     end

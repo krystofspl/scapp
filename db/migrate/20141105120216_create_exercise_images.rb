@@ -6,7 +6,8 @@ class CreateExerciseImages < ActiveRecord::Migration
       t.string :description
       t.column :correctness, "ENUM('right','wrong')", null: false
       t.references :exercise_step, index: true
-      t.references :exercise, index: true
+      t.string :exercise_code, index: true
+      t.integer :exercise_version, index: true
 
       t.timestamps
     end
