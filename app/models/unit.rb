@@ -6,8 +6,8 @@ class Unit < ActiveRecord::Base
   friendly_id :name, :use => :slugged, :slug_column => :code
 
   # =================== ASSOCIATIONS =================================
-  has_many :exercise_setups
-  has_many :exercise_measurements
+  has_many :exercise_setups, :foreign_key => :unit_code
+  has_many :exercise_measurements, :foreign_key => :unit_code
 
   # =================== VALIDATIONS ==================================
   validates :code, presence: true, uniqueness: true
@@ -27,7 +27,7 @@ class Unit < ActiveRecord::Base
   #   @option :integer
   #   @option :decimal
   #   @option :time
-  def unit_type(unit_type)
+  def unit_type=(unit_type)
     write_attribute(:unit_type, accessibility.to_s) unless unit_type.blank?
   end
   # =================== METHODS ======================================

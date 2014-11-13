@@ -5,7 +5,7 @@ class ExerciseSetupType < ActiveRecord::Base
   friendly_id :name, :use => :slugged, :slug_column => :code
 
   # =================== ASSOCIATIONS =================================
-  has_one :exercise_setup
+  has_many :exercise_setups, :foreign_key => :exercise_setup_type_code
 
   # =================== VALIDATIONS ==================================
   validates :code, presence: true, uniqueness: true

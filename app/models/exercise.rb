@@ -4,12 +4,16 @@ class Exercise < ActiveRecord::Base
   self.primary_keys = :code, :version
   extend FriendlyId
   friendly_id :name, :use => :slugged, :slug_column => :code
+  #TODO validovat code ve formulari (uniqueness, aby se nepřidal UUID)
 
   # =================== ASSOCIATIONS =================================
   belongs_to :user
   has_one :exercise_image
-  has_many :exercise_bundles, :through => :exercise_bundle_exercise
+  has_many :exercise_bundle_exercises, :class_name => 'ExerciseBundleExercise', :foreign_key => [:exercise_code, :exercise_version]
+  has_many :exercise_bundles, :through => :exercise_bundle_exercises
   has_many :exercise_steps
+  has_many :exercise_setups, :foreign_key => [:exercise_code, :exercise_version]
+  has_many :exercise_measurements, :foreign_key => [:exercise_code, :exercise_version]
 
   # =================== VALIDATIONS ==================================
   validates :code, presence: true
@@ -34,4 +38,9 @@ class Exercise < ActiveRecord::Base
   end
 
   # =================== METHODS ======================================
+  # Does the exercise have any realizations?
+  def is_in_use?
+    #TODO dodelat s realizacemi
+    false
+  end
 end

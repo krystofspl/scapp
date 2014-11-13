@@ -7,7 +7,8 @@ class ExerciseBundle < ActiveRecord::Base
 
   # =================== ASSOCIATIONS =================================
   belongs_to :user
-  has_many :exercises, :through => :ExerciseBundleExercise
+  has_many :exercise_bundle_exercises, :class_name => 'ExerciseBundleExercise', :foreign_key => :exercise_bundle_code
+  has_many :exercises, :through => :exercise_bundle_exercises
 
   # =================== VALIDATIONS ==================================
   validates :code, presence: true, uniqueness: true

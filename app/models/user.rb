@@ -62,6 +62,12 @@ class User < ActiveRecord::Base
     write_attribute(:handedness, handedness.to_s) unless handedness.blank?
   end
 
+  # Read full name
+  def to_s
+    return (read_attribute(:first_name).to_s + " " + read_attribute(:last_name).to_s) unless (read_attribute(:first_name).blank? && read_attribute(:last_name).blank?)
+    "-"
+  end
+
   # =================== METHODS ======================================
 
   # Test if specified relation exists between users

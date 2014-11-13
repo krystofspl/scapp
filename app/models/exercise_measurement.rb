@@ -6,8 +6,8 @@ class ExerciseMeasurement < ActiveRecord::Base
   friendly_id :name, :use => :slugged, :slug_column => :code
   
   # =================== ASSOCIATIONS =================================
-  belongs_to :unit
-  belongs_to :exercise
+  belongs_to :unit, :foreign_key => :unit_code
+  belongs_to :exercise, :foreign_key => [:exercise_code, :exercise_version]
 
   # =================== VALIDATIONS ==================================
   validates :code, presence: true, uniqueness: true

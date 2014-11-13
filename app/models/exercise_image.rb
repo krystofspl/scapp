@@ -3,7 +3,7 @@ class ExerciseImage < ActiveRecord::Base
 
   # =================== ASSOCIATIONS =================================
   belongs_to :exercise_step
-  belongs_to :exercise
+  belongs_to :exercise,  :foreign_key => [:exercise_code, :exercise_version]
 
   # =================== VALIDATIONS ==================================
   validates :path, presence: true
