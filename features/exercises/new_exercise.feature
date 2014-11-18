@@ -23,14 +23,11 @@ Feature: Add new exercise
       # Pro coache bude "private" implicitni
       And I should see "Create exercise and add details" action button
     When I fill in all required fields for exercise
-      | name     | description | type |
-      | exc1 abc | exc1 desc   | Exercise      |
-      And I click "Generate code"
-    #TODO !!! pokud generovani pojede dynamicky melo by to zvladat i kolize kodu (pokud jiz cvik s danym kodem existuje)
-    Then I should see "exc1_abc" in "code" field
-    When I click "Create exercise"
-    Then I should see "Exercise successfully created." message
-      And I should see "heading" containing "exc1 - Exercise detail"
+      | name     | description | type         |
+      | exc1 abc | exc1 desc   | Simple exercise      |
+    When I click "Create exercise without adding details"
+    Then I should see "Exercise was successfully created." message
+      And I should see "heading" containing "exc1 abc - exercise detail"
 
   Scenario: As admin I can add a new global exercise
     Given I have "admin" role
@@ -40,12 +37,10 @@ Feature: Add new exercise
       And I should see "radio_button" containing "Private"
       And I should see "radio_button" containing "Global"
       # Pro admina bude "global" implicitni
-      And Radio button "accessibility_global" should be selected
+      And Radio button "exercise_accessibility_global" should be selected
     When I fill in all required fields for exercise
       | name     | description | type |
-      | exc2 abc | exc2 desc   | ExerciseWithSets   |
-    And I click "Generate code"
-    Then I should see "exc2_abc" in "code" field
-    When I click "Create exercise"
-    Then I should see "Exercise successfully created." message
-      And I should see "heading" containing "exc2 - Exercise detail"
+      | exc2 abc | exc2 desc   | Exercise with sets   |
+    When I click "Create exercise without adding details"
+    Then I should see "Exercise was successfully created." message
+      And I should see "heading" containing "exc2 abc - exercise detail"

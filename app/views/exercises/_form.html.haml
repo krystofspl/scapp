@@ -1,0 +1,21 @@
+= simple_form_for(@exercise) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name, input_html: {maxlength:255}
+    = f.input :description, input_html: {maxlength:255}
+    = f.input :type, :collection => [[Exercise.name, t('exercise.simple_exercise')],[ExerciseWithSets.name, t('exercise.exercise_with_sets')]], :selected=>@exercise.type.to_s, :value_method => :first, :label_method => :last
+    = f.input :author_name, input_html: {maxlength:255}
+    = f.input :sources, input_html: {maxlength:255}
+    = f.input :youtube_url, input_html: {maxlength:255}
+    - if current_user.is_admin?
+      = f.input :accessibility, :collection => [['private', t('private')],['global', t('global')]],
+        :as => :radio_buttons, :value_method => :first, :label_method => :last, :checked => (@exercise.persisted? ? @exercise.accessibility : 'global')
+    #TODO TODO avatar image select
+
+  .form-actions
+    - if params[:action] == "new"
+      = f.button :submit, t('exercise.new.form_button_create_add_details'), class: "btn btn-primary"
+      = f.button :submit, t('exercise.new.form_button_create'), class: "btn btn-default"
+    - else
+      = f.button :submit, class: "btn btn-primary"

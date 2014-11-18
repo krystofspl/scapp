@@ -1,0 +1,37 @@
+.row
+  .col-sm-12
+    .box.box-primary
+      .box-header
+        %h2.box-title= t('exercise.index.exercises_list')
+      .box-body
+        %table.table#exercises
+          %tbody
+            %tr
+              %th= t('dictionary.name')
+              %th= t('exercise.show.used')
+              %th= t('dictionary.description')
+              %th= t('dictionary.accessibility')
+              %th= t('exercise.show.exercise_type')
+              %th
+              %th
+
+            - @exercises.each do |exercise|
+              %tr
+                %td= link_to exercise.name+((exercise.version>1)?" ("+exercise.version.to_s+")":""), exercise
+                %td
+                  %span.label.label-success 5x
+                -#TODO exercise_realizations.count
+                %td= exercise.description
+                %td
+                  %span.label.label-info= t(exercise.accessibility)
+                %td= exercise.type
+                %td
+                  - if (exercise.user == current_user || current_user.is_admin?)
+                    = link_to t('dictionary.edit'), edit_exercise_path(exercise), class: 'btn btn-warning'
+                  - else
+                    = link_to t('dictionary.edit'), "#", class: 'disabled btn btn-warning'
+                %td
+                  - if !exercise.is_in_use? && (exercise.user == current_user || current_user.is_admin?)
+                    = link_to t('dictionary.delete'), exercise, class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' }
+                  - else
+                    = link_to t('dictionary.delete'), "#", class: 'disabled btn btn-danger'

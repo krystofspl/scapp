@@ -25,10 +25,20 @@ en:
       destroy_exercise: "Delete exercise"
       exercise_type: "Exercise type"
       used: "Used"
+      user_exercises: "Exercises created by"
+      view_all_available_exercises: "View all accessible exercises"
     index:
       exercises_list: "Exercises list"
+    new_exercise: "New exercise"
+    successfully_removed: "Exercise successfully removed."
+    simple_exercise: "Simple exercise"
+    exercise_with_sets: "Exercise with sets"
+    new:
+      form_button_create: "Create exercise without adding details"
+      form_button_create_add_details: "Create exercise and add details"
   breadcrumbs:
     exercise_detail: "Exercise detail"
     exercises: "Exercises"
+    user_exercises: "User exercises"
   private: "Private"
   global: "Global"

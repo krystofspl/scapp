@@ -1,0 +1,12 @@
+%p#notice= notice
+
+- content_for :heading do
+  = "#{t('exercise.index.exercises_list')}"
+
+- breadcrumb :exercises, @exercise
+
+#action-box
+  = link_to new_exercise_path, class: 'btn btn-info' do
+    = t('exercise.new_exercise')
+
+= render :template => 'exercises/_list_table.html.haml', :locale => @locale

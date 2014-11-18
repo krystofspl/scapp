@@ -1,0 +1,19 @@
+defaults: &defaults
+  app:
+    name: 'ScApp v2'
+    host: '192.168.1.5'
+    port: 3000
+    default_locale: 'cs'
+    email:
+      default: 'club@example.com'
+      registration: 'register@example.com'
+      no_reply: 'no_reply@example.com'
+
+test:
+  <<: *defaults
+
+development:
+  <<: *defaults
+
+production:
+  <<: *defaults

@@ -331,6 +331,14 @@ class Ability
       vfc.user == @user
     end
 
+    #TODO doplnit permission do tabulky
+    # =============
+    # x) Exercises
+    # =============
+
+    # Exercise detail
+    #TODO can view if he is a part of the lesson realization
+
   end
 
   # ===========================================
@@ -561,11 +569,33 @@ class Ability
       end
     end
 
-
-
-
-
+    #TODO doplnit permission do tabulky
+    # =============
+    # x) Exercises
+    # =============
+    @exercise = nil
+    begin
+      ver = @request.params[:exercise_version].nil? ? 1 : @request.params[:exercise_version]
+      @exercise = Exercise.friendly.find([@request.params[:exercise_code],ver])
+    rescue ActiveRecord::RecordNotFound
     end
+
+    # Exercises list
+    can [:exercises_list], ExercisesController
+
+    # Exercise detail
+    unless @exercise.nil?
+      if @exercise.accessibility == :global || @exercise.user == @user
+        can [:exercise_detail], ExercisesController
+      end
+    end
+
+    # New exercise
+    can [:exercise_new], ExercisesController
+
+    # UserExercise
+    can [:user_exercises], ExercisesController if @request.params[:user_id] == @user.slug
+  end
 
   # ===========================================
   # ADMIN PERMISSIONS

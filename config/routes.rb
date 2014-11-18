@@ -9,7 +9,11 @@ Scapp::Application.routes.draw do
 
   resources :exercise_setups
 
-  resources :exercises
+  resources :exercises, except: [:show,:edit,:update,:destroy]
+  get '/exercises/:exercise_code(/v/:exercise_version)' => 'exercises#show', :as => :exercise
+  get '/exercises/:exercise_code(/v/:exercise_version)/edit' => 'exercises#edit', :as => :edit_exercise
+  patch '/exercises/:exercise_code(/v/:exercise_version)' => 'exercises#update', :as => :update_exercise
+  delete '/exercises/:exercise_code(/v/:exercise_version)' => 'exercises#destroy', :as => :destroy_exercise
 
   resources :units
 
@@ -189,6 +193,12 @@ Scapp::Application.routes.draw do
     end
 
     get 'trainings' => 'trainings#user_overview'
+
+    resources :exercises, only: [], path: 'exercises' do
+      collection do
+        get '/' => 'exercises#user_exercises'
+      end
+    end
 
   end
 

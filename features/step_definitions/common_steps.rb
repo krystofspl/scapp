@@ -71,7 +71,7 @@ Then(/^I shouldn't see "([^"]*)" in actionbox$/) do |action_name|
 end
 
 And(/^I should see "([^"]*)" action button$/) do |action|
-  page.should have_link(action)
+  page.should have_selector(:link_or_button, action)
 end
 
 Then(/^I should see "([^"]*)" basic alert message$/) do |text|
@@ -79,3 +79,6 @@ Then(/^I should see "([^"]*)" basic alert message$/) do |text|
 end
 
 
+Then(/^Link "([^"]*)" in table row "([^"]*)" should be disabled$/) do |link, name|
+  find(:xpath, "//tr[contains(.,'#{name}')]/td/a", :text => link)[:class].include?('disabled')
+end

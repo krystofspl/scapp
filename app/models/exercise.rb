@@ -14,6 +14,9 @@ class Exercise < ActiveRecord::Base
   has_many :exercise_steps
   has_many :exercise_setups, :foreign_key => [:exercise_code, :exercise_version]
   has_many :exercise_measurements, :foreign_key => [:exercise_code, :exercise_version]
+  # --- prototypes for v2
+  has_many :exercise_realizations, :foreign_key => [:exercise_code, :exercise_version]
+
 
   # =================== VALIDATIONS ==================================
   validates :code, presence: true
@@ -40,7 +43,6 @@ class Exercise < ActiveRecord::Base
   # =================== METHODS ======================================
   # Does the exercise have any realizations?
   def is_in_use?
-    #TODO dodelat s realizacemi
-    false
+    !self.exercise_realizations.empty?
   end
 end

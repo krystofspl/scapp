@@ -1,0 +1,11 @@
+- content_for :heading do
+  = t('exercise.show.user_exercises') + " " + @user.to_s
+
+- breadcrumb :user_exercises, @user
+
+#action-box
+  = link_to t('exercise.show.view_all_available_exercises'), exercises_path, class: 'btn btn-info'
+  = link_to new_exercise_path, class: 'btn btn-info' do
+    = t('exercise.new_exercise')
+
+= render :template => 'exercises/_list_table.html.haml', :locale => @locale

@@ -407,14 +407,20 @@ end
 # Exercise
 # ============
 
-crumb :exercises do |exercise|
+crumb :exercises do
   link t('breadcrumbs.exercises'), exercises_path
+end
+
+crumb :user_exercises do |user|
+  link t('breadcrumbs.user_exercises'), exercises_path
+  parent :user, user
 end
 
 crumb :exercise_detail do |exercise|
   link t('breadcrumbs.exercise_detail')
   parent :exercises, exercise
 end
+
 
 # If you want to split your breadcrumbs configuration over multiple files, you
 # can create a folder named `config/breadcrumbs` and put your configuration

@@ -1,0 +1,111 @@
+%p#notice= notice
+
+- content_for :heading do
+  = "#{@exercise.name} - #{t('exercise.show.exercise_detail').downcase}"
+
+- breadcrumb :exercise_detail, @exercise
+
+#action-box
+  - if is_admin? || @exercise.user==current_user
+    = link_to edit_exercise_path(@exercise), class: 'btn btn-info' do
+      %i.fa.fa-pencil
+      = t('exercise.show.edit_exercise')
+    - unless @exercise.is_in_use?
+      = link_to @exercise, :method => :delete, class: 'btn btn-warning', :data => { :confirm => 'Are you sure?' } do
+        %i.fa.fa-times
+        = t('exercise.show.destroy_exercise')
+
+.row
+  .col-sm-12
+    .box.box-primary
+      .box-header
+        %h2.box-title= t('exercise.show.detail')
+      .box-body
+        .row
+          .col-sm-4
+            %table.table
+              %tbody
+                - if @exercise.version > 1
+                  %tr
+                    %th= t('exercise.show.version')
+                    %td= @exercise.version
+                %tr
+                  %th= t('exercise.show.owner')
+                  %td= dash_or_object(@exercise.user).to_s
+                %tr
+                  %th= t('exercise.show.accessibility')
+                  %td
+                    %span.label.label-info= t(@exercise.accessibility)
+                - unless @exercise.sources.blank?
+                  %tr
+                    %th= t('exercise.show.sources')
+                    %td= dash_or_value(@exercise, :sources)
+                - unless @exercise.youtube_url.blank?
+                  %tr
+                    %th= t('exercise.show.youtube_url')
+                    %td= link_to t('exercise.show.youtube_url_click'), @exercise.youtube_url
+                - unless @exercise.author_name.blank?
+                  %tr
+                    %th= t('exercise.show.author_name')
+                    %td= dash_or_value(@exercise, :author_name)
+                %tr
+                  %th= t('exercise.show.in_bundles')
+                  %td
+                    - @exercise_bundles.each do |exercise_bundle|
+                      %span.label.label-success=link_to exercise_bundle.name, exercise_bundle
+          .col-sm-4
+            %strong= t('dictionary.description')
+            - unless @exercise.description.blank?
+              =@exercise.description
+            - else
+              =t('exercise.show.description_is_empty')
+          .col-sm-4
+            %strong Opráski
+            Obrázky správně/špatně
+
+.row
+  .col-sm-12
+    .box.box-primary
+      .box-header
+        %h2.box-title= t('exercise.show.exercise_setups')
+      .box-body
+        .row
+          - @exercise_setups.each do |exercise_setup|
+            .col-sm-4
+              .box
+                .box-header
+                  %strong.box-title= exercise_setup.name
+                .box-body
+                  %table.table
+                    %tbody
+                      %tr
+                        %th= t('exercise.show.exercise_setups_required')
+                        %td!= ApplicationHelper.labelize_boolean exercise_setup.is_required?
+                      %tr
+                        %th= t('exercise.show.exercise_setups_unit_name')
+                        %td= exercise_setup.unit.name
+                      %tr
+                        %th= t('exercise.show.exercise_setup_type')
+                        %td= exercise_setup.exercise_setup_type.name
+
+.row
+  .col-sm-12
+    .box.box-primary
+      .box-header
+        %h2.box-title= t('exercise.show.exercise_measurements')
+      .box-body
+        .row
+          - @exercise_measurements.each do |exercise_measurement|
+            .col-sm-4
+              .box
+                .box-header
+                  %strong.box-title= exercise_measurement.name
+                .box-body
+                  %table.table
+                    %tbody
+                      %tr
+                        %th= t('exercise.show.exercise_measurement_optimal_value')
+                        %td!= ApplicationHelper.labelize_optimal_value exercise_measurement.optimal_value
+                      %tr
+                        %th= t('exercise.show.exercise_setups_unit_name')
+                        %td= exercise_measurement.unit.name
