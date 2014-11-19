@@ -7,7 +7,7 @@
 #   @option 'owner' Visible only to owner. Useful for internal organization
 
 class UserGroup < ActiveRecord::Base
-  GROUP_VISIBILITIES = [:public, :registered, :members, :owner]
+  GROUP_VISIBILITIES = [:public_available, :registered, :members, :owner]
 
   # =================== ASSOCIATIONS =================================
   has_and_belongs_to_many :users

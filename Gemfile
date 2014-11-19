@@ -1,20 +1,21 @@
 source 'https://rubygems.org'
 ruby '2.1.0'
-gem 'rails', '4.0.1'
+gem 'rails', '4.1.4'
 # CSS preprocessor
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 1.3.0'
 # JS preprocessor
 gem 'coffee-rails', '~> 4.0.0'
 # JS jQuery library
-gem 'jquery-rails', '~>3.1.0'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'jquery-scrollto-rails'
 # page speedup loader - replacing only document body and changed assets
 gem 'turbolinks'
 gem 'jquery-turbolinks'
 gem 'jbuilder', '~> 1.2'
 # twitter bootstrap tem,plate framework
-gem 'bootstrap-sass', '>= 3.0.0.0'
+gem 'bootstrap-sass'
 # add user permissions support for controller actions
 gem 'cancan'
 # user authentication
@@ -39,7 +40,9 @@ gem 'gretel'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 # datetime picker for bootstrap
-gem 'datetimepicker-rails', :require => 'datetimepicker-rails', :git => 'git://github.com/zpaulovics/datetimepicker-rails.git'
+#gem 'datetimepicker-rails', :require => 'datetimepicker-rails', :git => 'git://github.com/zpaulovics/datetimepicker-rails.git'
+gem 'momentjs-rails', '>= 2.8.1'
+gem 'bootstrap3-datetimepicker-rails', '~> 3.1.3'
 # image upload + manipulation
 gem 'carrierwave'
 gem 'rmagick', :git => 'https://github.com/rmagick/rmagick.git', :ref => '79e1708c7f6792a3a90cb8cb3ffaeb74c58e092e', :require => 'RMagick'
@@ -49,7 +52,9 @@ gem 'immigrant'
 # configuration
 gem 'settingslogic'
 # composite primary keys
-gem 'composite_primary_keys', '~> 6.0.6'
+gem 'composite_primary_keys'
+# ranked model for dynamic table rows ordering (used in excsteps)
+gem 'ranked-model'
 
 group :development do
   gem 'better_errors'

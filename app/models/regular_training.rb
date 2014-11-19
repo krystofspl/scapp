@@ -14,7 +14,7 @@ class RegularTraining < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: :slugged
 
-  scope :public, -> { where(public: true) }
+  scope :public_available, -> { where(public: true) }
 
   # =================== GETTERS / SETTERS ============================
 
