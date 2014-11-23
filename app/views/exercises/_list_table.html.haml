@@ -19,14 +19,17 @@
               %tr
                 %td= link_to exercise.name+((exercise.version>1)?" ("+exercise.version.to_s+")":""), exercise
                 %td
-                  %span.label.label-success 5x
-                -#TODO exercise_realizations.count
+                  - if exercise.exercise_realizations.count>0
+                    -#TODO link_to (exercise.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
+                    %span.label.label-success= exercise.exercise_realizations.count.to_s+"x"
+                  - else
+                    %span.label.label-success= '0x'
                 %td= exercise.description
                 %td
                   %span.label.label-info= t(exercise.accessibility)
                 %td= exercise.type
                 %td
-                  - if (exercise.user == current_user || current_user.is_admin?)
+                  - if exercise.user == current_user || current_user.is_admin?
                     = link_to t('dictionary.edit'), edit_exercise_path(exercise), class: 'btn btn-warning'
                   - else
                     = link_to t('dictionary.edit'), "#", class: 'disabled btn btn-warning'

@@ -51,61 +51,113 @@
                 %tr
                   %th= t('exercise.show.in_bundles')
                   %td
-                    - @exercise_bundles.each do |exercise_bundle|
+                    - @exercise.exercise_bundles.each do |exercise_bundle|
                       %span.label.label-success=link_to exercise_bundle.name, exercise_bundle
           .col-sm-4
-            %strong= t('dictionary.description')
-            - unless @exercise.description.blank?
-              =@exercise.description
-            - else
-              =t('exercise.show.description_is_empty')
+            .row
+              %table.table#exercise_description
+                %thead
+                  %tr
+                    %td
+                      %strong= t('dictionary.description')
+                  %tbody
+                    %tr
+                    - unless @exercise.description.blank?
+                      %td= @exercise.description
+                    - else
+                      %td= t('exercise.show.description_is_empty')
+            .row
+              - unless @exercise.exercise_steps.blank?
+                %table#exercise_steps.table.table-striped
+                  %thead
+                    %tr
+                      %td.no-border{:colspan => 2}
+                        %strong= t('exercise_steps.index')
+                        = '('
+                        = link_to t('exercise_steps.show_detailed_view'), exercise_steps_path(@exercise)
+                        = ')'
+                  %tbody
+                    - @exercise.exercise_steps.rank(:row_order).each_with_index do |es,i|
+                      %tr
+                        %th= i+1
+                        %td= es.name
           .col-sm-4
-            %strong Opráski
+            %strong Obrázky
+            %br
             Obrázky správně/špatně
+            %br TODO
 
 .row
   .col-sm-12
-    .box.box-primary
+    .box.box-primary#exercise_setups
       .box-header
         %h2.box-title= t('exercise.show.exercise_setups')
       .box-body
         .row
-          - @exercise_setups.each do |exercise_setup|
-            .col-sm-4
-              .box
-                .box-header
-                  %strong.box-title= exercise_setup.name
-                .box-body
-                  %table.table
-                    %tbody
-                      %tr
-                        %th= t('exercise.show.exercise_setups_required')
-                        %td!= ApplicationHelper.labelize_boolean exercise_setup.is_required?
-                      %tr
-                        %th= t('exercise.show.exercise_setups_unit_name')
-                        %td= exercise_setup.unit.name
-                      %tr
-                        %th= t('exercise.show.exercise_setup_type')
-                        %td= exercise_setup.exercise_setup_type.name
+        - if current_user.is_admin? || @exercise.user==current_user
+          = link_to new_exercise_setup_path(:exercise_code=>@exercise.code, :exercise_version=>@exercise.version), class: 'btn btn-success' do
+            %i.fa.fa-plus
+            = t('exercise.show.add_setup')
+          .row.margin
+        - for i in 1..(@exercise.exercise_setups.count/3)+1
+          .row
+            - @exercise.exercise_setups.page(i).per(3).each do |exercise_setup|
+              .col-sm-4
+                .box
+                  .box-header
+                    %strong.box-title= exercise_setup.name
+                  .box-body
+                    %table.table
+                      %tbody
+                        %tr
+                          %th= t('exercise.show.exercise_setups_required')
+                          %td!= ApplicationHelper.labelize_boolean exercise_setup.is_required?
+                        %tr
+                          %th= t('exercise.show.exercise_setups_unit_name')
+                          %td= dash_or_object(exercise_setup.unit)
+                        %tr
+                          %th= t('exercise.show.exercise_setup_type')
+                          %td= dash_or_object(exercise_setup.exercise_setup_type)
+                        %tr
+                          %th= t('dictionary.description')
+                          %td= dash_or_value(exercise_setup,:description)
+                    - if !exercise_setup.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
+                      = link_to exercise_setup, class: 'btn btn-danger btn-xs margin', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+                        %i.fa.fa-remove
+                        = t('dictionary.delete')
 
 .row
   .col-sm-12
-    .box.box-primary
+    .box.box-primary#exercise_measurements
       .box-header
         %h2.box-title= t('exercise.show.exercise_measurements')
       .box-body
         .row
-          - @exercise_measurements.each do |exercise_measurement|
-            .col-sm-4
-              .box
-                .box-header
-                  %strong.box-title= exercise_measurement.name
-                .box-body
-                  %table.table
-                    %tbody
-                      %tr
-                        %th= t('exercise.show.exercise_measurement_optimal_value')
-                        %td!= ApplicationHelper.labelize_optimal_value exercise_measurement.optimal_value
-                      %tr
-                        %th= t('exercise.show.exercise_setups_unit_name')
-                        %td= exercise_measurement.unit.name
+        - if current_user.is_admin? || @exercise.user==current_user
+          = link_to new_exercise_measurement_path(:exercise_code=>@exercise.code, :exercise_version=>@exercise.version), class: 'btn btn-success' do
+            %i.fa.fa-plus
+            = t('exercise.show.add_measurement')
+          .row.margin
+        - for i in 1..(@exercise.exercise_setups.count/3)+1
+          .row
+            - @exercise.exercise_measurements.page(i).per(3).each do |exercise_measurement|
+              .col-sm-4
+                .box
+                  .box-header
+                    %strong.box-title= exercise_measurement.name
+                  .box-body
+                    %table.table
+                      %tbody
+                        %tr
+                          %th= t('exercise.show.exercise_measurement_optimal_value')
+                          %td!= ApplicationHelper.labelize_optimal_value exercise_measurement.optimal_value
+                        %tr
+                          %th= t('exercise.show.exercise_setups_unit_name')
+                          %td= exercise_measurement.unit.name
+                        %tr
+                          %th= t('dictionary.description')
+                          %td= dash_or_value(exercise_measurement, :description)
+                    - if !exercise_measurement.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
+                      = link_to exercise_measurement, class: 'btn btn-danger btn-xs margin', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+                        %i.fa.fa-remove
+                        = t('dictionary.delete')

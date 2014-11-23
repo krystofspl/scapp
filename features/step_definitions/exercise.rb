@@ -1,5 +1,5 @@
 And(/^Following exercises exist in the system$/) do |table|
-  # table is a table.hashes.keys # => [:code, :name, :description, :accessibility, :owner]
+  # table is a table.hashes.keys # => [:name, :description, :accessibility, :owner]
   table.hashes.each do |r|
     user = User.friendly.find(r[:owner])
     Exercise.create({name: r[:name], description: r[:description], accessibility: r[:accessibility], user: user})
@@ -29,4 +29,28 @@ end
 
 And(/^Radio button "([^"]*)" should be selected$/) do |arg|
   page.should have_checked_field(arg)
+end
+
+And(/^Following exercise steps exist in the system$/) do |table|
+  # table is a table.hashes.keys # => [:name, :description, :step_number, :exercise]
+  table.hashes.each do |r|
+    exercise = Exercise.friendly.find([r[:exercise],1])
+    ExerciseStep.create({name: r[:name], description: r[:description], row_order: r[:step_number], exercise: exercise})
+  end
+end
+
+And(/^Exercise step "([^"]*)" should have number "([^"]*)"$/) do |arg1, arg2|
+  step0 = ExerciseStep.where(:name=>arg1).first
+  exc = step0.exercise
+  steps = exc.exercise_steps
+  steps.index(step0).should eq(((arg2.to_i)-1))
+end
+
+
+When(/^I fill all required fields for exercise step$/) do |table|
+  # table is a table.hashes.keys # => [:name, :description]
+  values = table.hashes.first
+
+  fill_in 'exercise_step_name', with: values[:name]
+  fill_in 'exercise_step_description', with: values[:description]
 end

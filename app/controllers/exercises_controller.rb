@@ -15,9 +15,6 @@ class ExercisesController < ApplicationController
   # GET /exercises/1.json
   def show
     authorize! :exercise_detail, ExercisesController
-    @exercise_setups = @exercise.exercise_setups
-    @exercise_measurements = @exercise.exercise_measurements
-    @exercise_bundles = @exercise.exercise_bundles
   end
 
   # GET /exercises/new

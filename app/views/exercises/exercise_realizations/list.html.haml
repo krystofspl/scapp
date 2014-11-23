@@ -1,0 +1,6 @@
+- content_for :heading do
+  = @exercise.name +" "+ t('exercise.show.exercise_realizations')
+
+- @exercise_realizations.each do |exercise_realization|
+  = exercise_realization.__id__
+-#TODO dopsat
