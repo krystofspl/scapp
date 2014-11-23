@@ -3,7 +3,7 @@ class HomeController < ApplicationController
   def index
     authorize! :index, HomeController
 
-    @regular_trainings = RegularTraining.public.page(params[:training_page])
+    @regular_trainings = RegularTraining.public_available.page(params[:training_page])
 
     render :layout => 'application_public'
   end
