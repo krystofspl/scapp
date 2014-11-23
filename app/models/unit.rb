@@ -28,7 +28,10 @@ class Unit < ActiveRecord::Base
   #   @option :decimal
   #   @option :time
   def unit_type=(unit_type)
-    write_attribute(:unit_type, accessibility.to_s) unless unit_type.blank?
+    write_attribute(:unit_type, unit_type.to_s) unless unit_type.blank?
   end
   # =================== METHODS ======================================
+  def to_s
+    read_attribute(:name).to_s
+  end
 end

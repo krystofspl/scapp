@@ -33,7 +33,7 @@ end
 def delete_user(id)
   @visitor ||= Array.new
   @user ||= Array.new
-  @user[id] ||= User.first conditions: {:email => @visitor[id][:email]}
+  @user[id] ||= User.where(:email => @visitor[id][:email]).first
   @user[id].destroy unless @user[id].nil?
 end
 

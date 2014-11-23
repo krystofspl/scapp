@@ -11,7 +11,7 @@ class Exercise < ActiveRecord::Base
   has_one :exercise_image
   has_many :exercise_bundle_exercises, :class_name => 'ExerciseBundleExercise', :foreign_key => [:exercise_code, :exercise_version]
   has_many :exercise_bundles, :through => :exercise_bundle_exercises
-  has_many :exercise_steps
+  has_many :exercise_steps, :foreign_key => [:exercise_code, :exercise_version]
   has_many :exercise_setups, :foreign_key => [:exercise_code, :exercise_version]
   has_many :exercise_measurements, :foreign_key => [:exercise_code, :exercise_version]
   # --- prototypes for v2
