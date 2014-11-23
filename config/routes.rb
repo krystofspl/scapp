@@ -7,13 +7,28 @@ Scapp::Application.routes.draw do
   get '/help/:locale/:theme' => 'helps#show', as: 'show_help'
   get '/help_modal/:locale/:theme' => 'helps#show_ajax', as: 'show_modal_help'
 
-  resources :exercise_setups
+  resources :exercise_setups, except: [:show,:edit,:update,:destroy]
+  get '/exercise_setups/:exercise_setup_code' => 'exercise_setups#show', :as => :exercise_setup
+  delete '/exercise_setups/:exercise_setup_code' => 'exercise_setups#destroy', :as => :destroy_exercise_setup
+
+  resources :exercise_measurements, except: [:show,:edit,:update,:destroy]
+  get '/exercise_measurements/:exercise_measurement_code' => 'exercise_measurements#show', :as => :exercise_measurement
+  delete '/exercise_measurements/:exercise_measurement_code' => 'exercise_measurements#destroy', :as => :destroy_exercise_measurement
 
   resources :exercises, except: [:show,:edit,:update,:destroy]
   get '/exercises/:exercise_code(/v/:exercise_version)' => 'exercises#show', :as => :exercise
-  get '/exercises/:exercise_code(/v/:exercise_version)/edit' => 'exercises#edit', :as => :edit_exercise
+  get '/exercises/:exercise_code(/v/:exercise_version)/edit(:exercise_step_id)' => 'exercises#edit', :as => :edit_exercise
   patch '/exercises/:exercise_code(/v/:exercise_version)' => 'exercises#update', :as => :update_exercise
   delete '/exercises/:exercise_code(/v/:exercise_version)' => 'exercises#destroy', :as => :destroy_exercise
+
+  get '/exercises/:exercise_code(/v/:exercise_version)/steps' => 'exercise_steps#index', :as =>:exercise_steps
+  post '/exercises/:exercise_code(/v/:exercise_version)/steps' => 'exercise_steps#create', :as =>:create_exercise_step
+  patch '/exercises/:exercise_code(/v/:exercise_version)/steps' => 'exercise_steps#update', :as =>:update_exercise_step
+  get '/exercises/:exercise_code(/v/:exercise_version)/steps/new' => 'exercise_steps#new', :as =>:new_exercise_step
+  get '/exercises/:exercise_code(/v/:exercise_version)/steps/edit' => 'exercise_steps#edit', :as => :edit_exercise_step
+  post '/exercises/:exercise_code(/v/:exercise_version)/steps/update_row_order' => 'exercise_steps#update_row_order', :as =>:update_row_order_exercise_steps
+  delete '/exercises/:exercise_code(/v/:exercise_version)/steps' => 'exercise_steps#destroy', :as =>:destroy_exercise_step
+
 
   resources :units
 

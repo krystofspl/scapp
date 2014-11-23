@@ -44,9 +44,9 @@ module ApplicationHelper
   def self.labelize_optimal_value(label)
     case label.to_s
       when "higher"
-        return '<span class="label label-info">&uarr;</span>'
+        return "<span class=\"label label-info\">&uarr; #{I18n.t('optimal_value.higher')}</span>"
       when "lower"
-        return '<span class="label label-info">&darr;</span>'
+        return "<span class=\"label label-info\">&darr; #{I18n.t('optimal_value.lower')}</span>"
       else
         return label
     end

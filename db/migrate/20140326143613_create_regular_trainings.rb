@@ -3,7 +3,7 @@ class CreateRegularTrainings < ActiveRecord::Migration
     create_table :regular_trainings do |t|
       t.string :name
       t.text :description
-      t.boolean :public
+      t.boolean :public_available
       t.references :user
 
       t.timestamps

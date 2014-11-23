@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141115222948) do
+ActiveRecord::Schema.define(version: 20141123162338) do
 
   create_table "attendances", force: true do |t|
     t.string   "participation",                  limit: 9
-    t.float    "price_without_tax"
+    t.float    "price_without_tax",              limit: 24
     t.datetime "player_change"
     t.integer  "training_lesson_realization_id"
     t.integer  "user_id"
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20141115222948) do
   add_index "attendances", ["user_id"], name: "index_attendances_on_user_id", using: :btree
 
   create_table "coach_obligations", force: true do |t|
-    t.float    "hourly_wage_without_vat"
+    t.float    "hourly_wage_without_vat", limit: 24
     t.string   "role",                    limit: 10, default: "coach", null: false
     t.integer  "vat_id",                                               null: false
     t.integer  "currency_id",                                          null: false
@@ -109,6 +109,14 @@ ActiveRecord::Schema.define(version: 20141115222948) do
 
   add_index "exercise_measurements", ["code"], name: "index_exercise_measurements_on_code", using: :btree
 
+  create_table "exercise_realization_measurements", force: true do |t|
+    t.string "exercise_measurement_code"
+  end
+
+  create_table "exercise_realization_setups", force: true do |t|
+    t.string "exercise_setup_code"
+  end
+
   create_table "exercise_realizations", force: true do |t|
     t.string  "exercise_code"
     t.integer "exercise_version"
@@ -141,7 +149,7 @@ ActiveRecord::Schema.define(version: 20141115222948) do
   create_table "exercise_steps", force: true do |t|
     t.string   "name",                         null: false
     t.string   "description"
-    t.integer  "step_number",      default: 1, null: false
+    t.integer  "row_order",        default: 1, null: false
     t.string   "exercise_code"
     t.integer  "exercise_version"
     t.datetime "created_at"
@@ -197,7 +205,7 @@ ActiveRecord::Schema.define(version: 20141115222948) do
   add_index "organizations", ["user_id"], name: "index_organizations_on_user_id", using: :btree
 
   create_table "payments", force: true do |t|
-    t.float    "amount"
+    t.float    "amount",         limit: 24
     t.string   "status",         limit: 15, default: "waiting_payment", null: false
     t.integer  "currency_id",                                           null: false
     t.integer  "received_by_id"
@@ -209,12 +217,12 @@ ActiveRecord::Schema.define(version: 20141115222948) do
   add_index "payments", ["received_by_id"], name: "index_payments_on_received_by_id", using: :btree
 
   create_table "present_coaches", force: true do |t|
-    t.float    "salary_without_tax"
+    t.float    "salary_without_tax",             limit: 24
     t.integer  "vat_id"
     t.integer  "currency_id"
     t.integer  "user_id"
     t.integer  "training_lesson_realization_id"
-    t.boolean  "supplementation",                default: false
+    t.boolean  "supplementation",                           default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -255,9 +263,9 @@ ActiveRecord::Schema.define(version: 20141115222948) do
     t.date     "date"
     t.time     "from"
     t.time     "until"
-    t.float    "player_price_without_tax"
-    t.float    "group_price_without_tax"
-    t.float    "rental_price_without_tax"
+    t.float    "player_price_without_tax", limit: 24
+    t.float    "group_price_without_tax",  limit: 24
+    t.float    "rental_price_without_tax", limit: 24
     t.string   "calculation"
     t.string   "status"
     t.text     "note"
@@ -291,9 +299,9 @@ ActiveRecord::Schema.define(version: 20141115222948) do
     t.string   "calculation",                     limit: 37
     t.datetime "from_date"
     t.datetime "until_date"
-    t.float    "player_price_without_tax"
-    t.float    "group_price_without_tax"
-    t.float    "rental_price_without_tax"
+    t.float    "player_price_without_tax",        limit: 24
+    t.float    "group_price_without_tax",         limit: 24
+    t.float    "rental_price_without_tax",        limit: 24
     t.integer  "training_vat_id"
     t.integer  "rental_vat_id"
     t.integer  "regular_training_id"
@@ -417,7 +425,7 @@ ActiveRecord::Schema.define(version: 20141115222948) do
     t.datetime "measured_at"
     t.string   "locality"
     t.string   "string_value"
-    t.float    "int_value"
+    t.float    "int_value",                      limit: 24
     t.integer  "measured_by_id"
     t.integer  "measured_for_id"
     t.integer  "variable_field_id"
@@ -430,8 +438,8 @@ ActiveRecord::Schema.define(version: 20141115222948) do
   add_index "variable_field_measurements", ["variable_field_id"], name: "index_variable_field_measurements_on_variable_field_id", using: :btree
 
   create_table "variable_field_optimal_values", force: true do |t|
-    t.float    "bottom_limit"
-    t.float    "upper_limit"
+    t.float    "bottom_limit",                 limit: 24
+    t.float    "upper_limit",                  limit: 24
     t.string   "source"
     t.integer  "variable_field_id"
     t.integer  "variable_field_sport_id"
@@ -476,7 +484,7 @@ ActiveRecord::Schema.define(version: 20141115222948) do
   create_table "vats", force: true do |t|
     t.string   "name"
     t.string   "slug"
-    t.float    "percentage_value"
+    t.float    "percentage_value",  limit: 24
     t.boolean  "is_time_limited"
     t.datetime "start_of_validity"
     t.datetime "end_of_validity"

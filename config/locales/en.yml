@@ -27,6 +27,9 @@ en:
       used: "Used"
       user_exercises: "Exercises created by"
       view_all_available_exercises: "View all accessible exercises"
+      add_measurement: "Add exercise measurement"
+      add_setup: "Add exercise setup"
+      exercise_realizations: "Exercise realizations"
     index:
       exercises_list: "Exercises list"
     new_exercise: "New exercise"
@@ -42,3 +45,29 @@ en:
     user_exercises: "User exercises"
   private: "Private"
   global: "Global"
+  exercise_measurement:
+    optimal_value_higher: "Higher is better"
+    optimal_value_lower: "Lower is better"
+    new:
+      add_measurement: "Add measurement"
+    delete:
+      successfully_removed: "Exercise measurement was successfully removed"
+  optimal_value:
+    higher: "Higher"
+    lower: "Lower"
+  exercise_steps:
+    index: "Exercise steps"
+    show_detailed_view: "Show detailed view"
+    list: "Exercise steps list"
+    add_new: "Add new exercise step"
+    successfully_deleted: "Exercise step was successfully deleted."
+    successfully_updated: "Exercise step was successfully updated."
+    successfully_added: "Exercise step was successfully added."
+    empty: "There are no exercise steps yet."
+    form_button_add_step: "Add step"
+    form_button_update_step: "Update step"
+  exercise_setup:
+    new:
+      add_setup: "Add exercise setup"
+    delete:
+      successfully_removed: "Exercise setup was successfully removed."
