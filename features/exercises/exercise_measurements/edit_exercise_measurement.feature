@@ -32,7 +32,7 @@ Feature: Edit exercise measurement
     Then I should see warning alert message
     When I confirm popup
     Then I should see "heading" containing "exc1 - Edit exercise measurement"
-    When I fill in all necessary exercise measurement fields
+    When I fill in all required exercise measurement fields
       | name           | description         |
       | measurementMod | measurementMod desc |
       And I select option "mililitry" from the "unit" menu

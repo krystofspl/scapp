@@ -8,6 +8,8 @@ class ExerciseMeasurement < ActiveRecord::Base
   # =================== ASSOCIATIONS =================================
   belongs_to :unit, :foreign_key => :unit_code
   belongs_to :exercise, :foreign_key => [:exercise_code, :exercise_version]
+  # --- prototypes for v2
+  has_many :exercise_realization_measurements, :foreign_key => :exercise_measurement_code
 
   # =================== VALIDATIONS ==================================
   validates :code, presence: true, uniqueness: true
@@ -29,4 +31,8 @@ class ExerciseMeasurement < ActiveRecord::Base
     write_attribute(:optimal_value, optimal_value.to_s) unless optimal_value.blank?
   end
 
+  # Does the exercise measurement have any realizations?
+  def is_in_use?
+    !self.exercise_realization_measurements.empty?
+  end
 end
