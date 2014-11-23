@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 ruby '2.1.0'
-gem 'rails', '4.1.4'
+gem 'rails', '4.1.7'
 # CSS preprocessor
 gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 1.3.0'
@@ -15,7 +15,7 @@ gem 'turbolinks'
 gem 'jquery-turbolinks'
 gem 'jbuilder', '~> 1.2'
 # twitter bootstrap tem,plate framework
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '>= 3.3.0'
 # add user permissions support for controller actions
 gem 'cancan'
 # user authentication
@@ -30,8 +30,8 @@ gem 'rolify'
 # html form builder
 gem 'simple_form'
 gem 'therubyracer', :platform=>:ruby
-# seo identifiers in url
-gem 'friendly_id', '~> 5.0.0'
+# seo identifiers in url (5.0.4 breaks composite_primary_keys)
+gem 'friendly_id', '= 5.0.3'
 # ruby statistic package
 gem 'statsample', '~> 1.3.0'
 # breadcrumb & navigation builder
@@ -40,9 +40,8 @@ gem 'gretel'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 # datetime picker for bootstrap
-#gem 'datetimepicker-rails', :require => 'datetimepicker-rails', :git => 'git://github.com/zpaulovics/datetimepicker-rails.git'
-gem 'momentjs-rails', '>= 2.8.1'
-gem 'bootstrap3-datetimepicker-rails', '~> 3.1.3'
+gem 'momentjs-rails', '>=2.8.1', :github => 'derekprior/momentjs-rails'
+gem 'datetimepicker-rails', :require => 'datetimepicker-rails', :git => 'git://github.com/zpaulovics/datetimepicker-rails.git', branch: 'master', submodules: true
 # image upload + manipulation
 gem 'carrierwave'
 gem 'rmagick', :git => 'https://github.com/rmagick/rmagick.git', :ref => '79e1708c7f6792a3a90cb8cb3ffaeb74c58e092e', :require => 'RMagick'
@@ -52,7 +51,7 @@ gem 'immigrant'
 # configuration
 gem 'settingslogic'
 # composite primary keys
-gem 'composite_primary_keys'
+gem 'composite_primary_keys', '~>7.0.0'
 # ranked model for dynamic table rows ordering (used in excsteps)
 gem 'ranked-model'
 

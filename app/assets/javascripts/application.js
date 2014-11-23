@@ -13,8 +13,6 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
-// require bootstrap
-// require jquery-ui-1.10.3
 //= require jquery-ui/sortable
 //= require jquery-ui/effect-highlight
 //= require jquery.scrollTo
@@ -28,9 +26,8 @@
 //= require plugins/iCheck/icheck.min
 //= require AdminLTE/app
 //= require moment
+//= require bootstrap-sprockets
 //= require bootstrap-datetimepicker
-// require moment/bootstrap-datetimepicker.cs
-// require bootstrap-datetimepicker/core
-// require bootstrap-datetimepicker/locales/bootstrap-datetimepicker.cs
+//= require pickers
 //= require_tree .
 //= require turbolinks
