@@ -9,10 +9,10 @@ Feature: Show exercise setups
     And User test3 exists
     And User "test3" has "admin" role
     And Following exercises exist in the system
-      | code | name | description | accessibility | owner |
-      | exc1 | exc1 | exc1 desc   | private       | test1 |
-      | exc2 | exc2 | exc2 desc   | private       | test2 |
-      | exc3 | exc3 | exc3 desc   | global        | test3 |
+      | name | description | accessibility | owner |
+      | exc1 | exc1 desc   | private       | test1 |
+      | exc2 | exc2 desc   | private       | test2 |
+      | exc3 | exc3 desc   | global        | test3 |
     And Following unit types exist in the system
       | name    |
       | decimal |
@@ -22,9 +22,9 @@ Feature: Show exercise setups
       | stupne C  | decimal   | stupne celsia | °C           |
     And Following exercise setups exist in the system
       | name    | description | required | unit | exercise |
-      | vaha    | asd         | true     | kg   | exc1     |
-      | teplota | teplota     | true     | °C   | exc2     |
-      | neco    | neco        | false    | kg   | exc3     |
+      | vaha    | asd         | true     | kilogramy   | exc1     |
+      | teplota | teplota     | true     | stupne-C    | exc2     |
+      | neco    | neco        | false    | kilogramy   | exc3     |
 
   # List = detail (detail bude rovnou na detailu exercise, jinde ne)
   Scenario: As a coach I can view exercise setups connected to my exercise

@@ -8,6 +8,8 @@ class ExerciseSetup < ActiveRecord::Base
   belongs_to :exercise_setup_type, :foreign_key => :exercise_setup_type_code
   belongs_to :unit, :foreign_key => :unit_code
   belongs_to :exercise, :foreign_key => [:exercise_code, :exercise_version]
+  # --- prototypes for v2
+  has_many :exercise_realization_setups, :foreign_key => :exercise_setup_code
 
   # =================== VALIDATIONS ==================================
   validates :code, presence: true, uniqueness: true
@@ -17,8 +19,12 @@ class ExerciseSetup < ActiveRecord::Base
   # =================== GETTERS / SETTERS ============================
 
   # =================== HELPERS ======================================
-
   def is_required?
     self.read_attribute(:required)
+  end
+
+  # Does the exercise setup have any realizations?
+  def is_in_use?
+    !self.exercise_realization_setups.empty?
   end
 end

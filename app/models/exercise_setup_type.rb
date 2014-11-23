@@ -10,4 +10,9 @@ class ExerciseSetupType < ActiveRecord::Base
   # =================== VALIDATIONS ==================================
   validates :code, presence: true, uniqueness: true
   validates :name, presence: true
+
+  # =================== METHODS ==================================
+  def to_s
+    read_attribute(:name).to_s
+  end
 end

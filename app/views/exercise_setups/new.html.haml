@@ -1,0 +1,6 @@
+- content_for :heading do
+  = @exercise.name.to_s+' - '+t('exercise_setup.new.add_setup')
+
+= render 'form'
+
+= link_to 'Back', exercise_setups_path
