@@ -1,0 +1,27 @@
+%h1 Listing exercise_sets
+
+%table
+  %tr
+    %th Code
+    %th Name
+    %th Description
+    %th Accessibility
+    %th User
+    %th
+    %th
+    %th
+
+  - @exercise_bundles.each do |exercise_set|
+    %tr
+      %td= exercise_set.code
+      %td= exercise_set.name
+      %td= exercise_set.description
+      %td= exercise_set.accessibility
+      %td= exercise_set.user
+      %td= link_to 'Show', exercise_set
+      %td= link_to 'Edit', edit_exercise_set_path(exercise_set)
+      %td= link_to 'Destroy', exercise_set, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Exercise set', new_exercise_set_path

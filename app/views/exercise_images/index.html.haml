@@ -1,0 +1,29 @@
+%h1 Listing exercise_images
+
+%table
+  %tr
+    %th Name
+    %th Path
+    %th Description
+    %th Correctness
+    %th Exercise phase
+    %th Exercise
+    %th
+    %th
+    %th
+
+  - @exercise_images.each do |exercise_image|
+    %tr
+      %td= exercise_image.name
+      %td= exercise_image.path
+      %td= exercise_image.description
+      %td= exercise_image.correctness
+      %td= exercise_image.exercise_phase
+      %td= exercise_image.exercise
+      %td= link_to 'Show', exercise_image
+      %td= link_to 'Edit', edit_exercise_image_path(exercise_image)
+      %td= link_to 'Destroy', exercise_image, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Exercise image', new_exercise_image_path

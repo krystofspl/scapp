@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Code:
+  = @exercise_bundle.code
+%p
+  %b Name:
+  = @exercise_bundle.name
+%p
+  %b Description:
+  = @exercise_bundle.description
+%p
+  %b Accessibility:
+  = @exercise_bundle.accessibility
+%p
+  %b User:
+  = @exercise_bundle.user
+
+= link_to 'Edit', edit_exercise_bundle_path(@exercise_bundle)
+\|
+= link_to 'Back', exercise_bundles_path

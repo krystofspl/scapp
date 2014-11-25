@@ -9,7 +9,12 @@ Scapp::Application.routes.draw do
 
   resources :exercise_setups, except: [:show,:edit,:update,:destroy]
   get '/exercise_setups/:exercise_setup_code' => 'exercise_setups#show', :as => :exercise_setup
+  get '/exercise_setups/:exercise_setup_code/edit' => 'exercise_setups#edit', :as => :edit_exercise_setup
+  patch '/exercise_setups/:exercise_setup_code' => 'exercise_setups#update', :as => :update_exercise_setup
   delete '/exercise_setups/:exercise_setup_code' => 'exercise_setups#destroy', :as => :destroy_exercise_setup
+  get '/exercise_setups/:exercise_setup_code/clone' => 'exercise_setups#clone', :as => :clone_exercise_setup
+  post '/exercise_setups/:exercise_setup_code/clone' => 'exercise_setups#create', :as => :save_clone_exercise_setup
+
 
   resources :exercise_measurements, except: [:show,:edit,:update,:destroy]
   get '/exercise_measurements/:exercise_measurement_code' => 'exercise_measurements#show', :as => :exercise_measurement

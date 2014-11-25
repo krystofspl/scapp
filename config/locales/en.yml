@@ -52,6 +52,8 @@ en:
       add_measurement: "Add measurement"
     delete:
       successfully_removed: "Exercise measurement was successfully removed"
+    show:
+      used: "Used"
   optimal_value:
     higher: "Higher"
     lower: "Lower"
@@ -71,3 +73,13 @@ en:
       add_setup: "Add exercise setup"
     delete:
       successfully_removed: "Exercise setup was successfully removed."
+    edit:
+      edit_setup: "Edit exercise setup"
+      update_setup: "Update setup"
+    show:
+      used: "Used"
+    clone:
+      button: "Clone"
+      add_setup: "Clone exercise setup"
+  dictionary:
+    back: "Back"

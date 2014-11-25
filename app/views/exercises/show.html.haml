@@ -14,6 +14,10 @@
       = link_to @exercise, :method => :delete, class: 'btn btn-warning', :data => { :confirm => 'Are you sure?' } do
         %i.fa.fa-times
         = t('exercise.show.destroy_exercise')
+    - else
+      = link_to '#', class: 'disabled btn btn-warning' do
+        %i.fa.fa-times
+        = t('exercise.show.destroy_exercise')
 
 .row
   .col-sm-12
@@ -110,22 +114,47 @@
                     %table.table
                       %tbody
                         %tr
+                          %th= t('exercise_setup.show.used')
+                          %td
+                            - if exercise_setup.exercise_realization_setups.count>0
+                              -#TODO link_to (exercise_setup.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
+                              %span.label.label-success= exercise_setup.exercise_realization_setups.count.to_s+"x"
+                            - else
+                              %span.label.label-default= '0x'
+                        %tr
                           %th= t('exercise.show.exercise_setups_required')
                           %td!= ApplicationHelper.labelize_boolean exercise_setup.is_required?
                         %tr
                           %th= t('exercise.show.exercise_setups_unit_name')
-                          %td= dash_or_object(exercise_setup.unit)
+                          %td= exercise_setup.unit.name+" ["+exercise_setup.unit.abbreviation+"]"
                         %tr
                           %th= t('exercise.show.exercise_setup_type')
                           %td= dash_or_object(exercise_setup.exercise_setup_type)
                         %tr
                           %th= t('dictionary.description')
                           %td= dash_or_value(exercise_setup,:description)
+                  .box-footer
+                    %div
                     - if !exercise_setup.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
-                      = link_to exercise_setup, class: 'btn btn-danger btn-xs margin', :method => :delete, :data => { :confirm => 'Are you sure?' } do
-                        %i.fa.fa-remove
-                        = t('dictionary.delete')
+                      = link_to edit_exercise_setup_path(exercise_setup), class: 'btn btn-warning btn-xs' do
+                        %i.fa.fa-pencil
+                        = t('dictionary.edit')
+                    - else
+                      = link_to clone_exercise_setup_path(exercise_setup), class: 'btn btn-primary btn-xs' do
+                        %i.fa.fa-copy
+                        = t('exercise_setup.clone.button')
+                      = link_to '#', class: 'btn btn-warning btn-xs disabled' do
+                        %i.fa.fa-pencil
+                        = t('dictionary.edit')
 
+                    - if !exercise_setup.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
+                      = link_to exercise_setup, class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+                        %i.fa.fa-times
+                        = t('dictionary.delete')
+                    - else
+                      = link_to '#', class: 'btn btn-danger btn-xs disabled' do
+                        %i.fa.fa-times
+                        = t('dictionary.delete')
 .row
   .col-sm-12
     .box.box-primary#exercise_measurements
@@ -149,15 +178,25 @@
                     %table.table
                       %tbody
                         %tr
+                          %th= t('exercise_measurement.show.used')
+                          %td
+                            - if exercise_measurement.exercise_realization_measurements.count>0
+                              -#TODO link_to (exercise_measurement.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
+                              %span.label.label-success= exercise_measurement.exercise_realization_measurements.count.to_s+"x"
+                            - else
+                              %span.label.label-default= '0x'
+                        %tr
                           %th= t('exercise.show.exercise_measurement_optimal_value')
                           %td!= ApplicationHelper.labelize_optimal_value exercise_measurement.optimal_value
                         %tr
                           %th= t('exercise.show.exercise_setups_unit_name')
-                          %td= exercise_measurement.unit.name
+                          %td= exercise_measurement.unit.name+" ["+exercise_measurement.unit.abbreviation+"]"
                         %tr
                           %th= t('dictionary.description')
                           %td= dash_or_value(exercise_measurement, :description)
-                    - if !exercise_measurement.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
-                      = link_to exercise_measurement, class: 'btn btn-danger btn-xs margin', :method => :delete, :data => { :confirm => 'Are you sure?' } do
-                        %i.fa.fa-remove
-                        = t('dictionary.delete')
+                  .box-footer
+                  - if !exercise_measurement.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
+                    = link_to exercise_measurement, class: 'btn btn-danger btn-xs margin', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+                      %i.fa.fa-times
+                      = t('dictionary.delete')
+                    -#TODO doplnit jako u setupu

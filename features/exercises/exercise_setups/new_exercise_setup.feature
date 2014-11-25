@@ -1,10 +1,7 @@
 Feature: Add exercise setup to an existing exercise
   As admin or coach who owns the exercise
   I want to add a new exercise setup to an existing exercise
-  #TODO ?doplnit setupTypes
 
-  #TODO !!! neni mozne aby uzivatel mohl zadat mereni s required = true pokud jiz nejaky setup existuje
-  # !!!   -> je to z duvodu, ze by potom povine parametry u nekterych realizaci cviku zadanych v minulosti mohly chybet
   Background:
     Given User test1 exists
     And User "test1" has "coach" role
@@ -51,3 +48,10 @@ Feature: Add exercise setup to an existing exercise
     And I click "Add exercise setup"
     Then I should see "vaha" in table "exercise_setups"
     And I should see "kilogramy" in table "exercise_setups"
+
+  Scenario: "Required" setup cannot be added to an exercise with realization
+    Given I am logged in as User test1
+    And Exercise "exc1" is in use
+    And I am at the "/exercises/exc1" page
+    When I click "Add exercise setup"
+    Then I shouldn't see "exercise_setup_required" checkbox

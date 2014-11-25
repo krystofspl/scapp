@@ -29,3 +29,21 @@ And(/^Exercise setup "([^"]*)" is not in use$/) do |arg|
     end
   end
 end
+
+Then(/^I shouldn't see "([^"]*)" checkbox$/) do |arg|
+  page.should_not have_css("input##{arg}")
+end
+
+When(/^I click "([^"]*)" for "([^"]*)" exercise setup$/) do |arg1, arg2|
+  within('#exercise_setups', :text => arg2) do
+    click_link(arg1)
+  end
+end
+
+Then(/^Link "([^"]*)" for "([^"]*)" exercise setup should be disabled$/) do |link, setup|
+  find(:xpath, "//div[@class='box'][contains(.,'#{setup}')]//a", :text => link)[:class].include?('disabled')
+end
+
+And(/^I should see "([^"]*)" in "([^"]*)"$/) do |what, id|
+  find("##{id}").should have_content what
+end

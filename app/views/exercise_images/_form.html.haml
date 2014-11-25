@@ -1,0 +1,13 @@
+= simple_form_for(@exercise_image) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :path
+    = f.input :description
+    = f.input :correctness
+    = f.association :exercise_phase
+    = f.association :exercise
+
+  .form-actions
+    = f.button :submit

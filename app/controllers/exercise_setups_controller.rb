@@ -1,10 +1,5 @@
 class ExerciseSetupsController < ApplicationController
-  before_action :set_exercise_setup, only: [:show, :edit, :update, :destroy]
-
-  # GET /exercise_setups/1
-  # GET /exercise_setups/1.json
-  def show
-  end
+  before_action :set_exercise_setup, only: [:update, :edit, :destroy]
 
   # GET /exercise_setups/new
   def new
@@ -25,10 +20,8 @@ class ExerciseSetupsController < ApplicationController
     respond_to do |format|
       if @exercise_setup.save
         format.html { redirect_to @exercise, notice: 'Exercise setup was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @exercise_setup }
       else
         format.html { render action: 'new' }
-        format.json { render json: @exercise_setup.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -38,7 +31,7 @@ class ExerciseSetupsController < ApplicationController
   def update
     respond_to do |format|
       if @exercise_setup.update(exercise_setup_params)
-        format.html { redirect_to @exercise_setup, notice: 'Exercise setup was successfully updated.' }
+        format.html { redirect_to @exercise, notice: 'Exercise setup was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -50,7 +43,6 @@ class ExerciseSetupsController < ApplicationController
   # DELETE /exercise_setups/1
   # DELETE /exercise_setups/1.json
   def destroy
-    @exercise = @exercise_setup.exercise
     @exercise_setup.destroy
     respond_to do |format|
       format.html { redirect_to @exercise, notice: t('exercise_setup.delete.successfully_removed') }
@@ -58,10 +50,19 @@ class ExerciseSetupsController < ApplicationController
     end
   end
 
+  def clone
+    @existing_setup = ExerciseSetup.friendly.find(params[:exercise_setup_code])
+    @exercise_setup = ExerciseSetup.new(@existing_setup.attributes)
+    @exercise_setup.code=nil
+    @exercise = @exercise_setup.exercise
+    render action: 'clone'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_exercise_setup
       @exercise_setup = ExerciseSetup.friendly.find(params[:exercise_setup_code])
+      @exercise = @exercise_setup.exercise
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

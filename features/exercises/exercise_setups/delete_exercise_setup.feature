@@ -22,7 +22,7 @@ Feature: Delete exercise setup that is not in use
     Given I am logged in as User test1
       And Exercise setup "setup1" is in use
     When I visit page "/exercises/exc1"
-    Then I shouldn't see "link" containing "Delete"
+    Then Link "Delete" for "setup1" exercise setup should be disabled
 
   @javascript
   Scenario: As a coach I can delete my exercise setup that is not in use

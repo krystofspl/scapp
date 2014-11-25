@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @exercise_image.name
+%p
+  %b Path:
+  = @exercise_image.path
+%p
+  %b Description:
+  = @exercise_image.description
+%p
+  %b Correctness:
+  = @exercise_image.correctness
+%p
+  %b Exercise phase:
+  = @exercise_image.exercise_phase
+%p
+  %b Exercise:
+  = @exercise_image.exercise
+
+= link_to 'Edit', edit_exercise_image_path(@exercise_image)
+\|
+= link_to 'Back', exercise_images_path
