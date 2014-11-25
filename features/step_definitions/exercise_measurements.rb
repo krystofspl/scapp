@@ -33,3 +33,13 @@ end
 And(/^I select option "([^"]*)" from the "([^"]*)" menu$/) do |arg1, arg2|
   select arg1, :from => arg2
 end
+
+Then(/^Link "([^"]*)" for "([^"]*)" exercise measurement should be disabled$/) do |link, measurement|
+  find(:xpath, "//div[@class='box'][contains(.,'#{measurement}')]//a", :text => link)[:class].include?('disabled')
+end
+
+When(/^I click "([^"]*)" for "([^"]*)" exercise measurement$/) do |arg1, arg2|
+  within('#exercise_measurements', :text => arg2) do
+    click_link(arg1)
+  end
+end

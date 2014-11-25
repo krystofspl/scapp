@@ -1,5 +1,5 @@
 class ExerciseMeasurementsController < ApplicationController
-  before_action :set_exercise_measurement, only: [:show, :edit, :update, :destroy]
+  before_action :set_exercise_measurement, only: [:edit, :update, :destroy]
 
   # GET /exercise_measurements/new
   def new
@@ -17,13 +17,12 @@ class ExerciseMeasurementsController < ApplicationController
   def create
     @exercise = Exercise.friendly.find([params[:exercise_measurement][:exercise_code],params[:exercise_measurement][:exercise_version]])
     @exercise_measurement = ExerciseMeasurement.new(exercise_measurement_params)
+
     respond_to do |format|
       if @exercise_measurement.save
         format.html { redirect_to @exercise, notice: 'Exercise measurement was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @exercise_measurement }
       else
         format.html { render action: 'new' }
-        format.json { render json: @exercise_measurement.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -33,7 +32,7 @@ class ExerciseMeasurementsController < ApplicationController
   def update
     respond_to do |format|
       if @exercise_measurement.update(exercise_measurement_params)
-        format.html { redirect_to @exercise_measurement, notice: 'Exercise measurement was successfully updated.' }
+        format.html { redirect_to @exercise, notice: 'Exercise measurement was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -53,10 +52,19 @@ class ExerciseMeasurementsController < ApplicationController
     end
   end
 
+  def clone
+    @existing_measurement = ExerciseMeasurement.friendly.find(params[:exercise_measurement_code])
+    @exercise_measurement = ExerciseMeasurement.new(@existing_measurement.attributes)
+    @exercise_measurement.code=nil
+    @exercise = @exercise_measurement.exercise
+    render action: 'clone'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_exercise_measurement
       @exercise_measurement = ExerciseMeasurement.friendly.find(params[:exercise_measurement_code])
+      @exercise = @exercise_measurement.exercise
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

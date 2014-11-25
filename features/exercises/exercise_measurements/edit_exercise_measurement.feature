@@ -19,24 +19,18 @@ Feature: Edit exercise measurement
       | mililitry | decimal   | ml          | ml           |
     And Following exercise measurements exist in the system
       | name        | description      | optimal_value | unit | exercise |
-      | measurement | measurement desc | higher        | kg   | exc1     |
+      | measurement1 | measurement desc | higher        | kilogramy   | exc1     |
 
+  @javascript
   Scenario: As a coach I can edit my exercise measurement, I should be warned
     Given I have "coach" role
     When I visit page "/exercises/exc1"
-    Then I should see "link" containing "Edit"
-    When I click "Edit"
-    #TODO !!! vhodne by bylo dat uzivateli na vyber (pokud je jiz measurement pouzit, jinak neni treba ani varovat)
-    # !!!   1) uprava je jen mala a nevyznamna -> povol
-    # !!!   2) uprava ma zasadni vliv -> odkaz nebo presmeruj na vznik nove verze cviku
-    Then I should see warning alert message
-    When I confirm popup
-    Then I should see "heading" containing "exc1 - Edit exercise measurement"
+    When I click "Edit" for "measurement1" exercise measurement
     When I fill in all required exercise measurement fields
       | name           | description         |
       | measurementMod | measurementMod desc |
       And I select option "mililitry" from the "unit" menu
-      And I click "Save changes"
-    Then I should see "Exercise measurement successfully updated." message
+      And I click "Update measurement"
+    Then I should see "Exercise measurement was successfully updated." message
       And I should see "measurementMod" in table "exercise_measurements"
-      And I should see "ml" in table "exercise_measurement"
+      And I should see "ml" in table "exercise_measurements"

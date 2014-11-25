@@ -195,8 +195,23 @@
                           %th= t('dictionary.description')
                           %td= dash_or_value(exercise_measurement, :description)
                   .box-footer
-                  - if !exercise_measurement.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
-                    = link_to exercise_measurement, class: 'btn btn-danger btn-xs margin', :method => :delete, :data => { :confirm => 'Are you sure?' } do
-                      %i.fa.fa-times
-                      = t('dictionary.delete')
-                    -#TODO doplnit jako u setupu
+                    %div
+                    - if !exercise_measurement.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
+                      = link_to edit_exercise_measurement_path(exercise_measurement), class: 'btn btn-warning btn-xs' do
+                        %i.fa.fa-pencil
+                        = t('dictionary.edit')
+                    - else
+                      = link_to clone_exercise_measurement_path(exercise_measurement), class: 'btn btn-primary btn-xs' do
+                        %i.fa.fa-copy
+                        = t('exercise_measurement.clone.button')
+                      = link_to '#', class: 'btn btn-warning btn-xs disabled' do
+                        %i.fa.fa-pencil
+                        = t('dictionary.edit')
+                    - if !exercise_measurement.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
+                      = link_to exercise_measurement, class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+                        %i.fa.fa-times
+                        = t('dictionary.delete')
+                    - else
+                      = link_to '#', class: 'btn btn-danger btn-xs disabled' do
+                        %i.fa.fa-times
+                        = t('dictionary.delete')
