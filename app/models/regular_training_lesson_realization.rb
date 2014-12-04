@@ -4,7 +4,7 @@ class RegularTrainingLessonRealization < TrainingLessonRealization
 
   # =================== VALIDATIONS ==================================
   validates :training_lesson_id, presence: true
-  validates_uniqueness_of :date, scope: :training_lesson
+  validates_uniqueness_of :date, scope: :training_lesson_id
 
   # =================== EXTENSIONS ===================================
   # Currency, from, until, day is used from training lesson

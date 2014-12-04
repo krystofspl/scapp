@@ -22,7 +22,6 @@ Feature: Edit regular training
       And I am at the "/regular_trainings" page
     Then I shouldn't see "Edit" in the table
 
-
   Scenario: I edit my own training
     Given I have "coach" role
       And I am at the "/regular_trainings" page

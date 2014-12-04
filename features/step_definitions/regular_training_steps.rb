@@ -15,8 +15,8 @@ When(/^I fill all required fields for regular training$/) do |table|
   f = table.hashes.first
   fill_in 'Name', with: f[:name]
   fill_in 'Description', with: f[:description]
-  if f[:public] == "true"
-    check 'Is visible to public?'
+  if f[:public] == 'true'
+    find(:css,'#regular_training_public').set(true)
   end
   find(:xpath, "//select/option[contains(text(), '#{f[:for_group]}')]").select_option
 end

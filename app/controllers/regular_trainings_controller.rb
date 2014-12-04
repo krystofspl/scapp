@@ -193,7 +193,7 @@ class RegularTrainingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def regular_training_params
-      params.require(:regular_training).permit(:name, :description, :public_available, :user_id)
+      params.require(:regular_training).permit(:name, :description, :public, :user_id)
     end
 
     # Get groups which current user can use for assignment

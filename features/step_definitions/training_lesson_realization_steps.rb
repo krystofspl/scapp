@@ -6,7 +6,7 @@ And(/^Following regular training lesson realizations exist$/) do |table|
     RegularTrainingLessonRealization.create(date: row[:date], status: row[:status], note: row[:note], training_lesson: tl,
                                             sign_in_time: row[:sign_in_time], excuse_time: row[:excuse_time], calculation: tl.calculation,
                                             group_price_without_tax: tl.group_price_without_tax, player_price_without_tax: tl.player_price_without_tax,
-                                            rental_price_without_tax: tl[:rental_price_without_tax], training_vat: tl.training_vat,
+                                            rental_price_without_tax: tl.rental_price_without_tax, training_vat: tl.training_vat,
                                             rental_vat: tl.rental_vat)
   end
 end

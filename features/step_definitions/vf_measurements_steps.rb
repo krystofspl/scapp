@@ -7,7 +7,7 @@ And(/^I should see measurement with value "([^"]*)"$/) do |vf_value|
     end
   end
 
-  found.should be_true
+  found.should be_truthy
 end
 
 And(/^I shouldn't see measurement with value "([^"]*)"$/) do |vf_value|
@@ -19,7 +19,7 @@ And(/^I shouldn't see measurement with value "([^"]*)"$/) do |vf_value|
     end
   end
 
-  found.should be_false
+  found.should be_falsey
 end
 
 And(/^I am at page listing my variables and measurements$/) do

@@ -9,7 +9,7 @@ end
 
 def find_user(id)
   @user ||= Array.new
-  @user[id] ||= User.first conditions: {:email => @visitor[id][:email]}
+  @user ||= User.first conditions: {:email => @visitor[id][:email]}
 end
 
 def create_unconfirmed_user(id)
