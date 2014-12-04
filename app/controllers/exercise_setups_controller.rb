@@ -14,14 +14,16 @@ class ExerciseSetupsController < ApplicationController
   # POST /exercise_setups
   # POST /exercise_setups.json
   def create
-    @exercise = Exercise.friendly.find([params[:exercise_setup][:exercise_code],params[:exercise_setup][:exercise_version]])
+    @exercise = Exercise.friendly.find([exercise_setup_params[:exercise_code],exercise_setup_params[:exercise_version]])
     @exercise_setup = ExerciseSetup.new(exercise_setup_params)
 
     respond_to do |format|
       if @exercise_setup.save
         format.html { redirect_to @exercise, notice: 'Exercise setup was successfully created.' }
       else
-        format.html { render action: 'new' }
+        format.html {
+          render action: 'new', :exercise_code => exercise_setup_params[:exercise_code], :exercise_version=> exercise_setup_params[:exercise_version]
+        }
       end
     end
   end
@@ -54,7 +56,6 @@ class ExerciseSetupsController < ApplicationController
     @existing_setup = ExerciseSetup.friendly.find(params[:exercise_setup_code])
     @exercise_setup = ExerciseSetup.new(@existing_setup.attributes)
     @exercise_setup.code=nil
-    @exercise = @exercise_setup.exercise
     render action: 'clone'
   end
 
@@ -67,6 +68,6 @@ class ExerciseSetupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def exercise_setup_params
-      params.require(:exercise_setup).permit(:code, :name, :description, :required, :exercise_setup_type_id, :unit_code, :exercise_code, :exercise_version)
+      params.require(:exercise_setup).permit(:code, :name, :description, :required, :exercise_setup_type_code, :unit_code, :exercise_code, :exercise_version)
     end
 end

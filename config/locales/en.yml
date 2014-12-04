@@ -30,6 +30,7 @@ en:
       add_measurement: "Add exercise measurement"
       add_setup: "Add exercise setup"
       exercise_realizations: "Exercise realizations"
+      add_steps: "Add exercise steps"
     index:
       exercises_list: "Exercises list"
     new_exercise: "New exercise"
@@ -39,6 +40,8 @@ en:
     new:
       form_button_create: "Create exercise without adding details"
       form_button_create_add_details: "Create exercise and add details"
+    edit:
+      edit: "Edit exercise"
   breadcrumbs:
     exercise_detail: "Exercise detail"
     exercises: "Exercises"
@@ -74,6 +77,7 @@ en:
     empty: "There are no exercise steps yet."
     form_button_add_step: "Add step"
     form_button_update_step: "Update step"
+    edit: "Edit exercise step"
   exercise_setup:
     new:
       add_setup: "Add exercise setup"
@@ -89,3 +93,4 @@ en:
       add_setup: "Clone exercise setup"
   dictionary:
     back: "Back"
+    cancel: "Cancel"

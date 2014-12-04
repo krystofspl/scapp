@@ -19,11 +19,8 @@
               %tr
                 %td= link_to exercise.name+((exercise.version>1)?" ("+exercise.version.to_s+")":""), exercise
                 %td
-                  - if exercise.exercise_realizations.count>0
-                    -#TODO link_to (exercise.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
-                    %span.label.label-success= exercise.exercise_realizations.count.to_s+"x"
-                  - else
-                    %span.label.label-success= '0x'
+                  -#TODO link_to (exercise_measurement.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
+                  !=ApplicationHelper.labelize_realizations exercise.exercise_realizations.count
                 %td= exercise.description
                 %td
                   %span.label.label-info= t(exercise.accessibility)

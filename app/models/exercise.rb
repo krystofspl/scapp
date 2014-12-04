@@ -4,24 +4,23 @@ class Exercise < ActiveRecord::Base
   self.primary_keys = :code, :version
   extend FriendlyId
   friendly_id :name, :use => :slugged, :slug_column => :code
-  #TODO validovat code ve formulari (uniqueness, aby se nepřidal UUID)
 
   # =================== ASSOCIATIONS =================================
   belongs_to :user
   has_one :exercise_image
   has_many :exercise_bundle_exercises, :class_name => 'ExerciseBundleExercise', :foreign_key => [:exercise_code, :exercise_version]
   has_many :exercise_bundles, :through => :exercise_bundle_exercises
-  has_many :exercise_steps, :foreign_key => [:exercise_code, :exercise_version]
-  has_many :exercise_setups, :foreign_key => [:exercise_code, :exercise_version]
-  has_many :exercise_measurements, :foreign_key => [:exercise_code, :exercise_version]
+  has_many :exercise_steps, :foreign_key => [:exercise_code, :exercise_version], :dependent => :delete_all
+  has_many :exercise_setups, :foreign_key => [:exercise_code, :exercise_version], :dependent => :delete_all
+  has_many :exercise_measurements, :foreign_key => [:exercise_code, :exercise_version], :dependent => :delete_all
   # --- prototypes for v2
-  has_many :exercise_realizations, :foreign_key => [:exercise_code, :exercise_version]
+  has_many :exercise_realizations, :foreign_key => [:exercise_code, :exercise_version], :dependent => :restrict_with_error
 
 
   # =================== VALIDATIONS ==================================
   validates :code, presence: true
   validates :version, presence: true
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
   validates :accessibility, inclusion: { in: ACCESSIBILITY }
 
   # =================== GETTERS / SETTERS ============================

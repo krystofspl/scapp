@@ -44,7 +44,8 @@ gem 'momentjs-rails', '>=2.8.1', :github => 'derekprior/momentjs-rails'
 gem 'datetimepicker-rails', :require => 'datetimepicker-rails', :git => 'git://github.com/zpaulovics/datetimepicker-rails.git', branch: 'master', submodules: true
 # image upload + manipulation
 gem 'carrierwave'
-gem 'rmagick', :git => 'https://github.com/rmagick/rmagick.git', :ref => '79e1708c7f6792a3a90cb8cb3ffaeb74c58e092e', :require => 'RMagick'
+#gem 'rmagick', :git => 'https://github.com/rmagick/rmagick.git', :ref => '79e1708c7f6792a3a90cb8cb3ffaeb74c58e092e', :require => 'RMagick'
+gem 'rmagick'
 # handling foreign keys
 gem 'foreigner', '~>1.4.2'
 gem 'immigrant'

@@ -41,14 +41,30 @@ module ApplicationHelper
     end
   end
 
+  # Wraps exercise measurement optimal value into label with specific color
+  # @param [String] label
+  # @return [String] label wrapped in label span
   def self.labelize_optimal_value(label)
     case label.to_s
       when "higher"
-        return "<span class=\"label label-info\">&uarr; #{I18n.t('optimal_value.higher')}</span>"
+        return "<span class=\"label label-info\"><i class=\"fa fa-arrow-up\"></i> #{I18n.t('optimal_value.higher')}</span>"
       when "lower"
-        return "<span class=\"label label-info\">&darr; #{I18n.t('optimal_value.lower')}</span>"
+        return "<span class=\"label label-info\"><i class=\"fa fa-arrow-down\"></i> #{I18n.t('optimal_value.lower')}</span>"
       else
         return label
+    end
+  end
+
+  # Wraps exercise [,measurement,setup] realizations count into label with specific color
+  # @param [Integer] count number of realizations
+  # @return [String] label wrapped in label span
+  def self.labelize_realizations(count)
+    count = count.to_s
+    case count
+      when "0"
+        return "<span class=\"label label-default\">#{count}x</span>"
+      else
+        return "<span class=\"label label-success\">#{count}x</span>"
     end
   end
 

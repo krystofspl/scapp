@@ -35,7 +35,10 @@
   .col-sm-12
     .box.box-primary
       .box-header
-        %h2.box-title= t('exercise_steps.add_new')
+        - if ['index','new', 'create'].include? params[:action]
+          %h2.box-title= t('exercise_steps.add_new')
+        - elsif ['edit','update'].include? params[:action]
+          %h2.box-title= t('exercise_steps.edit')
       .box-body
         .row
           .col-sm-4

@@ -15,14 +15,14 @@ class ExerciseMeasurementsController < ApplicationController
   # POST /exercise_measurements
   # POST /exercise_measurements.json
   def create
-    @exercise = Exercise.friendly.find([params[:exercise_measurement][:exercise_code],params[:exercise_measurement][:exercise_version]])
+    @exercise = Exercise.friendly.find([exercise_measurement_params[:exercise_code],exercise_measurement_params[:exercise_version]])
     @exercise_measurement = ExerciseMeasurement.new(exercise_measurement_params)
 
     respond_to do |format|
       if @exercise_measurement.save
         format.html { redirect_to @exercise, notice: 'Exercise measurement was successfully created.' }
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new', :exercise_code => exercise_measurement_params[:exercise_code], :exercise_version=> exercise_measurement_params[:exercise_version] }
       end
     end
   end
@@ -44,7 +44,6 @@ class ExerciseMeasurementsController < ApplicationController
   # DELETE /exercise_measurements/1
   # DELETE /exercise_measurements/1.json
   def destroy
-    @exercise = @exercise_measurement.exercise
     @exercise_measurement.destroy
     respond_to do |format|
       format.html { redirect_to @exercise, notice: t('exercise_measurement.delete.successfully_removed') }
@@ -56,7 +55,6 @@ class ExerciseMeasurementsController < ApplicationController
     @existing_measurement = ExerciseMeasurement.friendly.find(params[:exercise_measurement_code])
     @exercise_measurement = ExerciseMeasurement.new(@existing_measurement.attributes)
     @exercise_measurement.code=nil
-    @exercise = @exercise_measurement.exercise
     render action: 'clone'
   end
 

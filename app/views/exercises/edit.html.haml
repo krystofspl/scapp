@@ -1,7 +1,4 @@
-%h1 Editing exercise
+- content_for :heading do
+  = @exercise.name.to_s+' - '+t('exercise.edit.edit')
 
 = render 'form'
-
-= link_to 'Show', @exercise
-\|
-= link_to 'Back', exercises_path

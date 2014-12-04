@@ -14,8 +14,9 @@
     #TODO TODO avatar image select
 
   .form-actions
-    - if params[:action] == "new"
+    - if ["new","create"].include? params[:action]
       = f.button :submit, t('exercise.new.form_button_create_add_details'), class: "btn btn-primary"
       = f.button :submit, t('exercise.new.form_button_create'), class: "btn btn-default"
     - else
       = f.button :submit, class: "btn btn-primary"
+    = link_to t('dictionary.cancel'), exercises_path, class: "btn btn-default"

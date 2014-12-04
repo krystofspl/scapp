@@ -71,20 +71,26 @@
                     - else
                       %td= t('exercise.show.description_is_empty')
             .row
-              - unless @exercise.exercise_steps.blank?
-                %table#exercise_steps.table.table-striped
-                  %thead
-                    %tr
-                      %td.no-border{:colspan => 2}
-                        %strong= t('exercise_steps.index')
-                        = '('
-                        = link_to t('exercise_steps.show_detailed_view'), exercise_steps_path(@exercise)
-                        = ')'
-                  %tbody
+              %table#exercise_steps.table.table-striped
+                %thead
+                  %tr
+                    %td.no-border{:colspan => 2}
+                      %strong= t('exercise_steps.index')
+                      = '('
+                      = link_to t('exercise_steps.show_detailed_view'), exercise_steps_path(@exercise)
+                      = ')'
+                %tbody
+                  - unless @exercise.exercise_steps.blank?
                     - @exercise.exercise_steps.rank(:row_order).each_with_index do |es,i|
                       %tr
                         %th= i+1
                         %td= es.name
+                  - else
+                    %tr
+                      %td
+                        = link_to exercise_steps_path(@exercise), class: 'btn btn-success btn-sm' do
+                          %i.fa.fa-plus
+                          = t('exercise.show.add_steps')
           .col-sm-4
             %strong Obrázky
             %br
@@ -116,11 +122,8 @@
                         %tr
                           %th= t('exercise_setup.show.used')
                           %td
-                            - if exercise_setup.exercise_realization_setups.count>0
-                              -#TODO link_to (exercise_setup.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
-                              %span.label.label-success= exercise_setup.exercise_realization_setups.count.to_s+"x"
-                            - else
-                              %span.label.label-default= '0x'
+                            -#TODO link_to (exercise_setup.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
+                            !=ApplicationHelper.labelize_realizations exercise_setup.exercise_realization_setups.count
                         %tr
                           %th= t('exercise.show.exercise_setups_required')
                           %td!= ApplicationHelper.labelize_boolean exercise_setup.is_required?
@@ -131,8 +134,7 @@
                           %th= t('exercise.show.exercise_setup_type')
                           %td= dash_or_object(exercise_setup.exercise_setup_type)
                         %tr
-                          %th= t('dictionary.description')
-                          %td= dash_or_value(exercise_setup,:description)
+                          %td{:colspan=>2}= dash_or_value(exercise_setup,:description)
                   .box-footer
                     %div
                     - if !exercise_setup.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
@@ -180,11 +182,8 @@
                         %tr
                           %th= t('exercise_measurement.show.used')
                           %td
-                            - if exercise_measurement.exercise_realization_measurements.count>0
-                              -#TODO link_to (exercise_measurement.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
-                              %span.label.label-success= exercise_measurement.exercise_realization_measurements.count.to_s+"x"
-                            - else
-                              %span.label.label-default= '0x'
+                            -#TODO link_to (exercise_measurement.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
+                            !=ApplicationHelper.labelize_realizations exercise_measurement.exercise_realization_measurements.count
                         %tr
                           %th= t('exercise.show.exercise_measurement_optimal_value')
                           %td!= ApplicationHelper.labelize_optimal_value exercise_measurement.optimal_value
@@ -192,8 +191,7 @@
                           %th= t('exercise.show.exercise_setups_unit_name')
                           %td= exercise_measurement.unit.name+" ["+exercise_measurement.unit.abbreviation+"]"
                         %tr
-                          %th= t('dictionary.description')
-                          %td= dash_or_value(exercise_measurement, :description)
+                          %td{:colspan=>2}= dash_or_value(exercise_measurement, :description)
                   .box-footer
                     %div
                     - if !exercise_measurement.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)

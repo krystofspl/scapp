@@ -11,15 +11,18 @@
       = f.input :optimal_value, :collection => [['higher', t('exercise_measurement.optimal_value_higher')],['lower', t('exercise_measurement.optimal_value_lower')]], :value_method => :first, :label_method => :last, include_blank:false
       = f.association :unit, :label_method => :name, :value_method => :code, include_blank:false
 
-    - if params[:action]=='new'
-      = f.hidden_field :exercise_code, :value => params[:exercise_code]
-      = f.hidden_field :exercise_version, :value => params[:exercise_version]
-    - if params[:action]=='clone'
-      = f.hidden_field :exercise_code, :value => @exercise.code
-      = f.hidden_field :exercise_version, :value => @exercise.version
+    - if ['new'].include? params[:action]
+      - exercise_code = params[:exercise_code]
+      - exercise_version = params[:exercise_version]
+    - else
+      - exercise_code = @exercise_measurement.exercise.code
+      - exercise_version = @exercise_measurement.exercise.version
+    = f.hidden_field :exercise_code, :value => exercise_code
+    = f.hidden_field :exercise_version, :value => exercise_version
 
   .form-actions
-    - if params[:action]=='new' || params[:action]=='clone'
+    - if ['new','create','clone'].include? params[:action]
       = f.button :submit, t('exercise_measurement.new.add_measurement'), class: 'btn btn-primary'
-    - elsif params[:action]=='edit'
+    - elsif ['edit','update'].include? params[:action]
       = f.button :submit, t('exercise_measurement.edit.update_measurement'), class: 'btn btn-primary'
+    = link_to t('dictionary.cancel'), Exercise.friendly.find([exercise_code,exercise_version]), class: "btn btn-default"

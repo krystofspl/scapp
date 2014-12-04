@@ -1,7 +1,7 @@
 class ExerciseStepsController < ApplicationController
-  before_action :set_exercise_step, only: [:destroy]
-  before_action :set_exercise_steps, only: [:index, :edit]
-  before_action :set_exercise, only: [:index, :edit]
+  before_action :set_exercise_step, only: [:edit,:destroy]
+  before_action :set_exercise_steps, only: [:index, :edit, :create, :update]
+  before_action :set_exercise, only: [:index, :edit, :create, :update]
 
   def index
     @exercise_step = ExerciseStep.new
@@ -20,7 +20,6 @@ class ExerciseStepsController < ApplicationController
   end
 
   def edit
-    @exercise_step = ExerciseStep.find(params[:exercise_step_id])
     render :index
   end
 
@@ -29,9 +28,11 @@ class ExerciseStepsController < ApplicationController
     respond_to do |format|
       if @exercise_step.save
         format.html { redirect_to :exercise_steps, notice: t('exercise_steps.successfully_added') }
-        format.json { render action: 'show', status: :created, location: @exercise_step }
+        format.json { render action: 'index', status: :created, location: @exercise_step }
       else
-        format.html { render action: 'new' }
+        format.html {
+          render :index
+        }
         format.json { render json: @exercise_step.errors, status: :unprocessable_entity }
       end
     end
@@ -44,7 +45,9 @@ class ExerciseStepsController < ApplicationController
         format.html { redirect_to exercise_steps_url, notice: t('exercise_steps.successfully_updated') }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html {
+          render :index
+        }
         format.json { render json: @exercise_step.errors, status: :unprocessable_entity }
       end
     end
