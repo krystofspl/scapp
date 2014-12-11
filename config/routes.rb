@@ -41,7 +41,13 @@ Scapp::Application.routes.draw do
 
   resources :units
 
-  resources :exercise_bundles
+  resources :exercise_bundles do
+    member do
+      get 'edit_exercises' => 'exercise_bundles#edit_exercises'
+      get 'edit_exercises/add/:exercise_code(/v/:exercise_version)' => 'exercise_bundles#add_exercise', :as => :bundle_add_exercise
+      get 'edit_exercises/remove/:exercise_code(/v/:exercise_version)' => 'exercise_bundles#remove_exercise', :as => :bundle_remove_exercise
+    end
+  end
 
   resources :payments
 
@@ -221,6 +227,12 @@ Scapp::Application.routes.draw do
     resources :exercises, only: [], path: 'exercises' do
       collection do
         get '/' => 'exercises#user_exercises'
+      end
+    end
+
+    resources :exercise_bundles, path: 'exercise_bundles' do
+      collection do
+        get '/' => 'exercise_bundles#user_exercise_bundles'
       end
     end
 

@@ -1,0 +1,10 @@
+$green: #d3ffae;
+$red: #e99b96;
+
+tr.included{
+  background-color: $green;
+}
+
+tr.not-included{
+  background-color: $red;
+}

@@ -46,6 +46,12 @@ en:
     exercise_detail: "Exercise detail"
     exercises: "Exercises"
     user_exercises: "User exercises"
+    exercise_bundle_detail: "Exercise bundle detail"
+    edit_bundle_exercises: "Edit exercises"
+    exercise_bundles: "Exercise bundles"
+    new_exercise_bundle: "New exercise bundle"
+    edit_exercise_bundle: "Edit exercise bundle"
+    user_exercise_bundles: "Exercise bundles"
   private: "Private"
   global: "Global"
   exercise_measurement:
@@ -94,3 +100,40 @@ en:
   dictionary:
     back: "Back"
     cancel: "Cancel"
+    remove: "Remove"
+    add: "Add"
+    include: "Include"
+    warning: "Warning"
+    close: "Close"
+    continue: "Continue"
+  exercise_bundle:
+    edit:
+      edit_bundle: "Edit exercise bundle"
+      update_bundle: "Update exercise bundle"
+      warning_message_body: "This bundle includes some exercises, we do not recommend making extensive changes, because it will affect all exercises, that are included in this bundle."
+      warning_continue_btn: "Continue and edit"
+    new:
+      new_bundle: "New exercise bundle"
+      create_bundle: "Create exercise bundle"
+    index:
+      exercise_bundles_list: "Exercise bundles list"
+    show:
+      view_all_accessible_bundles: "View all accessible exercise bundles"
+      bundle_detail: "Exercise bundle detail"
+      details_heading: "Details"
+      description_is_empty: "This exercise bundle contains no description"
+      contains_exercises_nr: "Contains exercises"
+      exercises_contained: "Exercises contained within the bundle"
+      edit_bundle: "Edit exercise bundle"
+      delete_bundle: "Delete exercise bundle"
+      edit_exercises: "Add / Remove exercises"
+      view_my_bundles: "View my exercise bundles"
+    edit_exercises:
+      edit_exercises: "Edit exercises"
+      exercise_successfully_included: "Exercise was successfully included."
+      exercise_successfully_removed: "Exercise was successfully removed."
+  exercise_bundles:
+    show:
+      user_exercise_bundles: "Exercise bundles created by"
+  exercise_bundle_show:
+    contains_no_exercises: "This bundle contains no exercises yet."

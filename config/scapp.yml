@@ -3,7 +3,7 @@ defaults: &defaults
     name: 'ScApp v2'
     host: '192.168.1.5'
     port: 3000
-    default_locale: 'cs'
+    default_locale: 'en'
     email:
       default: 'club@example.com'
       registration: 'register@example.com'

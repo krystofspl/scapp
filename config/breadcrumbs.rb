@@ -421,6 +421,38 @@ crumb :exercise_detail do |exercise|
   parent :exercises, exercise
 end
 
+# ============
+# ExerciseBundle
+# ============
+
+crumb :exercise_bundles do
+  link t('breadcrumbs.exercise_bundles'), exercise_bundles_path
+end
+
+crumb :exercise_bundle_detail do |exercise_bundle|
+  link t('breadcrumbs.exercise_bundle_detail'), exercise_bundle
+  parent :exercise_bundles
+end
+
+crumb :new_exercise_bundle do
+  link t('breadcrumbs.new_exercise_bundle')
+  parent :exercise_bundles
+end
+
+crumb :edit_exercise_bundle do
+  link t('breadcrumbs.edit_exercise_bundle')
+  parent :exercise_bundles
+end
+
+crumb :edit_bundle_exercises do |exercise_bundle|
+  link t('breadcrumbs.edit_bundle_exercises')
+  parent :exercise_bundle_detail, exercise_bundle
+end
+
+crumb :user_exercise_bundles do |user|
+  link t('breadcrumbs.user_exercise_bundles'), exercise_bundles_path
+  parent :user, user
+end
 
 # If you want to split your breadcrumbs configuration over multiple files, you
 # can create a folder named `config/breadcrumbs` and put your configuration

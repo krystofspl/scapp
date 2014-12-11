@@ -1,21 +1,77 @@
-%p#notice= notice
+- content_for :heading do
+  = @exercise_bundle.name.to_s + ' - ' + t('exercise_bundle.show.bundle_detail')
 
-%p
-  %b Code:
-  = @exercise_bundle.code
-%p
-  %b Name:
-  = @exercise_bundle.name
-%p
-  %b Description:
-  = @exercise_bundle.description
-%p
-  %b Accessibility:
-  = @exercise_bundle.accessibility
-%p
-  %b User:
-  = @exercise_bundle.user
+- breadcrumb :exercise_bundle_detail, @exercise_bundle
 
-= link_to 'Edit', edit_exercise_bundle_path(@exercise_bundle)
-\|
-= link_to 'Back', exercise_bundles_path
+#action-box
+  = render 'exercise_bundles/warning'
+  - if @exercise_bundle.user == current_user || current_user.is_admin?
+    - edit_link_text = raw("<i class='fa fa-pencil'></i>")+ " " + t('exercise_bundle.show.edit_bundle')
+    = edit_button(@exercise_bundle, edit_link_text)
+    = link_to @exercise_bundle, class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+      %i.fa.fa-times
+      = t('exercise_bundle.show.delete_bundle')
+  - else
+    = link_to '#', class: 'disabled btn btn-warning' do
+      = t('exercise_bundle.show.edit_bundle')
+    = link_to '#', class: 'disabled btn btn-danger' do
+      %i.fa.fa-times
+      = t('exercise_bundle.show.delete_bundle')
+
+.row
+  .col-sm-4
+    .box.box-primary
+      .box-header
+        %h2.box-title= t('exercise_bundle.show.details_heading')
+      .box-body
+        %table.table
+          %tbody
+            %tr
+              %th= t('dictionary.accessibility')
+              %td
+                %span.label.label-info= t(@exercise_bundle.accessibility)
+            %tr
+              %th= t('dictionary.owner')
+              %td= dash_or_object(@exercise_bundle.user).to_s
+            %tr
+              %th= t('exercise_bundle.show.contains_exercises_nr')
+              %td!= ApplicationHelper.labelize_realizations @exercise_bundle.exercises.count
+  .col-sm-8
+    .box.box-primary
+      .box-header
+        %h2.box-title= t('dictionary.description')
+      .box-body
+        - unless @exercise_bundle.description.blank?
+          = @exercise_bundle.description
+        - else
+          = t('exercise_bundle.show.description_is_empty')
+
+.row
+  .col-sm-12
+    .box.box-primary
+      .box-header
+        %h2.box-title= t('exercise_bundle.show.exercises_contained')
+      .box-body
+        - if current_user.is_admin? || @exercise_bundle.user==current_user
+          = link_to edit_exercises_exercise_bundle_path(@exercise_bundle), class: 'btn btn-warning' do
+            %i.fa.fa-pencil
+            = t('exercise_bundle.show.edit_exercises')
+        .row.margin
+        - if @exercise_bundle.exercises.empty?
+          = t('exercise_bundle_show.contains_no_exercises')
+        - else
+          %table.table#exercises
+            %tbody
+              %tr
+                %th= t('dictionary.name')
+                %th= t('dictionary.description')
+                %th= t('dictionary.accessibility')
+                %th= t('exercise.show.exercise_type')
+
+              - @exercise_bundle.exercises.each do |exercise|
+                %tr
+                  %td= link_to exercise.name+((exercise.version>1)?" ("+exercise.version.to_s+")":""), exercise
+                  %td= exercise.description
+                  %td
+                    %span.label.label-info= t(exercise.accessibility)
+                  %td= exercise.type

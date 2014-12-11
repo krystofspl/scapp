@@ -1,0 +1,11 @@
+- content_for :heading do
+  = t('exercise_bundles.show.user_exercise_bundles') + " " + @user.to_s
+
+- breadcrumb :user_exercise_bundles, @user
+#action-box
+  = link_to t('exercise_bundle.show.view_all_accessible_bundles'), exercise_bundles_path, class: 'btn btn-info'
+  = link_to new_exercise_bundle_path, class: 'btn btn-info' do
+    %i.fa.fa-plus
+    = t('exercise_bundle.new.new_bundle')
+
+= render :template => 'exercise_bundles/_list_table.html.haml', :locale => @locale

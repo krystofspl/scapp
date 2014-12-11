@@ -1,27 +1,12 @@
-%h1 Listing exercise_sets
+- content_for :heading do
+  = "#{t('exercise_bundle.index.exercise_bundles_list')}"
 
-%table
-  %tr
-    %th Code
-    %th Name
-    %th Description
-    %th Accessibility
-    %th User
-    %th
-    %th
-    %th
+- breadcrumb :exercise_bundles
 
-  - @exercise_bundles.each do |exercise_set|
-    %tr
-      %td= exercise_set.code
-      %td= exercise_set.name
-      %td= exercise_set.description
-      %td= exercise_set.accessibility
-      %td= exercise_set.user
-      %td= link_to 'Show', exercise_set
-      %td= link_to 'Edit', edit_exercise_set_path(exercise_set)
-      %td= link_to 'Destroy', exercise_set, :method => :delete, :data => { :confirm => 'Are you sure?' }
+#action-box
+  = link_to t('exercise_bundle.show.view_my_bundles'), user_exercise_bundles_path(current_user), class: 'btn btn-info'
+  = link_to new_exercise_bundle_path, class: 'btn btn-info' do
+    %i.fa.fa-plus
+    = t('exercise_bundle.new.new_bundle')
 
-%br
-
-= link_to 'New Exercise set', new_exercise_set_path
+= render :template => 'exercise_bundles/_list_table.html.haml', :locale => @locale

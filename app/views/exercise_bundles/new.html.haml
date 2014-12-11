@@ -1,5 +1,6 @@
-%h1 New exercise_set
+- content_for :heading do
+  = t('exercise_bundle.new.new_bundle')
+
+- breadcrumb :new_exercise_bundle
 
 = render 'form'
-
-= link_to 'Back', exercise_sets_path

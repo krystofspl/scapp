@@ -1,0 +1,42 @@
+- content_for :heading do
+  = @exercise_bundle.name.to_s + ' - ' + t('exercise_bundle.edit_exercises.edit_exercises')
+
+- breadcrumb :edit_bundle_exercises, @exercise_bundle
+
+#action-box
+  = link_to @exercise_bundle, class: 'btn btn-default' do
+    %i.fa.fa-arrow-left
+    = t('dictionary.back')
+
+.row
+  .col-sm-12
+    .box.box-primary
+      .box-header
+        %h2.box-title= t('exercise_bundle.show.exercises_contained')
+      .box-body
+        %table.table#exercises
+          %tbody
+            %tr
+              %th
+              %th= t('dictionary.name')
+              %th= t('dictionary.description')
+              %th= t('dictionary.accessibility')
+              %th= t('exercise.show.exercise_type')
+
+            - @exercises.each do |exercise|
+              - (@exercise_bundle.exercises.include? exercise) ? incl = true : incl = false
+              %tr{:class => [('included' if incl), ('not-included' unless incl)]}
+                %td
+                  - if incl
+                    = link_to bundle_remove_exercise_exercise_bundle_path(:exercise_code=>exercise.code,:exercise_version=>exercise.version), {:title=>t('dictionary.remove'), class: 'btn btn-xs btn-default'} do
+                      %i.fa.fa-minus
+                      %b Remove
+                  - else
+                    = link_to bundle_add_exercise_exercise_bundle_path(:exercise_code=>exercise.code,:exercise_version=>exercise.version), {:title=>t('dictionary.include'), class: 'btn btn-xs btn-default'} do
+                      %i.fa.fa-plus
+                      %b Include
+                %td= link_to exercise.name+((exercise.version>1)?" ("+exercise.version.to_s+")":""), exercise
+                %td= exercise.description
+                %td
+                  %span.label.label-info= t(exercise.accessibility)
+                %td= exercise.type

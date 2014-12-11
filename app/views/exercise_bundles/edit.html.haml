@@ -1,7 +1,6 @@
-%h1 Editing exercise_set
+- content_for :heading do
+  = @exercise_bundle.name.to_s+' - '+t('exercise_bundle.edit.edit_bundle')
+
+- breadcrumb :edit_exercise_bundle
 
 = render 'form'
-
-= link_to 'Show', @exercise_bundle
-\|
-= link_to 'Back', exercise_sets_path

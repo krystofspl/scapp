@@ -2,8 +2,16 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :name
-    = f.input :description
+    = f.input :name, input_html: {maxlength:255}
+    = f.input :description, input_html: {maxlength:255}
+    - if current_user.is_admin?
+      = f.input :accessibility, :collection => [['private', t('private')],['global', t('global')]],
+        :as => :radio_buttons, :value_method => :first, :label_method => :last, :checked => (@exercise_bundle.persisted? ? @exercise_bundle.accessibility : 'global')
 
   .form-actions
-    = f.button :submit
+    - if ['new','create'].include? params[:action]
+      = f.button :submit, t('exercise_bundle.new.create_bundle'), class: 'btn btn-primary'
+    - elsif ['edit','update'].include? params[:action]
+      = f.button :submit, t('exercise_bundle.edit.update_bundle'), class: 'btn btn-primary'
+    = link_to t('dictionary.cancel'), exercise_bundles_path, class: 'btn btn-default'
+

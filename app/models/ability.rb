@@ -595,6 +595,14 @@ class Ability
 
     # UserExercise
     can [:user_exercises], ExercisesController if @request.params[:user_id] == @user.slug
+
+    # =============
+    # x) Exercise bundles
+    # =============
+
+    # UserExerciseBundle
+    can [:user_exercise_bundles], ExerciseBundlesController if @request.params[:user_id] == @user.slug
+
   end
 
   # ===========================================
