@@ -1,6 +1,5 @@
 class ExerciseBundlesController < ApplicationController
   before_action :set_exercise_bundle, only: [:show, :edit, :update, :destroy]
-  helper ExerciseBundlesHelper
 
   # GET /exercise_sets
   # GET /exercise_bundles.json

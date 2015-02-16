@@ -7,7 +7,7 @@
   = render 'exercise_bundles/warning'
   - if @exercise_bundle.user == current_user || current_user.is_admin?
     - edit_link_text = raw("<i class='fa fa-pencil'></i>")+ " " + t('exercise_bundle.show.edit_bundle')
-    = edit_button(@exercise_bundle, edit_link_text)
+    = edit_button_bundle(@exercise_bundle, edit_link_text)
     = link_to @exercise_bundle, class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' } do
       %i.fa.fa-times
       = t('exercise_bundle.show.delete_bundle')

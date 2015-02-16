@@ -42,6 +42,10 @@ en:
       form_button_create_add_details: "Create exercise and add details"
     edit:
       edit: "Edit exercise"
+      warning_message_body: "This exercise already has realizations. We do not recommend making any extensive changes, because it will affect all realizations. If you want to correct something or make a small change, please continue, otherwise click Cancel. You can also create a new version of the exercise."
+      warning_new_version_btn: "Make a new version"
+    clone:
+      clone: "Clone exercise"
   breadcrumbs:
     exercise_detail: "Exercise detail"
     exercises: "Exercises"

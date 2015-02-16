@@ -1,5 +1,6 @@
 class ExercisesController < ApplicationController
   before_action :set_exercise, only: [:show, :edit, :update, :destroy]
+  include ExercisesHelper
 
   # GET /exercises
   # GET /exercises.json
@@ -58,13 +59,46 @@ class ExercisesController < ApplicationController
   def update
     respond_to do |format|
       if @exercise.update(exercise_params)
-        format.html { redirect_to @exercise, notice: 'Exercise successfully updated.' }
+        format.html { redirect_to exercise_path(@exercise), notice: 'Exercise successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
         format.json { render json: @exercise.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def clone
+    existing_exercise_version = (params[:exercise_version].blank?) ? 1 : params[:exercise_version]
+    new_exercise_version = Exercise.all.order('version').last.version+1
+    # Exercise
+    existing_exercise = Exercise.friendly.find([params[:exercise_code],existing_exercise_version])
+    @exercise = existing_exercise.deep_dup
+    @exercise.code = existing_exercise.code
+    @exercise.version = new_exercise_version
+    # Measurements
+    existing_exercise.exercise_measurements.each do |measurement|
+      new = measurement.deep_dup
+      new.exercise_version = new_exercise_version
+      new.save
+      @exercise.exercise_measurements << new
+    end
+    # Setups
+    existing_exercise.exercise_setups.each do |setup|
+      new = setup.deep_dup
+      new.exercise_version = new_exercise_version
+      new.save
+      @exercise.exercise_setups << new
+    end
+    # Steps
+    existing_exercise.exercise_steps.each do |step|
+      new = step.deep_dup
+      new.exercise_version = new_exercise_version
+      new.save
+      @exercise.exercise_steps << new
+    end
+    @exercise.save
+    render action: 'edit'
   end
 
   # DELETE /exercises/1

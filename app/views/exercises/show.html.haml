@@ -1,30 +1,30 @@
 - content_for :heading do
   = "#{@exercise.name} - #{t('exercise.show.exercise_detail').downcase}"
-
 - breadcrumb :exercise_detail, @exercise
 
+
 #action-box
+  = render 'exercises/warning'
   - if is_admin? || @exercise.user==current_user
-    = link_to edit_exercise_path(@exercise), class: 'btn btn-info' do
-      %i.fa.fa-pencil
-      = t('exercise.show.edit_exercise')
+    - edit_link_text = raw("<i class='fa fa-pencil'></i>")+ " " + t('exercise.show.edit_exercise')
+    = edit_button_exercise(@exercise, edit_link_text)
     - unless @exercise.is_in_use?
-      = link_to @exercise, :method => :delete, class: 'btn btn-warning', :data => { :confirm => 'Are you sure?' } do
+      = link_to @exercise, :method => :delete, class: 'btn btn-danger', :data => { :confirm => 'Are you sure?' } do
         %i.fa.fa-times
         = t('exercise.show.destroy_exercise')
     - else
-      = link_to '#', class: 'disabled btn btn-warning' do
+      = link_to '#', class: 'disabled btn btn-danger' do
         %i.fa.fa-times
         = t('exercise.show.destroy_exercise')
 
 .row
-  .col-sm-12
+  .col-sm-8
     .box.box-primary
       .box-header
         %h2.box-title= t('exercise.show.detail')
       .box-body
         .row
-          .col-sm-4
+          .col-sm-7
             %table.table
               %tbody
                 - if @exercise.version > 1
@@ -52,49 +52,60 @@
                     %td= dash_or_value(@exercise, :author_name)
                 %tr
                   %th= t('exercise.show.in_bundles')
+                  - if @exercise.exercise_bundles.blank?
+                    %td
+                      = '-'
+                  - else
+                    %td
+                      - @exercise.exercise_bundles.each do |exercise_bundle|
+                        %span.label.label-success=link_to exercise_bundle.name, exercise_bundle
+          .col-sm-5
+            %table.table#exercise_description
+              %thead
+                %tr
                   %td
-                    - @exercise.exercise_bundles.each do |exercise_bundle|
-                      %span.label.label-success=link_to exercise_bundle.name, exercise_bundle
-          .col-sm-4
-            .row
-              %table.table#exercise_description
-                %thead
+                    %strong= t('dictionary.description')
+              %tbody
+                %tr
+                - unless @exercise.description.blank?
+                  %td= @exercise.description
+                - else
+                  %td= t('exercise.show.description_is_empty')
+        .row
+          .col-sm-12
+            %table#exercise_images.table
+              %thead
+              %tbody
+                %tr
+                  %td
+                    %strong Obrázky
+                    %br
+                    Obrázky správně/špatně
+                    %br TODO
+  .col-sm-4
+    .box.box-primary
+      .box-header
+        %h2.box-title= t('exercise_steps.index')
+      .box-body
+        = '('
+        = link_to t('exercise_steps.show_detailed_view'), exercise_steps_path(@exercise)
+        = ')'
+        .row
+          .col-sm-12
+            %table#exercise_steps.table.table-striped
+              %thead
+              %tbody
+                - unless @exercise.exercise_steps.blank?
+                  - @exercise.exercise_steps.rank(:row_order).each_with_index do |es,i|
+                    %tr
+                      %th= i+1
+                      %td= es.name
+                - else
                   %tr
                     %td
-                      %strong= t('dictionary.description')
-                  %tbody
-                    %tr
-                    - unless @exercise.description.blank?
-                      %td= @exercise.description
-                    - else
-                      %td= t('exercise.show.description_is_empty')
-            .row
-              %table#exercise_steps.table.table-striped
-                %thead
-                  %tr
-                    %td.no-border{:colspan => 2}
-                      %strong= t('exercise_steps.index')
-                      = '('
-                      = link_to t('exercise_steps.show_detailed_view'), exercise_steps_path(@exercise)
-                      = ')'
-                %tbody
-                  - unless @exercise.exercise_steps.blank?
-                    - @exercise.exercise_steps.rank(:row_order).each_with_index do |es,i|
-                      %tr
-                        %th= i+1
-                        %td= es.name
-                  - else
-                    %tr
-                      %td
-                        = link_to exercise_steps_path(@exercise), class: 'btn btn-success btn-sm' do
-                          %i.fa.fa-plus
-                          = t('exercise.show.add_steps')
-          .col-sm-4
-            %strong Obrázky
-            %br
-            Obrázky správně/špatně
-            %br TODO
-
+                      = link_to exercise_steps_path(@exercise), class: 'btn btn-success btn-sm' do
+                        %i.fa.fa-plus
+                        = t('exercise.show.add_steps')
 .row
   .col-sm-12
     .box.box-primary#exercise_setups

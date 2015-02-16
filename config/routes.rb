@@ -27,6 +27,7 @@ Scapp::Application.routes.draw do
   resources :exercises, except: [:show,:edit,:update,:destroy]
   get '/exercises/:exercise_code(/v/:exercise_version)' => 'exercises#show', :as => :exercise
   get '/exercises/:exercise_code(/v/:exercise_version)/edit(:exercise_step_id)' => 'exercises#edit', :as => :edit_exercise
+  get '/exercises/:exercise_code(/v/:exercise_version)/clone' => 'exercises#clone', :as => :clone_exercise
   patch '/exercises/:exercise_code(/v/:exercise_version)' => 'exercises#update', :as => :update_exercise
   delete '/exercises/:exercise_code(/v/:exercise_version)' => 'exercises#destroy', :as => :destroy_exercise
 

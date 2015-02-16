@@ -24,7 +24,7 @@ When(/^I fill in all required fields for exercise$/) do |table|
 
   fill_in 'exercise_name', with: values[:name]
   fill_in 'exercise_description', with: values[:description]
-  select values[:type], from: 'exercise_type'
+  #select values[:type], from: 'exercise_type'
 end
 
 And(/^Radio button "([^"]*)" should be selected$/) do |arg|
@@ -53,4 +53,16 @@ When(/^I fill all required fields for exercise step$/) do |table|
 
   fill_in 'exercise_step_name', with: values[:name]
   fill_in 'exercise_step_description', with: values[:description]
+end
+
+Then(/^I should see an exercise fork dialog$/) do
+  page.find('#btn-continue')
+end
+
+When(/^I choose to edit the current version$/) do
+  page.find('#btn-continue').click
+end
+
+When(/^I choose to make a new version$/) do
+  page.find('#btn-clone').click
 end

@@ -1,0 +1,22 @@
+#warning.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{'aria-hiden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} &times;
+        %h3.modal-title= t('dictionary.warning')
+      .modal-body
+        .modal-body-content
+          = t('exercise.edit.warning_message_body')
+      .modal-footer
+
+:javascript
+  $(document).ready(function(){
+    $(".edit-action").click(
+      function(){
+        $(".modal-footer").html("" +
+        "<a href='#' data-dismiss='modal' class='btn btn-default'>#{t('dictionary.cancel')}</a>" +
+        "<a href='/exercises/"+$(this).data('id')+"/clone' class='btn btn-primary' id='btn-clone'>#{t('exercise.edit.warning_new_version_btn')}</a>" +
+        "<a href='/exercises/"+$(this).data('id')+"/edit' class='btn btn-primary' id='btn-continue'>#{t('exercise_bundle.edit.warning_continue_btn')}</a>"
+        );
+    });
+  });

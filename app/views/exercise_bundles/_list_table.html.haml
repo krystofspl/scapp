@@ -21,7 +21,7 @@
                 %span.label.label-info= t(exercise_bundle.accessibility)
               - if exercise_bundle.user == current_user || current_user.is_admin?
                 %td
-                  = edit_button(exercise_bundle,t('dictionary.edit'))
+                  = edit_button_bundle(exercise_bundle,t('dictionary.edit'))
                 %td= link_to t('dictionary.delete'), exercise_bundle, class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' }
               - else
                 %td= link_to t('dictionary.edit'), '#', class: 'disabled btn btn-warning'

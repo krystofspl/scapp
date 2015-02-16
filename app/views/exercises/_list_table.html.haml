@@ -17,7 +17,7 @@
 
             - @exercises.each do |exercise|
               %tr
-                %td= link_to exercise.name+((exercise.version>1)?" ("+exercise.version.to_s+")":""), exercise
+                %td= link_to exercise.name+((exercise.version>1)?" ("+exercise.version.to_s+")":""), exercise_path(exercise)
                 %td
                   -#TODO link_to (exercise_measurement.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
                   !=ApplicationHelper.labelize_realizations exercise.exercise_realizations.count
@@ -27,11 +27,13 @@
                 %td= exercise.type
                 %td
                   - if exercise.user == current_user || current_user.is_admin?
-                    = link_to t('dictionary.edit'), edit_exercise_path(exercise), class: 'btn btn-warning'
+                    = edit_button_exercise(exercise, t('dictionary.edit'))
                   - else
                     = link_to t('dictionary.edit'), "#", class: 'disabled btn btn-warning'
                 %td
                   - if !exercise.is_in_use? && (exercise.user == current_user || current_user.is_admin?)
-                    = link_to t('dictionary.delete'), exercise, class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' }
+                    = link_to t('dictionary.delete'), exercise_path(exercise), class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' }
                   - else
                     = link_to t('dictionary.delete'), "#", class: 'disabled btn btn-danger'
+
+  = render 'exercises/warning'
