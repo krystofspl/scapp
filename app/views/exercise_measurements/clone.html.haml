@@ -1,4 +1,5 @@
 - content_for :heading do
   = @exercise_measurement.exercise.name.to_s+' - '+t('exercise_measurement.clone.add_setup')
+- breadcrumb :clone_exercise_measurement, @exercise_measurement.exercise
 
 = render 'form'

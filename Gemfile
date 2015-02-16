@@ -41,6 +41,7 @@ gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 # datetime picker for bootstrap
 gem 'momentjs-rails', '>=2.8.1', :github => 'derekprior/momentjs-rails'
+# this has to be run after bundle install: "rails generate datetimepicker_rails:install Font-Awesome"
 gem 'datetimepicker-rails', :require => 'datetimepicker-rails', :git => 'git://github.com/zpaulovics/datetimepicker-rails.git', branch: 'master', submodules: true
 # image upload + manipulation
 gem 'carrierwave'
@@ -71,7 +72,7 @@ end
 group :test do
   gem 'capybara'
   gem 'cucumber-rails', :require=>false
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '>=2.45.0.dev3' #temporary version because of a bug
   gem 'database_cleaner', '1.0.1'
   gem 'email_spec'
   gem 'launchy'

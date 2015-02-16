@@ -1,5 +1,6 @@
 - content_for :heading do
   = @exercise.name + ' - ' + t('exercise_steps.list')
+- breadcrumb :exercise_steps, @exercise
 
 .row
   .col-sm-12

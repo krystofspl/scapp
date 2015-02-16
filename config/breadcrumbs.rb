@@ -417,8 +417,18 @@ crumb :user_exercises do |user|
 end
 
 crumb :exercise_detail do |exercise|
-  link t('breadcrumbs.exercise_detail')
-  parent :exercises, exercise
+  link t('breadcrumbs.exercise_detail'), exercise
+  parent :exercises
+end
+
+crumb :new_exercise do
+  link t('breadcrumbs.new_exercise')
+  parent :exercises
+end
+
+crumb :edit_exercise do |exercise|
+  link t('breadcrumbs.edit_exercise'), exercise
+  parent :exercise_detail, exercise
 end
 
 # ============
@@ -452,6 +462,53 @@ end
 crumb :user_exercise_bundles do |user|
   link t('breadcrumbs.user_exercise_bundles'), exercise_bundles_path
   parent :user, user
+end
+
+# ============
+# ExerciseStep
+# ============
+
+crumb :exercise_steps do |exercise|
+  link t('breadcrumbs.exercise_steps')
+  parent :exercise_detail, exercise
+end
+
+# ============
+# ExerciseSetup
+# ============
+
+crumb :new_exercise_setup do |exercise|
+  link t('breadcrumbs.new_exercise_setup')
+  parent :exercise_detail, exercise
+end
+
+crumb :edit_exercise_setup do |exercise|
+  link t('breadcrumbs.edit_exercise_setup')
+  parent :exercise_detail, exercise
+end
+
+crumb :clone_exercise_setup do |exercise|
+  link t('breadcrumbs.clone_exercise_setup')
+  parent :exercise_detail, exercise
+end
+
+# ============
+# ExerciseMeasurement
+# ============
+
+crumb :new_exercise_measurement do |exercise|
+  link t('breadcrumbs.new_exercise_measurement')
+  parent :exercise_detail, exercise
+end
+
+crumb :edit_exercise_measurement do |exercise|
+  link t('breadcrumbs.edit_exercise_measurement')
+  parent :exercise_detail, exercise
+end
+
+crumb :clone_exercise_measurement do |exercise|
+  link t('breadcrumbs.clone_exercise_measurement')
+  parent :exercise_detail, exercise
 end
 
 # If you want to split your breadcrumbs configuration over multiple files, you
