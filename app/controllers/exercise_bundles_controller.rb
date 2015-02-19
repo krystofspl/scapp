@@ -1,5 +1,5 @@
 class ExerciseBundlesController < ApplicationController
-  before_action :set_exercise_bundle, only: [:show, :edit, :update, :destroy]
+  before_action :set_exercise_bundle, only: [:show, :edit, :update, :destroy, :edit_exercises, :add_exercise, :remove_exercise]
 
   # GET /exercise_sets
   # GET /exercise_bundles.json
@@ -85,7 +85,6 @@ class ExerciseBundlesController < ApplicationController
 
   # GET /exercise_bundles/id/edit_exercises
   def edit_exercises
-    @exercise_bundle = ExerciseBundle.friendly.find(params[:id])
     authorize! :edit, @exercise_bundle
     if @exercise_bundle.accessibility==:global
       @exercises = Exercise.where(:accessibility => :global)
@@ -96,25 +95,23 @@ class ExerciseBundlesController < ApplicationController
 
   def add_exercise
     exercise = Exercise.friendly.find([params[:exercise_code],params[:exercise_version]])
-    exercise_bundle = ExerciseBundle.friendly.find(params[:id])
-    exercise_bundle.exercises << exercise
+    @exercise_bundle.exercises << exercise
     flash[:notice] = t('exercise_bundle.edit_exercises.exercise_successfully_included')
-    redirect_to :controller => :exercise_bundles, :action => :edit_exercises, :id => exercise_bundle.id
+    redirect_to :controller => :exercise_bundles, :action => :edit_exercises, :id => @exercise_bundle.id
   end
 
   def remove_exercise
     exercise = Exercise.friendly.find([params[:exercise_code],params[:exercise_version]])
-    exercise_bundle = ExerciseBundle.friendly.find(params[:id])
     # bug - nefunguje exercise_bundle.exercises.delete(exercise), delam to manualne pres join table
-    exercise_bundle.exercise_bundle_exercises.where(:exercise_bundle_code=>exercise_bundle.code,:exercise_code=>exercise.code,:exercise_version=>exercise.version).first.delete
+    @exercise_bundle.exercise_bundle_exercises.where(:exercise_bundle_code=>@exercise_bundle.code,:exercise_code=>exercise.code,:exercise_version=>exercise.version).first.delete
     flash[:notice] = t('exercise_bundle.edit_exercises.exercise_successfully_removed')
-    redirect_to :controller => :exercise_bundles, :action => :edit_exercises, :id => exercise_bundle.id
+    redirect_to :controller => :exercise_bundles, :action => :edit_exercises, :id => @exercise_bundle.id
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_exercise_bundle
-      @exercise_bundle = ExerciseBundle.find(params[:id])
+      @exercise_bundle = ExerciseBundle.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

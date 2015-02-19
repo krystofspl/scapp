@@ -9,6 +9,11 @@ class ExerciseSetupsController < ApplicationController
     authorize! :add_setup, @exercise
   end
 
+  # GET /exercise_setups/1/edit
+  def edit
+    authorize! :edit, @exercise_setup
+  end
+
   # POST /exercise_setups
   # POST /exercise_setups.json
   def create
@@ -26,11 +31,6 @@ class ExerciseSetupsController < ApplicationController
         }
       end
     end
-  end
-
-  # GET /exercise_setups/1/edit
-  def edit
-    authorize! :edit, @exercise_setup
   end
 
   # PATCH/PUT /exercise_setups/1
