@@ -25,15 +25,14 @@
                 %td
                   %span.label.label-info= t(exercise.accessibility)
                 %td= exercise.type
-                %td
-                  - if exercise.user == current_user || current_user.is_admin?
+                - if can? :edit, exercise
+                  %td
                     = edit_button_exercise(exercise, t('dictionary.edit'))
-                  - else
-                    = link_to t('dictionary.edit'), "#", class: 'disabled btn btn-warning'
-                %td
-                  - if !exercise.is_in_use? && (exercise.user == current_user || current_user.is_admin?)
-                    = link_to t('dictionary.delete'), exercise_path(exercise), class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' }
-                  - else
-                    = link_to t('dictionary.delete'), "#", class: 'disabled btn btn-danger'
+                - if can? :destroy, exercise
+                  %td
+                    - if !exercise.is_in_use?
+                      = link_to t('dictionary.delete'), exercise_path(exercise), class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' }
+                    - else
+                      = link_to t('dictionary.delete'), "#", class: 'disabled btn btn-danger'
 
   = render 'exercises/warning'

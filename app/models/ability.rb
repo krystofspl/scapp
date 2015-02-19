@@ -573,36 +573,93 @@ class Ability
     # =============
     # x) Exercises
     # =============
-    @exercise = nil
-    begin
-      ver = @request.params[:exercise_version].nil? ? 1 : @request.params[:exercise_version]
-      @exercise = Exercise.friendly.find([@request.params[:exercise_code],ver])
-    rescue ActiveRecord::RecordNotFound
-    end
 
     # Exercises list
-    can [:exercises_list], ExercisesController
+    can [:index], Exercise
 
     # Exercise detail
-    unless @exercise.nil?
-      if @exercise.accessibility == :global || @exercise.user == @user
-        can [:exercise_detail], ExercisesController
-      end
+    can [:show], Exercise do |exercise|
+      exercise.accessibility == :global || exercise.user == @user
     end
 
-    # New exercise
-    can [:exercise_new], ExercisesController
+    # Create exercise
+    can [:create], Exercise
+
+    # Edit, destroy, clone exercise
+    can [:edit, :destroy, :clone], Exercise do |exercise|
+      exercise.user == @user
+    end
 
     # UserExercise
-    can [:user_exercises], ExercisesController if @request.params[:user_id] == @user.slug
+    can [:user_exercises], Exercise if @request.params[:user_id] == @user.slug
 
     # =============
-    # x) Exercise bundles
+    # x) ExerciseSteps
     # =============
+
+    # Exercise steps list
+    can [:index], ExerciseStep
+
+    # Add, edit steps to exercise
+    can [:add_steps, :edit_steps], Exercise do |exercise|
+      exercise.user == @user
+    end
+
+    # Destroy exercise step
+    can [:destroy], ExerciseStep do |step|
+      step.exercise.user == @user
+    end
+
+    # =============
+    # x) ExerciseBundles
+    # =============
+
+    # ExerciseBundles list
+    can [:index], ExerciseBundle
+
+    # ExerciseBundles create
+    can [:create], ExerciseBundle
+
+    # ExerciseBundle detail
+    can [:show], ExerciseBundle do |bundle|
+      bundle.user == @user || bundle.accessibility == :global
+    end
+
+    # Edit, Destroy bundle
+    can [:edit, :destroy], ExerciseBundle do |bundle|
+      bundle.user == @user
+    end
 
     # UserExerciseBundle
     can [:user_exercise_bundles], ExerciseBundlesController if @request.params[:user_id] == @user.slug
 
+    # =============
+    # x) ExerciseSetups
+    # =============
+
+    # Add setup to exercise
+    can [:add_setup], Exercise do |exercise|
+      exercise.user == @user
+    end
+
+    # Edit, Destroy, Clone setup
+    can [:edit, :destroy, :clone], ExerciseSetup do |exercise_setup|
+      exercise_setup.exercise.user == @user
+    end
+
+    # =============
+    # x) ExerciseMeasurements
+    # =============
+
+    # Create measurement
+    can [:add_measurement], Exercise do |exercise|
+      exercise.user == @user
+    end
+
+    # Edit, Destroy, Clone measurement
+    can [:edit, :destroy, :clone], ExerciseMeasurement do |exercise_measurement|
+      exercise_measurement.exercise.user == @user
+    end
   end
 
   # ===========================================

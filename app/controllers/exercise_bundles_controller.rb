@@ -4,6 +4,7 @@ class ExerciseBundlesController < ApplicationController
   # GET /exercise_sets
   # GET /exercise_bundles.json
   def index
+    authorize! :index, ExerciseBundle
     if current_user.is_admin?
       @exercise_bundles = ExerciseBundle.all
     else
@@ -16,20 +17,24 @@ class ExerciseBundlesController < ApplicationController
   # GET /exercise_bundles/1
   # GET /exercise_bundles/1.json
   def show
+    authorize! :show, @exercise_bundle
   end
 
   # GET /exercise_bundles/new
   def new
+    authorize! :create, ExerciseBundle
     @exercise_bundle = ExerciseBundle.new
   end
 
   # GET /exercise_bundles/1/edit
   def edit
+    authorize! :edit, @exercise_bundle
   end
 
   # POST /exercise_bundles
   # POST /exercise_bundles.json
   def create
+    authorize! :create, ExerciseBundle
     @exercise_bundle = ExerciseBundle.new(exercise_bundle_params)
     @exercise_bundle.user = current_user
 
@@ -47,6 +52,7 @@ class ExerciseBundlesController < ApplicationController
   # PATCH/PUT /exercise_bundles/1
   # PATCH/PUT /exercise_bundles/1.json
   def update
+    authorize! :edit, @exercise_bundle
     respond_to do |format|
       if @exercise_bundle.update(exercise_bundle_params)
         format.html { redirect_to @exercise_bundle, notice: 'Exercise bundle was successfully updated.' }
@@ -61,6 +67,7 @@ class ExerciseBundlesController < ApplicationController
   # DELETE /exercise_bundles/1
   # DELETE /exercise_bundles/1.json
   def destroy
+    authorize! :destroy, @exercise_bundle
     @exercise_bundle.destroy
     respond_to do |format|
       format.html { redirect_to exercise_bundles_url, notice: 'Exercise bundle was successfully deleted.' }
@@ -79,6 +86,7 @@ class ExerciseBundlesController < ApplicationController
   # GET /exercise_bundles/id/edit_exercises
   def edit_exercises
     @exercise_bundle = ExerciseBundle.friendly.find(params[:id])
+    authorize! :edit, @exercise_bundle
     if @exercise_bundle.accessibility==:global
       @exercises = Exercise.where(:accessibility => :global)
     elsif @exercise_bundle.accessibility==:private

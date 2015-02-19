@@ -5,7 +5,7 @@ class ExercisesController < ApplicationController
   # GET /exercises
   # GET /exercises.json
   def index
-    authorize! :exercises_list, ExercisesController
+    authorize! :index, Exercise
     exercises_private = Exercise.where(:user=>current_user)
     exercises_global = Exercise.where(:accessibility => 'global')
     @exercises = exercises_private + exercises_global
@@ -15,23 +15,19 @@ class ExercisesController < ApplicationController
   # GET /exercises/1
   # GET /exercises/1.json
   def show
-    authorize! :exercise_detail, ExercisesController
+    authorize! :show, @exercise
   end
 
   # GET /exercises/new
   def new
-    authorize! :exercise_new, ExercisesController
+    authorize! :create, Exercise
     @exercise = Exercise.new
-  end
-
-  # GET /exercises/1/edit
-  def edit
-    #TODO authorize
   end
 
   # POST /exercises
   # POST /exercises.json
   def create
+    authorize! :create, Exercise
     @exercise = Exercise.new(exercise_params)
     @exercise.user = current_user
 
@@ -54,9 +50,13 @@ class ExercisesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /exercises/1
-  # PATCH/PUT /exercises/1.json
+  # GET /exercises/1/edit
+  def edit
+    authorize! :edit, @exercise
+  end
+
   def update
+    authorize! :edit, @exercise
     respond_to do |format|
       if @exercise.update(exercise_params)
         format.html { redirect_to exercise_path(@exercise), notice: 'Exercise successfully updated.' }
@@ -68,11 +68,23 @@ class ExercisesController < ApplicationController
     end
   end
 
+  def destroy
+    authorize! :destroy, @exercise
+    @exercise.destroy
+    respond_to do |format|
+      format.html { redirect_to exercises_url, notice: t('exercise.successfully_removed') }
+      format.json { head :no_content }
+    end
+  end
+
   def clone
     existing_exercise_version = (params[:exercise_version].blank?) ? 1 : params[:exercise_version]
     new_exercise_version = Exercise.all.order('version').last.version+1
     # Exercise
     existing_exercise = Exercise.friendly.find([params[:exercise_code],existing_exercise_version])
+
+    authorize! :clone, existing_exercise
+
     @exercise = existing_exercise.deep_dup
     @exercise.code = existing_exercise.code
     @exercise.version = new_exercise_version
@@ -101,19 +113,9 @@ class ExercisesController < ApplicationController
     render action: 'edit'
   end
 
-  # DELETE /exercises/1
-  # DELETE /exercises/1.json
-  def destroy
-    @exercise.destroy
-    respond_to do |format|
-      format.html { redirect_to exercises_url, notice: t('exercise.successfully_removed') }
-      format.json { head :no_content }
-    end
-  end
-
   # GET /users/test/exercises
   def user_exercises
-    authorize! :user_exercises, ExercisesController
+    authorize! :user_exercises, Exercise
     @user = User.friendly.find(params[:user_id])
     @exercises = Exercise.where(:user => @user)
     render 'users/exercises/list'

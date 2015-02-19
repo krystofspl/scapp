@@ -31,6 +31,7 @@ en:
       add_setup: "Add exercise setup"
       exercise_realizations: "Exercise realizations"
       add_steps: "Add exercise steps"
+      exercise_steps_empty: "This exercise has no exercise steps."
     index:
       exercises_list: "Exercises list"
     new_exercise: "New exercise"

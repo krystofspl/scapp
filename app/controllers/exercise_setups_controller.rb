@@ -5,10 +5,8 @@ class ExerciseSetupsController < ApplicationController
   def new
     @exercise = Exercise.friendly.find([params[:exercise_code],params[:exercise_version]])
     @exercise_setup = ExerciseSetup.new
-  end
 
-  # GET /exercise_setups/1/edit
-  def edit
+    authorize! :add_setup, @exercise
   end
 
   # POST /exercise_setups
@@ -16,6 +14,8 @@ class ExerciseSetupsController < ApplicationController
   def create
     @exercise = Exercise.friendly.find([exercise_setup_params[:exercise_code],exercise_setup_params[:exercise_version]])
     @exercise_setup = ExerciseSetup.new(exercise_setup_params)
+
+    authorize! :add_setup, @exercise
 
     respond_to do |format|
       if @exercise_setup.save
@@ -28,9 +28,15 @@ class ExerciseSetupsController < ApplicationController
     end
   end
 
+  # GET /exercise_setups/1/edit
+  def edit
+    authorize! :edit, @exercise_setup
+  end
+
   # PATCH/PUT /exercise_setups/1
   # PATCH/PUT /exercise_setups/1.json
   def update
+    authorize! :edit, @exercise_setup
     respond_to do |format|
       if @exercise_setup.update(exercise_setup_params)
         format.html { redirect_to @exercise, notice: 'Exercise setup was successfully updated.' }
@@ -45,6 +51,7 @@ class ExerciseSetupsController < ApplicationController
   # DELETE /exercise_setups/1
   # DELETE /exercise_setups/1.json
   def destroy
+    authorize! :destroy, @exercise_setup
     @exercise_setup.destroy
     respond_to do |format|
       format.html { redirect_to @exercise, notice: t('exercise_setup.delete.successfully_removed') }
@@ -54,6 +61,7 @@ class ExerciseSetupsController < ApplicationController
 
   def clone
     @existing_setup = ExerciseSetup.friendly.find(params[:exercise_setup_code])
+    authorize! :clone, @existing_setup
     @exercise_setup = ExerciseSetup.new(@existing_setup.attributes)
     @exercise_setup.code=nil
     render action: 'clone'

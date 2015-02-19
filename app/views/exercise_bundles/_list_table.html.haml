@@ -19,12 +19,9 @@
               %td= dash_or_value(exercise_bundle,:description)
               %td
                 %span.label.label-info= t(exercise_bundle.accessibility)
-              - if exercise_bundle.user == current_user || current_user.is_admin?
+              - if can? :edit, exercise_bundle
                 %td
                   = edit_button_bundle(exercise_bundle,t('dictionary.edit'))
                 %td= link_to t('dictionary.delete'), exercise_bundle, class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' }
-              - else
-                %td= link_to t('dictionary.edit'), '#', class: 'disabled btn btn-warning'
-                %td= link_to t('dictionary.delete'), '#', class: 'disabled btn btn-danger'
 
 = render 'exercise_bundles/warning'

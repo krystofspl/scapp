@@ -1,20 +1,13 @@
 - content_for :heading do
   = @exercise_bundle.name.to_s + ' - ' + t('exercise_bundle.show.bundle_detail')
-
 - breadcrumb :exercise_bundle_detail, @exercise_bundle
 
 #action-box
   = render 'exercise_bundles/warning'
-  - if @exercise_bundle.user == current_user || current_user.is_admin?
+  - if can? :edit, @exercise_bundle
     - edit_link_text = raw("<i class='fa fa-pencil'></i>")+ " " + t('exercise_bundle.show.edit_bundle')
     = edit_button_bundle(@exercise_bundle, edit_link_text)
     = link_to @exercise_bundle, class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' } do
-      %i.fa.fa-times
-      = t('exercise_bundle.show.delete_bundle')
-  - else
-    = link_to '#', class: 'disabled btn btn-warning' do
-      = t('exercise_bundle.show.edit_bundle')
-    = link_to '#', class: 'disabled btn btn-danger' do
       %i.fa.fa-times
       = t('exercise_bundle.show.delete_bundle')
 
@@ -52,7 +45,7 @@
       .box-header
         %h2.box-title= t('exercise_bundle.show.exercises_contained')
       .box-body
-        - if current_user.is_admin? || @exercise_bundle.user==current_user
+        - if can? :edit, @exercise_bundle
           = link_to edit_exercises_exercise_bundle_path(@exercise_bundle), class: 'btn btn-warning' do
             %i.fa.fa-pencil
             = t('exercise_bundle.show.edit_exercises')

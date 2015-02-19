@@ -10,7 +10,9 @@
       .box-body
         .row
           .col-sm-12
-            - unless @exercise_steps.empty?
+            - if @exercise_steps.empty?
+              = t('exercise_steps.empty')
+            - else
               %table#sortable.table
                 %tbody
                   %tr
@@ -18,32 +20,38 @@
                     %th.col-sm-7= t('dictionary.description')
                     %th.col-sm-2
                   - @exercise_steps.each do |exercise_step|
-                    %tr.item{:data => {'item-id' => exercise_step.id},:style=>'cursor:pointer;'}
-                      %td
-                        %span.fa.fa-arrows
-                        %strong= exercise_step.name
-                      %td= exercise_step.description
-                      %td
-                        = link_to edit_exercise_step_path(:exercise_step_id => exercise_step.id), class: 'btn btn-warning btn-xs' do
-                          %i.fa.fa-remove
-                          = t('dictionary.edit')
-                        = link_to exercise_steps_path(:exercise_step_id => exercise_step.id), class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => 'Are you sure?' } do
-                          %i.fa.fa-remove
-                          = t('dictionary.delete')
-            - else
-              = t('exercise_steps.empty')
-.row
-  .col-sm-12
-    .box.box-primary
-      .box-header
-        - if ['index','new', 'create'].include? params[:action]
-          %h2.box-title= t('exercise_steps.add_new')
-        - elsif ['edit','update'].include? params[:action]
-          %h2.box-title= t('exercise_steps.edit')
-      .box-body
-        .row
-          .col-sm-4
-            = render 'form'
+                    - if can? :edit_steps, exercise_step.exercise
+                      %tr.item{:data => {'item-id' => exercise_step.id},:style=>'cursor:pointer;'}
+                        %td
+                          %span.fa.fa-arrows
+                          %strong= exercise_step.name
+                        %td= exercise_step.description
+                        %td
+                          = link_to edit_exercise_step_path(:exercise_step_id => exercise_step.id), class: 'btn btn-warning btn-xs' do
+                            %i.fa.fa-remove
+                            = t('dictionary.edit')
+                          = link_to exercise_steps_path(:exercise_step_id => exercise_step.id), class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+                            %i.fa.fa-remove
+                            = t('dictionary.delete')
+                    - else
+                      %tr.item
+                        %td
+                          %strong= exercise_step.name
+                        %td= exercise_step.description
+
+- if can? :add_steps, @exercise or can? :edit_steps, @exercise
+  .row
+    .col-sm-12
+      .box.box-primary
+        .box-header
+          - if ['index','new', 'create'].include? params[:action] and can? :add_steps, @exercise
+            %h2.box-title= t('exercise_steps.add_new')
+          - elsif ['edit','update'].include? params[:action] and can? :edit_steps, @exercise
+            %h2.box-title= t('exercise_steps.edit')
+        .box-body
+          .row
+            .col-sm-4
+              = render 'form'
 
 :coffeescript
   rows_sorting = ->

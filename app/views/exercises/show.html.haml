@@ -2,10 +2,9 @@
   = "#{@exercise.name} - #{t('exercise.show.exercise_detail').downcase}"
 - breadcrumb :exercise_detail, @exercise
 
-
 #action-box
   = render 'exercises/warning'
-  - if is_admin? || @exercise.user==current_user
+  - if can? :edit, @exercise
     - edit_link_text = raw("<i class='fa fa-pencil'></i>")+ " " + t('exercise.show.edit_exercise')
     = edit_button_exercise(@exercise, edit_link_text)
     - unless @exercise.is_in_use?
@@ -101,11 +100,13 @@
                       %th= i+1
                       %td= es.name
                 - else
-                  %tr
-                    %td
-                      = link_to exercise_steps_path(@exercise), class: 'btn btn-success btn-sm' do
-                        %i.fa.fa-plus
-                        = t('exercise.show.add_steps')
+                  = t('exercise.show.exercise_steps_empty')
+                  - if can? :add_steps, @exercise
+                    %tr
+                      %td
+                        = link_to exercise_steps_path(@exercise), class: 'btn btn-success btn-sm' do
+                          %i.fa.fa-plus
+                          = t('exercise.show.add_steps')
 .row
   .col-sm-12
     .box.box-primary#exercise_setups
@@ -113,7 +114,7 @@
         %h2.box-title= t('exercise.show.exercise_setups')
       .box-body
         .row
-        - if current_user.is_admin? || @exercise.user==current_user
+        - if can? :add_setup, @exercise
           = link_to new_exercise_setup_path(:exercise_code=>@exercise.code, :exercise_version=>@exercise.version), class: 'btn btn-success' do
             %i.fa.fa-plus
             = t('exercise.show.add_setup')
@@ -146,26 +147,26 @@
                           %td{:colspan=>2}= dash_or_value(exercise_setup,:description)
                   .box-footer
                     %div
-                    - if !exercise_setup.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
-                      = link_to edit_exercise_setup_path(exercise_setup), class: 'btn btn-warning btn-xs' do
-                        %i.fa.fa-pencil
-                        = t('dictionary.edit')
-                    - else
-                      = link_to clone_exercise_setup_path(exercise_setup), class: 'btn btn-primary btn-xs' do
-                        %i.fa.fa-copy
-                        = t('exercise_setup.clone.button')
-                      = link_to '#', class: 'btn btn-warning btn-xs disabled' do
-                        %i.fa.fa-pencil
-                        = t('dictionary.edit')
-
-                    - if !exercise_setup.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
-                      = link_to exercise_setup, class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => 'Are you sure?' } do
-                        %i.fa.fa-times
-                        = t('dictionary.delete')
-                    - else
-                      = link_to '#', class: 'btn btn-danger btn-xs disabled' do
-                        %i.fa.fa-times
-                        = t('dictionary.delete')
+                    - if can? :edit, exercise_setup
+                      - if !exercise_setup.is_in_use?
+                        = link_to edit_exercise_setup_path(exercise_setup), class: 'btn btn-warning btn-xs' do
+                          %i.fa.fa-pencil
+                          = t('dictionary.edit')
+                      - else
+                        = link_to clone_exercise_setup_path(exercise_setup), class: 'btn btn-primary btn-xs' do
+                          %i.fa.fa-copy
+                          = t('exercise_setup.clone.button')
+                        = link_to '#', class: 'btn btn-warning btn-xs disabled' do
+                          %i.fa.fa-pencil
+                          = t('dictionary.edit')
+                      - if !exercise_setup.is_in_use?
+                        = link_to exercise_setup, class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+                          %i.fa.fa-times
+                          = t('dictionary.delete')
+                      - else
+                        = link_to '#', class: 'btn btn-danger btn-xs disabled' do
+                          %i.fa.fa-times
+                          = t('dictionary.delete')
 .row
   .col-sm-12
     .box.box-primary#exercise_measurements
@@ -173,7 +174,7 @@
         %h2.box-title= t('exercise.show.exercise_measurements')
       .box-body
         .row
-        - if current_user.is_admin? || @exercise.user==current_user
+        - if can? :add_measurement, @exercise
           = link_to new_exercise_measurement_path(:exercise_code=>@exercise.code, :exercise_version=>@exercise.version), class: 'btn btn-success' do
             %i.fa.fa-plus
             = t('exercise.show.add_measurement')
@@ -202,23 +203,24 @@
                         %tr
                           %td{:colspan=>2}= dash_or_value(exercise_measurement, :description)
                   .box-footer
-                    %div
-                    - if !exercise_measurement.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
-                      = link_to edit_exercise_measurement_path(exercise_measurement), class: 'btn btn-warning btn-xs' do
-                        %i.fa.fa-pencil
-                        = t('dictionary.edit')
-                    - else
-                      = link_to clone_exercise_measurement_path(exercise_measurement), class: 'btn btn-primary btn-xs' do
-                        %i.fa.fa-copy
-                        = t('exercise_measurement.clone.button')
-                      = link_to '#', class: 'btn btn-warning btn-xs disabled' do
-                        %i.fa.fa-pencil
-                        = t('dictionary.edit')
-                    - if !exercise_measurement.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
-                      = link_to exercise_measurement, class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => 'Are you sure?' } do
-                        %i.fa.fa-times
-                        = t('dictionary.delete')
-                    - else
-                      = link_to '#', class: 'btn btn-danger btn-xs disabled' do
-                        %i.fa.fa-times
-                        = t('dictionary.delete')
+                    %divs
+                    - if can? :edit, exercise_measurement
+                      - if !exercise_measurement.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
+                        = link_to edit_exercise_measurement_path(exercise_measurement), class: 'btn btn-warning btn-xs' do
+                          %i.fa.fa-pencil
+                          = t('dictionary.edit')
+                      - else
+                        = link_to clone_exercise_measurement_path(exercise_measurement), class: 'btn btn-primary btn-xs' do
+                          %i.fa.fa-copy
+                          = t('exercise_measurement.clone.button')
+                        = link_to '#', class: 'btn btn-warning btn-xs disabled' do
+                          %i.fa.fa-pencil
+                          = t('dictionary.edit')
+                      - if !exercise_measurement.is_in_use?
+                        = link_to exercise_measurement, class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+                          %i.fa.fa-times
+                          = t('dictionary.delete')
+                      - else
+                        = link_to '#', class: 'btn btn-danger btn-xs disabled' do
+                          %i.fa.fa-times
+                          = t('dictionary.delete')

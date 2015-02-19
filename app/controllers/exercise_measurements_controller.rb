@@ -3,13 +3,15 @@ class ExerciseMeasurementsController < ApplicationController
 
   # GET /exercise_measurements/new
   def new
-    #TODO authorize exercise.user==current_user || admin
     @exercise = Exercise.friendly.find([params[:exercise_code],params[:exercise_version]])
     @exercise_measurement = ExerciseMeasurement.new
+
+    authorize! :add_measurement, @exercise
   end
 
   # GET /exercise_measurements/1/edit
   def edit
+    authorize! :edit, @exercise_measurement
   end
 
   # POST /exercise_measurements
@@ -17,6 +19,8 @@ class ExerciseMeasurementsController < ApplicationController
   def create
     @exercise = Exercise.friendly.find([exercise_measurement_params[:exercise_code],exercise_measurement_params[:exercise_version]])
     @exercise_measurement = ExerciseMeasurement.new(exercise_measurement_params)
+
+    authorize! :add_measurement, @exercise
 
     respond_to do |format|
       if @exercise_measurement.save
@@ -30,6 +34,7 @@ class ExerciseMeasurementsController < ApplicationController
   # PATCH/PUT /exercise_measurements/1
   # PATCH/PUT /exercise_measurements/1.json
   def update
+    authorize! :edit, @exercise_measurement
     respond_to do |format|
       if @exercise_measurement.update(exercise_measurement_params)
         format.html { redirect_to @exercise, notice: 'Exercise measurement was successfully updated.' }
@@ -44,6 +49,7 @@ class ExerciseMeasurementsController < ApplicationController
   # DELETE /exercise_measurements/1
   # DELETE /exercise_measurements/1.json
   def destroy
+    authorize! :destroy, @exercise_measurement
     @exercise_measurement.destroy
     respond_to do |format|
       format.html { redirect_to @exercise, notice: t('exercise_measurement.delete.successfully_removed') }
@@ -53,6 +59,7 @@ class ExerciseMeasurementsController < ApplicationController
 
   def clone
     @existing_measurement = ExerciseMeasurement.friendly.find(params[:exercise_measurement_code])
+    authorize! :clone, @existing_measurement
     @exercise_measurement = ExerciseMeasurement.new(@existing_measurement.attributes)
     @exercise_measurement.code=nil
     render action: 'clone'

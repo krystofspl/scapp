@@ -57,3 +57,10 @@ Feature: View exercise bundles
     Then I should see "bundle1" in table "exercise_bundles"
     When I click "bundle1" for "bundle1" in table row
     Then I should see "heading" containing "bundle1 - Exercise bundle detail"
+
+  Scenario: As a coach I want to view a global exercise bundle detail
+    Given I am logged in as User test2
+    When I visit page "/exercise_bundles/"
+    Then I should see "bundle2" in table "exercise_bundles"
+    When I click "bundle2" for "bundle2" in table row
+    Then I should see "heading" containing "bundle2 - Exercise bundle detail"

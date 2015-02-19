@@ -4,7 +4,8 @@
 - breadcrumb :exercises, @exercise
 
 #action-box
-  = link_to new_exercise_path, class: 'btn btn-info' do
-    = t('exercise.new_exercise')
+  - if can? :create, Exercise
+    = link_to new_exercise_path, class: 'btn btn-info' do
+      = t('exercise.new_exercise')
 
 = render :template => 'exercises/_list_table.html.haml', :locale => @locale
