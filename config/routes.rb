@@ -7,23 +7,6 @@ Scapp::Application.routes.draw do
   get '/help/:locale/:theme' => 'helps#show', as: 'show_help'
   get '/help_modal/:locale/:theme' => 'helps#show_ajax', as: 'show_modal_help'
 
-  resources :exercise_setups, except: [:show,:edit,:update,:destroy]
-  get '/exercise_setups/:exercise_setup_code' => 'exercise_setups#show', :as => :exercise_setup
-  get '/exercise_setups/:exercise_setup_code/edit' => 'exercise_setups#edit', :as => :edit_exercise_setup
-  patch '/exercise_setups/:exercise_setup_code' => 'exercise_setups#update', :as => :update_exercise_setup
-  delete '/exercise_setups/:exercise_setup_code' => 'exercise_setups#destroy', :as => :destroy_exercise_setup
-  get '/exercise_setups/:exercise_setup_code/clone' => 'exercise_setups#clone', :as => :clone_exercise_setup
-  post '/exercise_setups/:exercise_setup_code/clone' => 'exercise_setups#create', :as => :save_clone_exercise_setup
-
-
-  resources :exercise_measurements, except: [:show,:edit,:update,:destroy]
-  get '/exercise_measurements/:exercise_measurement_code' => 'exercise_measurements#show', :as => :exercise_measurement
-  get '/exercise_measurements/:exercise_measurement_code/edit' => 'exercise_measurements#edit', :as => :edit_exercise_measurement
-  patch '/exercise_measurements/:exercise_measurement_code' => 'exercise_measurements#update', :as => :update_exercise_measurement
-  delete '/exercise_measurements/:exercise_measurement_code' => 'exercise_measurements#destroy', :as => :destroy_exercise_measurement
-  get '/exercise_measurements/:exercise_measurement_code/clone' => 'exercise_measurements#clone', :as => :clone_exercise_measurement
-  post '/exercise_measurements/:exercise_measurement_code/clone' => 'exercise_measurements#create', :as => :save_clone_exercise_measurement
-
   resources :exercises, except: [:show,:edit,:update,:destroy]
   get '/exercises/:exercise_code(/v/:exercise_version)' => 'exercises#show', :as => :exercise
   get '/exercises/:exercise_code(/v/:exercise_version)/edit(:exercise_step_id)' => 'exercises#edit', :as => :edit_exercise
@@ -39,9 +22,6 @@ Scapp::Application.routes.draw do
   post '/exercises/:exercise_code(/v/:exercise_version)/steps/update_row_order' => 'exercise_steps#update_row_order', :as =>:update_row_order_exercise_steps
   delete '/exercises/:exercise_code(/v/:exercise_version)/steps' => 'exercise_steps#destroy', :as =>:destroy_exercise_step
 
-
-  resources :units
-
   resources :exercise_bundles do
     member do
       get 'edit_exercises' => 'exercise_bundles#edit_exercises'
@@ -49,6 +29,22 @@ Scapp::Application.routes.draw do
       get 'edit_exercises/remove/:exercise_code(/v/:exercise_version)' => 'exercise_bundles#remove_exercise', :as => :bundle_remove_exercise
     end
   end
+
+  resources :exercise_setups do
+    member do
+      get 'clone' => 'exercise_setups#clone', :as => :clone
+      post 'clone' => 'exercise_setups#create', :as => :save_clone
+    end
+  end
+
+  resources :exercise_measurements do
+    member do
+      get 'clone' => 'exercise_measurements#clone', :as => :clone
+      post 'clone' => 'exercise_measurements#create', :as => :save_clone
+    end
+  end
+
+  resources :units
 
   resources :payments
 

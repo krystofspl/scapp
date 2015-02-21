@@ -70,7 +70,7 @@ class ExerciseSetupsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_exercise_setup
-      @exercise_setup = ExerciseSetup.friendly.find(params[:exercise_setup_code])
+      @exercise_setup = ExerciseSetup.friendly.find(params[:id])
       @exercise = @exercise_setup.exercise
     end
 

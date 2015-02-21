@@ -68,7 +68,7 @@ class ExerciseMeasurementsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_exercise_measurement
-      @exercise_measurement = ExerciseMeasurement.friendly.find(params[:exercise_measurement_code])
+      @exercise_measurement = ExerciseMeasurement.friendly.find(params[:id])
       @exercise = @exercise_measurement.exercise
     end
 
