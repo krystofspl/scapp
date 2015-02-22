@@ -47,6 +47,18 @@ en:
       warning_new_version_btn: "Make a new version"
     clone:
       clone: "Clone exercise"
+    filter:
+      name_asc: "Name ▲"
+      name_desc: "Name ▼"
+      reset: "Reset filters"
+      sort_by: "Sort by"
+      search: "Search"
+      created_at_asc: "Created at ▲"
+      created_at_desc: "Created at ▼"
+      realizations_asc: "Number of realizations ▲"
+      realizations_desc: "Number of realizations ▼"
+      filters: "Filters"
+      submit: "Filter"
   breadcrumbs:
     exercise_detail: "Exercise detail"
     exercises: "Exercises"

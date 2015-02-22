@@ -1,0 +1,4 @@
+<%
+js_s = escape_javascript(render partial: 'exercise_setups/list_table', locals: {:exercise_setups => @exercise_setups})
+%>
+$("#exercise_setups_data").html("<%= js_s %>");

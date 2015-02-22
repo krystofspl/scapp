@@ -1,0 +1,5 @@
+<%
+js_m = escape_javascript(render partial: 'exercise_measurements/list_table', locals: {:exercise_measurements => @exercise_measurements})
+%>
+$("#exercise_measurements_data").html("<%= js_m %>");
+

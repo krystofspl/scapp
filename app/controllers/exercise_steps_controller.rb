@@ -61,7 +61,7 @@ class ExerciseStepsController < ApplicationController
 
   # Update row order int for given exercise step, called via Ajax
   def update_row_order
-    authorize! :edit, @exercise_step
+    authorize! :edit_steps, @exercise_step.exercise
     @exercise_step.update_attribute :row_order_position, exercise_step_params[:row_order_position]
 
     render nothing: true

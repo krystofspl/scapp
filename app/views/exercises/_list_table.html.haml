@@ -1,5 +1,10 @@
 .row
   .col-sm-12
+    .well.well-sm
+      = render_filterrific_spinner
+      = page_entries_info @exercises
+.row
+  .col-sm-12
     .box.box-primary
       .box-header
         %h2.box-title= t('exercise.index.exercises_list')
@@ -14,8 +19,7 @@
               %th= t('exercise.show.exercise_type')
               %th
               %th
-
-            - @exercises.each do |exercise|
+            - exercises.each do |exercise|
               %tr
                 %td= link_to exercise.name+((exercise.version>1)?" ("+exercise.version.to_s+")":""), exercise_path(exercise)
                 %td
@@ -34,5 +38,6 @@
                       = link_to t('dictionary.delete'), exercise_path(exercise), class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' }
                     - else
                       = link_to t('dictionary.delete'), "#", class: 'disabled btn btn-danger'
-
+      .box-footer
+        = paginate @exercises
   = render 'exercises/warning'

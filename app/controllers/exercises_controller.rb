@@ -6,16 +6,44 @@ class ExercisesController < ApplicationController
   # GET /exercises.json
   def index
     authorize! :index, Exercise
-    exercises_private = Exercise.where(:user=>current_user)
-    exercises_global = Exercise.where(:accessibility => 'global')
-    @exercises = exercises_private + exercises_global
-    @exercises = @exercises.uniq
+    @filterrific = initialize_filterrific(
+        Exercise,
+        params[:filterrific],
+        :select_options => {
+            sorted_by: Exercise.options_for_sorted_by
+        }
+    ) or return
+    @exercises = @filterrific.find.where('user_id=? OR accessibility=?', current_user.id, :global).uniq.page(params[:page]).per(10)
   end
 
   # GET /exercises/1
   # GET /exercises/1.json
   def show
     authorize! :show, @exercise
+    filterrific_setups
+    filterrific_measurements
+  end
+
+  def filterrific_setups
+    @filterrific_setups = initialize_filterrific(
+        ExerciseSetup,
+        params[:filterrific_setups],
+        :select_options => {
+            sorted_by: ExerciseSetup.options_for_sorted_by
+        }
+    ) or return
+    @exercise_setups = @filterrific_setups.find.where('exercise_code=? AND exercise_version=?', @exercise.code, @exercise.version).page(params[:page_s]).per(3)
+  end
+
+  def filterrific_measurements
+    @filterrific_measurements = initialize_filterrific(
+        ExerciseMeasurement,
+        params[:filterrific_measurements],
+        :select_options => {
+            sorted_by: ExerciseMeasurement.options_for_sorted_by
+        }
+    ) or return
+    @exercise_measurements = @filterrific_measurements.find.where('exercise_code=? AND exercise_version=?', @exercise.code, @exercise.version).page(params[:page_m]).per(3)
   end
 
   # GET /exercises/new

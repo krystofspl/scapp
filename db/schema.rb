@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141123162338) do
+ActiveRecord::Schema.define(version: 20150222094010) do
 
   create_table "attendances", force: true do |t|
     t.string   "participation",                  limit: 9
@@ -96,15 +96,16 @@ ActiveRecord::Schema.define(version: 20141123162338) do
   add_index "exercise_images", ["exercise_step_id"], name: "index_exercise_images_on_exercise_step_id", using: :btree
 
   create_table "exercise_measurements", primary_key: "code", force: true do |t|
-    t.string   "name",                                                       null: false
+    t.string   "name",                                                                              null: false
     t.string   "description"
-    t.string   "type",                       default: "ExerciseMeasurement", null: false
-    t.string   "optimal_value",    limit: 6, default: "higher",              null: false
+    t.string   "type",                                              default: "ExerciseMeasurement", null: false
+    t.string   "optimal_value",                           limit: 6, default: "higher",              null: false
     t.string   "unit_code"
     t.string   "exercise_code"
     t.integer  "exercise_version"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "exercise_realization_measurements_count",           default: 0
   end
 
   add_index "exercise_measurements", ["code"], name: "index_exercise_measurements_on_code", using: :btree
@@ -132,16 +133,17 @@ ActiveRecord::Schema.define(version: 20141123162338) do
   add_index "exercise_setup_types", ["code"], name: "index_exercise_setup_types_on_code", using: :btree
 
   create_table "exercise_setups", primary_key: "code", force: true do |t|
-    t.string   "name",                                               null: false
+    t.string   "name",                                                        null: false
     t.string   "description"
-    t.string   "type",                     default: "ExerciseSetup", null: false
-    t.boolean  "required",                 default: false,           null: false
+    t.string   "type",                              default: "ExerciseSetup", null: false
+    t.boolean  "required",                          default: false,           null: false
     t.string   "exercise_setup_type_code"
     t.string   "unit_code"
     t.string   "exercise_code"
     t.integer  "exercise_version"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "exercise_realization_setups_count", default: 0
   end
 
   add_index "exercise_setups", ["code"], name: "index_exercise_setups_on_code", using: :btree
@@ -157,19 +159,20 @@ ActiveRecord::Schema.define(version: 20141123162338) do
   end
 
   create_table "exercises", id: false, force: true do |t|
-    t.string   "code",                                             null: false
-    t.integer  "version",                     default: 1,          null: false
-    t.string   "name",                                             null: false
+    t.string   "code",                                                       null: false
+    t.integer  "version",                               default: 1,          null: false
+    t.string   "name",                                                       null: false
     t.string   "author_name"
     t.string   "description"
     t.string   "sources"
     t.string   "youtube_url"
-    t.string   "type",                        default: "Exercise", null: false
-    t.string   "accessibility",     limit: 7, default: "private",  null: false
+    t.string   "type",                                  default: "Exercise", null: false
+    t.string   "accessibility",               limit: 7, default: "private",  null: false
     t.integer  "user_id"
     t.integer  "exercise_image_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "exercise_realizations_count",           default: 0
   end
 
   add_index "exercises", ["code"], name: "index_exercises_on_code", using: :btree

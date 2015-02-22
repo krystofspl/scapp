@@ -113,60 +113,30 @@
       .box-header
         %h2.box-title= t('exercise.show.exercise_setups')
       .box-body
-        .row
         - if can? :add_setup, @exercise
           = link_to new_exercise_setup_path(:exercise_code=>@exercise.code, :exercise_version=>@exercise.version), class: 'btn btn-success' do
             %i.fa.fa-plus
             = t('exercise.show.add_setup')
           .row.margin
-        - for i in 1..(@exercise.exercise_setups.count/3)+1
-          .row
-            - @exercise.exercise_setups.page(i).per(3).each do |exercise_setup|
-              .col-sm-4
-                .box
-                  .box-header
-                    %strong.box-title= exercise_setup.name
-                  .box-body
-                    %table.table
-                      %tbody
-                        %tr
-                          %th= t('exercise_setup.show.used')
-                          %td
-                            -#TODO link_to (exercise_setup.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
-                            !=ApplicationHelper.labelize_realizations exercise_setup.exercise_realization_setups.count
-                        %tr
-                          %th= t('exercise.show.exercise_setups_required')
-                          %td!= ApplicationHelper.labelize_boolean exercise_setup.is_required?
-                        %tr
-                          %th= t('exercise.show.exercise_setups_unit_name')
-                          %td= exercise_setup.unit.name+" ["+exercise_setup.unit.abbreviation+"]"
-                        %tr
-                          %th= t('exercise.show.exercise_setup_type')
-                          %td= dash_or_object(exercise_setup.exercise_setup_type)
-                        %tr
-                          %td{:colspan=>2}= dash_or_value(exercise_setup,:description)
-                  .box-footer
-                    %div
-                    - if can? :edit, exercise_setup
-                      - if !exercise_setup.is_in_use?
-                        = link_to edit_exercise_setup_path(exercise_setup), class: 'btn btn-warning btn-xs' do
-                          %i.fa.fa-pencil
-                          = t('dictionary.edit')
-                      - else
-                        = link_to clone_exercise_setup_path(exercise_setup), class: 'btn btn-primary btn-xs' do
-                          %i.fa.fa-copy
-                          = t('exercise_setup.clone.button')
-                        = link_to '#', class: 'btn btn-warning btn-xs disabled' do
-                          %i.fa.fa-pencil
-                          = t('dictionary.edit')
-                      - if !exercise_setup.is_in_use?
-                        = link_to exercise_setup, class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => 'Are you sure?' } do
-                          %i.fa.fa-times
-                          = t('dictionary.delete')
-                      - else
-                        = link_to '#', class: 'btn btn-danger btn-xs disabled' do
-                          %i.fa.fa-times
-                          = t('dictionary.delete')
+        .row
+          .col-sm-12
+            .well.well-sm
+              .row
+                .col-sm-12
+                  %h4=t('exercise.filter.filters')
+              .row
+                = form_for_filterrific @filterrific_setups, :as => :filterrific_setups do |f|
+                  .col-sm-3
+                    = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
+                  .col-sm-3
+                    = f.select(:sorted_by, @filterrific_setups.select_options[:sorted_by],{},{ :class => 'form-control'})
+                  .col-sm-6
+                    = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
+        .row
+          .col-sm-12
+            #exercise_setups_data
+              = render partial: 'exercise_setups/list_table', locals: {:exercise_setups => @exercise_setups}
+
 .row
   .col-sm-12
     .box.box-primary#exercise_measurements
@@ -179,48 +149,21 @@
             %i.fa.fa-plus
             = t('exercise.show.add_measurement')
           .row.margin
-        - for i in 1..(@exercise.exercise_setups.count/3)+1
-          .row
-            - @exercise.exercise_measurements.page(i).per(3).each do |exercise_measurement|
-              .col-sm-4
-                .box
-                  .box-header
-                    %strong.box-title= exercise_measurement.name
-                  .box-body
-                    %table.table
-                      %tbody
-                        %tr
-                          %th= t('exercise_measurement.show.used')
-                          %td
-                            -#TODO link_to (exercise_measurement.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
-                            !=ApplicationHelper.labelize_realizations exercise_measurement.exercise_realization_measurements.count
-                        %tr
-                          %th= t('exercise.show.exercise_measurement_optimal_value')
-                          %td!= ApplicationHelper.labelize_optimal_value exercise_measurement.optimal_value
-                        %tr
-                          %th= t('exercise.show.exercise_setups_unit_name')
-                          %td= exercise_measurement.unit.name+" ["+exercise_measurement.unit.abbreviation+"]"
-                        %tr
-                          %td{:colspan=>2}= dash_or_value(exercise_measurement, :description)
-                  .box-footer
-                    %divs
-                    - if can? :edit, exercise_measurement
-                      - if !exercise_measurement.is_in_use? && (current_user.is_admin? || @exercise.user==current_user)
-                        = link_to edit_exercise_measurement_path(exercise_measurement), class: 'btn btn-warning btn-xs' do
-                          %i.fa.fa-pencil
-                          = t('dictionary.edit')
-                      - else
-                        = link_to clone_exercise_measurement_path(exercise_measurement), class: 'btn btn-primary btn-xs' do
-                          %i.fa.fa-copy
-                          = t('exercise_measurement.clone.button')
-                        = link_to '#', class: 'btn btn-warning btn-xs disabled' do
-                          %i.fa.fa-pencil
-                          = t('dictionary.edit')
-                      - if !exercise_measurement.is_in_use?
-                        = link_to exercise_measurement, class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => 'Are you sure?' } do
-                          %i.fa.fa-times
-                          = t('dictionary.delete')
-                      - else
-                        = link_to '#', class: 'btn btn-danger btn-xs disabled' do
-                          %i.fa.fa-times
-                          = t('dictionary.delete')
+        .row
+          .col-sm-12
+            .well.well-sm
+              .row
+                .col-sm-12
+                  %h4=t('exercise.filter.filters')
+              .row
+                = form_for_filterrific @filterrific_measurements, :as => :filterrific_measurements do |f|
+                  .col-sm-3
+                    = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
+                  .col-sm-3
+                    = f.select(:sorted_by, @filterrific_measurements.select_options[:sorted_by],{},{ :class => 'form-control'})
+                  .col-sm-6
+                    = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
+        .row
+          .col-sm-12
+            #exercise_measurements_data
+              = render partial: 'exercise_measurements/list_table', locals: {:exercise_measurements => @exercise_measurements}

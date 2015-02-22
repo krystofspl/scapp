@@ -1,0 +1,51 @@
+.row
+  .col-sm-12
+    .well.well-sm
+      = render_filterrific_spinner
+      = page_entries_info @exercise_measurements
+
+.row
+  - exercise_measurements.each do |exercise_measurement|
+    .col-sm-4
+      .box
+        .box-header
+          %strong.box-title= exercise_measurement.name
+        .box-body
+          %table.table
+            %tbody
+              %tr
+                %th= t('exercise_measurement.show.used')
+                %td
+                  -#TODO link_to (exercise_measurement.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
+                  !=ApplicationHelper.labelize_realizations exercise_measurement.exercise_realization_measurements.count
+              %tr
+                %th= t('exercise.show.exercise_measurement_optimal_value')
+                %td!= ApplicationHelper.labelize_optimal_value exercise_measurement.optimal_value
+              %tr
+                %th= t('exercise.show.exercise_setups_unit_name')
+                %td= exercise_measurement.unit.name+" ["+exercise_measurement.unit.abbreviation+"]"
+              %tr
+                %td{:colspan=>2}= dash_or_value(exercise_measurement, :description)
+        .box-footer
+          %divs
+          - if can? :edit, exercise_measurement
+            - if !exercise_measurement.is_in_use?
+              = link_to edit_exercise_measurement_path(exercise_measurement), class: 'btn btn-warning btn-xs' do
+                %i.fa.fa-pencil
+                = t('dictionary.edit')
+            - else
+              = link_to clone_exercise_measurement_path(exercise_measurement), class: 'btn btn-primary btn-xs' do
+                %i.fa.fa-copy
+                = t('exercise_measurement.clone.button')
+              = link_to '#', class: 'btn btn-warning btn-xs disabled' do
+                %i.fa.fa-pencil
+                = t('dictionary.edit')
+            - if !exercise_measurement.is_in_use?
+              = link_to exercise_measurement, class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+                %i.fa.fa-times
+                = t('dictionary.delete')
+            - else
+              = link_to '#', class: 'btn btn-danger btn-xs disabled' do
+                %i.fa.fa-times
+                = t('dictionary.delete')
+= paginate @exercise_measurements, :param_name => :page_m

@@ -56,6 +56,8 @@ gem 'settingslogic'
 gem 'composite_primary_keys', '~>7.0.0'
 # ranked model for dynamic table rows ordering (used in excsteps)
 gem 'ranked-model'
+# filtering results
+gem 'filterrific'
 
 group :development do
   gem 'better_errors'
