@@ -8,4 +8,4 @@
   = link_to new_exercise_path, class: 'btn btn-info' do
     = t('exercise.new_exercise')
 
-= render :template => 'exercises/_list_table.html.haml', :locale => @locale
+= render :template => 'exercises/_list_table.html.haml', :locale => @locale, locals: {:exercises => @exercises}

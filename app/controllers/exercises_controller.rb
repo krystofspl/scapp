@@ -145,7 +145,7 @@ class ExercisesController < ApplicationController
   def user_exercises
     authorize! :user_exercises, Exercise
     @user = User.friendly.find(params[:user_id])
-    @exercises = Exercise.where(:user => @user)
+    @exercises = Exercise.where(:user => @user).page(params[:page]).per(5)
     render 'users/exercises/list'
   end
 
