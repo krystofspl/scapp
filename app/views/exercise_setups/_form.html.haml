@@ -6,12 +6,13 @@
     = f.input :description, input_html: {maxlength:255}
     - if @exercise.exercise_realizations.empty?
       = f.input :required
+    - unit_label = raw "#{t('unit.label')} (#{link_to t('unit.edit.manage'), units_path})"
     - if params[:action]=='edit'
       = f.association :exercise_setup_type
-      = f.association :unit, :selected=>@exercise_setup.unit.name.to_s
+      = f.association :unit, :selected=>@exercise_setup.unit.name.to_s, label: unit_label
     - else
       = f.association :exercise_setup_type, :label_method => :name, :value_method => :code
-      = f.association :unit, :label_method => :name, :value_method => :code, include_blank:false
+      = f.association :unit, :label_method => :name, :value_method => :code, include_blank:false, label: unit_label
 
     - if ['new'].include? params[:action]
       - exercise_code = params[:exercise_code]

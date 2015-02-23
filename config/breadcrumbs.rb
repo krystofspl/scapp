@@ -511,6 +511,23 @@ crumb :clone_exercise_measurement do |exercise|
   parent :exercise_detail, exercise
 end
 
+# ============
+# Unit
+# ============
+crumb :units do
+  link t('breadcrumbs.units'), units_path
+end
+
+crumb :new_unit do
+  link t('breadcrumbs.new_unit')
+  parent :units
+end
+
+crumb :edit_unit do
+  link t('breadcrumbs.edit_unit')
+  parent :units
+end
+
 # If you want to split your breadcrumbs configuration over multiple files, you
 # can create a folder named `config/breadcrumbs` and put your configuration
 # files there. All *.rb files (e.g. `frontend.rb` or `products.rb`) in that

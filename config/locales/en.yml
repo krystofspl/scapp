@@ -78,6 +78,10 @@ en:
     new_exercise_measurement: "New exercise measurement"
     edit_exercise_measurement: "Edit exercise measurement"
     clone_exercise_measurement: "Clone exercise measurement"
+    new_unit: "New unit"
+    units: "Units"
+    edit_unit: "Edit unit"
+    unit_detail: "Unit detail"
   private: "Private"
   global: "Global"
   exercise_measurement:
@@ -132,6 +136,7 @@ en:
     warning: "Warning"
     close: "Close"
     continue: "Continue"
+    abbreviation: "Abbreviation"
   exercise_bundle:
     edit:
       edit_bundle: "Edit exercise bundle"
@@ -163,3 +168,18 @@ en:
       user_exercise_bundles: "Exercise bundles created by"
   exercise_bundle_show:
     contains_no_exercises: "This bundle contains no exercises yet."
+  unit:
+    new:
+      submit: "Add unit"
+    type:
+      integer: "Integer"
+      decimal: "Decimal"
+      time: "Time"
+    new_unit: "New unit"
+    edit_unit: "Edit unit"
+    edit:
+      manage: "Manage units"
+    label: "Unit"
+  units:
+    index:
+      heading: "Units list"

@@ -4,12 +4,13 @@
   .form-inputs
     = f.input :name, input_html: {maxlength:255}
     = f.input :description, input_html: {maxlength:255}
+    - unit_label = raw "#{t('unit.label')} (#{link_to t('unit.edit.manage'), units_path})"
     - if params[:action]=='edit'
       = f.input :optimal_value, :collection => [['higher', t('exercise_measurement.optimal_value_higher')],['lower', t('exercise_measurement.optimal_value_lower')]], :selected=>@exercise_measurement.optimal_value.to_s, :value_method => :first, :label_method => :last
-      = f.association :unit, :label_method => :name, :value_method => :code, include_blank:false, :selected=>@exercise_measurement.unit.name.to_s
+      = f.association :unit, :label_method => :name, :value_method => :code, include_blank:false, :selected=>@exercise_measurement.unit.name.to_s, label: unit_label
     - else
       = f.input :optimal_value, :collection => [['higher', t('exercise_measurement.optimal_value_higher')],['lower', t('exercise_measurement.optimal_value_lower')]], :value_method => :first, :label_method => :last, include_blank:false
-      = f.association :unit, :label_method => :name, :value_method => :code, include_blank:false
+      = f.association :unit, :label_method => :name, :value_method => :code, include_blank:false, label: unit_label
 
     - if ['new'].include? params[:action]
       - exercise_code = params[:exercise_code]

@@ -11,7 +11,7 @@ class Unit < ActiveRecord::Base
 
   # =================== VALIDATIONS ==================================
   validates :code, presence: true, uniqueness: true
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
   validates :abbreviation, presence: true, uniqueness: true
   validates :unit_type, inclusion: { in: UNIT_TYPES }
 
@@ -33,5 +33,11 @@ class Unit < ActiveRecord::Base
   # =================== METHODS ======================================
   def to_s
     read_attribute(:name).to_s
+  end
+
+  # Destroy validation
+  def destroy
+    raise 'Unit is in use and therefore can\'t be deleted' if (!exercise_setups.empty? || !exercise_measurements.empty?)
+    super
   end
 end

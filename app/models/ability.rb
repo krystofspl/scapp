@@ -660,6 +660,19 @@ class Ability
     can [:edit, :destroy, :clone], ExerciseMeasurement do |exercise_measurement|
       exercise_measurement.exercise.user == @user
     end
+
+    # =============
+    # x) Units
+    # =============
+
+    # Show unit
+    can [:index, :show], Unit
+
+    # Create unit
+    can :create, Unit
+
+    # Edit, Destroy unit
+    can [:edit, :destroy], Unit
   end
 
   # ===========================================

@@ -1,0 +1,37 @@
+- content_for :heading do
+  = t('units.index.heading')
+- breadcrumb :units
+
+#action-box
+  - if can? :create, Unit
+    = link_to new_unit_path, class: 'btn btn-info' do
+      = t('unit.new_unit')
+
+.row
+  .col-sm-12
+    .box.box-primary
+      .box-header
+        %h2.box-title= t('units.index.heading')
+      .box-body
+        %table.table#units
+          %thead
+            %tr
+              %th= t('dictionary.name')
+              %th= t('dictionary.abbreviation')
+              %th= t('dictionary.type')
+              %th
+          %tbody
+            - @units.each do |unit|
+              %tr
+                %td= unit.name
+                %td= unit.abbreviation
+                %td
+                  %span.label.label-info= unit.unit_type
+                -if can? :edit, Unit
+                  %td
+                    - if unit.exercise_measurements.count == 0 && unit.exercise_setups.count == 0
+                      = link_to t('dictionary.edit'), edit_unit_path(unit), class: 'btn btn-warning'
+                      = link_to t('dictionary.delete'), unit, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn btn-danger'
+                    - else
+                      = link_to t('dictionary.edit'), '#', class: 'btn btn-warning disabled'
+                      = link_to t('dictionary.delete'), '#', class: 'btn btn-danger disabled'

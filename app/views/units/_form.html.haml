@@ -1,0 +1,10 @@
+= simple_form_for(@unit) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name, input_html: {maxlength:255}
+    = f.input :abbreviation, input_html: {maxlength:255}
+    = f.input :unit_type, :collection => [[:integer, t('unit.type.integer')],[:decimal, t('unit.type.decimal')],[:time, t('unit.type.time')]], :selected => @unit.unit_type.to_s, :value_method => :first, :label_method => :last
+
+  .form-actions
+    = f.button :submit, t('unit.new.submit'), class: 'btn btn-primary'
