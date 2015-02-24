@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150222094010) do
+ActiveRecord::Schema.define(version: 20150224091334) do
 
   create_table "attendances", force: true do |t|
     t.string   "participation",                  limit: 9
@@ -70,12 +70,13 @@ ActiveRecord::Schema.define(version: 20150222094010) do
   add_index "exercise_bundle_exercises", ["exercise_code"], name: "index_exercise_bundle_exercises_on_exercise_code", using: :btree
 
   create_table "exercise_bundles", primary_key: "code", force: true do |t|
-    t.string   "name",                                        null: false
-    t.string   "description"
-    t.string   "accessibility", limit: 7, default: "private", null: false
+    t.string   "name",                                           null: false
+    t.text     "description"
+    t.string   "accessibility",    limit: 7, default: "private", null: false
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "description_long"
   end
 
   add_index "exercise_bundles", ["code"], name: "index_exercise_bundles_on_code", using: :btree
@@ -97,7 +98,7 @@ ActiveRecord::Schema.define(version: 20150222094010) do
 
   create_table "exercise_measurements", primary_key: "code", force: true do |t|
     t.string   "name",                                                                              null: false
-    t.string   "description"
+    t.text     "description"
     t.string   "type",                                              default: "ExerciseMeasurement", null: false
     t.string   "optimal_value",                           limit: 6, default: "higher",              null: false
     t.string   "unit_code"
@@ -134,7 +135,7 @@ ActiveRecord::Schema.define(version: 20150222094010) do
 
   create_table "exercise_setups", primary_key: "code", force: true do |t|
     t.string   "name",                                                        null: false
-    t.string   "description"
+    t.text     "description"
     t.string   "type",                              default: "ExerciseSetup", null: false
     t.boolean  "required",                          default: false,           null: false
     t.string   "exercise_setup_type_code"
@@ -150,7 +151,7 @@ ActiveRecord::Schema.define(version: 20150222094010) do
 
   create_table "exercise_steps", force: true do |t|
     t.string   "name",                         null: false
-    t.string   "description"
+    t.text     "description"
     t.integer  "row_order",        default: 1, null: false
     t.string   "exercise_code"
     t.integer  "exercise_version"
@@ -163,7 +164,7 @@ ActiveRecord::Schema.define(version: 20150222094010) do
     t.integer  "version",                               default: 1,          null: false
     t.string   "name",                                                       null: false
     t.string   "author_name"
-    t.string   "description"
+    t.text     "description"
     t.string   "sources"
     t.string   "youtube_url"
     t.string   "type",                                  default: "Exercise", null: false
@@ -173,6 +174,7 @@ ActiveRecord::Schema.define(version: 20150222094010) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "exercise_realizations_count",           default: 0
+    t.text     "description_long"
   end
 
   add_index "exercises", ["code"], name: "index_exercises_on_code", using: :btree

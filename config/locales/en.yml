@@ -32,6 +32,8 @@ en:
       exercise_realizations: "Exercise realizations"
       add_steps: "Add exercise steps"
       exercise_steps_empty: "This exercise has no exercise steps."
+      show_detailed_description: "Show detailed description"
+      detailed_description: "Detailed description"
     index:
       exercises_list: "Exercises list"
     new_exercise: "New exercise"
@@ -137,6 +139,7 @@ en:
     close: "Close"
     continue: "Continue"
     abbreviation: "Abbreviation"
+    detailed_description: "Detailed description"
   exercise_bundle:
     edit:
       edit_bundle: "Edit exercise bundle"

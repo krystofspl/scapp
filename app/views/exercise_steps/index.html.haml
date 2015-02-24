@@ -25,7 +25,7 @@
                         %td
                           %span.fa.fa-arrows
                           %strong= exercise_step.name
-                        %td= exercise_step.description
+                        %td= sanitize exercise_step.description
                         %td
                           = link_to edit_exercise_step_path(:exercise_step_id => exercise_step.id), class: 'btn btn-warning btn-xs' do
                             %i.fa.fa-remove
@@ -37,7 +37,8 @@
                       %tr.item
                         %td
                           %strong= exercise_step.name
-                        %td= exercise_step.description
+                        %td
+                          = sanitize exercise_step.description
 
 - if can? :add_steps, @exercise or can? :edit_steps, @exercise
   .row

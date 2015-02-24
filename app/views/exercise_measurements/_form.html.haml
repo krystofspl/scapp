@@ -3,7 +3,7 @@
 
   .form-inputs
     = f.input :name, input_html: {maxlength:255}
-    = f.input :description, input_html: {maxlength:255}
+    = f.input :description, as: :text, input_html: { class: 'textarea', rows: 10 }, :label => t('dictionary.description')
     - unit_label = raw "#{t('unit.label')} (#{link_to t('unit.edit.manage'), units_path})"
     - if params[:action]=='edit'
       = f.input :optimal_value, :collection => [['higher', t('exercise_measurement.optimal_value_higher')],['lower', t('exercise_measurement.optimal_value_lower')]], :selected=>@exercise_measurement.optimal_value.to_s, :value_method => :first, :label_method => :last

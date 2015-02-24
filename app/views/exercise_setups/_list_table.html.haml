@@ -28,7 +28,7 @@
                 %th= t('exercise.show.exercise_setup_type')
                 %td= dash_or_object(exercise_setup.exercise_setup_type)
               %tr
-                %td{:colspan=>2}= dash_or_value(exercise_setup,:description)
+                %td{:colspan=>2}= sanitize exercise_setup.description
         .box-footer
           %div
           - if can? :edit, exercise_setup

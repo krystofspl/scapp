@@ -3,7 +3,7 @@
 
   .form-inputs
     = f.input :name, input_html: {maxlength:255}
-    = f.input :description, input_html: {maxlength:255}
+    = f.input :description, as: :text, input_html: { class: 'textarea', rows: 10 }, :label => t('dictionary.description')
     = f.hidden_field :exercise_code, :value => params[:exercise_code]
     = f.hidden_field :exercise_version, :value => (params[:exercise_version].nil? ? 1 : params[:exercise_version])
     - if ['edit','update'].include? params[:action]

@@ -32,12 +32,26 @@
   .col-sm-8
     .box.box-primary
       .box-header
-        %h2.box-title= t('dictionary.description')
+        %h2.box-title
+          = t('dictionary.description')
       .box-body
         - unless @exercise_bundle.description.blank?
-          = @exercise_bundle.description
+          = sanitize @exercise_bundle.description
         - else
           = t('exercise_bundle.show.description_is_empty')
+        - unless @exercise_bundle.description_long.blank?
+          %br
+          =raw "(#{link_to t('exercise.show.show_detailed_description'), '#', {'data-toggle' => 'modal', 'data-target' => '#long_description'}})"
+          #long_description.modal.fade
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  %button.close{'aria-hiden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} &times;
+                  %h3.modal-title= t('exercise.show.detailed_description')
+                .modal-body
+                  .modal-body-content
+                    = sanitize @exercise_bundle.description_long
+                .modal-footer
 
 .row
   .col-sm-12

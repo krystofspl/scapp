@@ -116,6 +116,6 @@ class ExerciseBundlesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def exercise_bundle_params
-      params.require(:exercise_bundle).permit(:code, :name, :description, :accessibility, :user_id)
+      params.require(:exercise_bundle).permit(:code, :name, :description, :description_long, :accessibility, :user_id)
     end
 end

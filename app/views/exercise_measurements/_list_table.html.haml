@@ -25,7 +25,7 @@
                 %th= t('exercise.show.exercise_setups_unit_name')
                 %td= exercise_measurement.unit.name+" ["+exercise_measurement.unit.abbreviation+"]"
               %tr
-                %td{:colspan=>2}= dash_or_value(exercise_measurement, :description)
+                %td{:colspan=>2}= sanitize exercise_measurement.description
         .box-footer
           %divs
           - if can? :edit, exercise_measurement
