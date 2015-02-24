@@ -21,6 +21,7 @@ class ExerciseStepsController < ApplicationController
   def create
     authorize! :add_steps, @exercise
     @exercise_step = ExerciseStep.new(exercise_step_params)
+    @exercise_step.update_attribute :row_order_position, 10000
     respond_to do |format|
       if @exercise_step.save
         format.html { redirect_to :exercise_steps, notice: t('exercise_steps.successfully_added') }
