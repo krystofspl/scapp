@@ -1,5 +1,5 @@
 class ExerciseStepsController < ApplicationController
-  before_action :set_exercise_step, only: [:edit,:destroy, :update_row_order]
+  before_action :set_exercise_step, only: [:edit,:destroy]
   before_action :set_exercise_steps, only: [:index, :edit, :create, :update]
   before_action :set_exercise, only: [:index, :edit, :create, :update]
 
@@ -61,6 +61,7 @@ class ExerciseStepsController < ApplicationController
 
   # Update row order int for given exercise step, called via Ajax
   def update_row_order
+    @exercise_step = ExerciseStep.find(params[:exercise_step][:exercise_step_id])
     authorize! :edit_steps, @exercise_step.exercise
     @exercise_step.update_attribute :row_order_position, exercise_step_params[:row_order_position]
 
