@@ -15,6 +15,7 @@
               %th= t('dictionary.name')
               %th= t('exercise.show.used')
               %th= t('dictionary.description')
+              %th= t('dictionary.image')
               %th= t('dictionary.accessibility')
               %th= t('exercise.show.exercise_type')
               %th
@@ -26,6 +27,9 @@
                   -#TODO link_to (exercise_measurement.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
                   !=ApplicationHelper.labelize_realizations exercise.exercise_realizations.count
                 %td= sanitize exercise.description
+                %td
+                  - unless exercise.exercise_image.blank?
+                    = image_tag exercise.exercise_image.image.small
                 %td
                   %span.label.label-info= t(exercise.accessibility)
                 %td= exercise.type

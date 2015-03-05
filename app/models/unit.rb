@@ -12,7 +12,7 @@ class Unit < ActiveRecord::Base
   # =================== VALIDATIONS ==================================
   validates :code, presence: true, uniqueness: true
   validates :name, presence: true, uniqueness: true
-  validates :abbreviation, presence: true, uniqueness: true
+  validates :abbreviation, uniqueness: true
   validates :unit_type, inclusion: { in: UNIT_TYPES }
 
   # =================== GETTERS / SETTERS ============================

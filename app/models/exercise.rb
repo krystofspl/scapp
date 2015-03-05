@@ -48,12 +48,13 @@ class Exercise < ActiveRecord::Base
 
   # =================== ASSOCIATIONS =================================
   belongs_to :user
-  #has_one :exercise_image
   has_many :exercise_bundle_exercises, :class_name => 'ExerciseBundleExercise', :foreign_key => [:exercise_code, :exercise_version]
   has_many :exercise_bundles, :through => :exercise_bundle_exercises
   has_many :exercise_steps, :foreign_key => [:exercise_code, :exercise_version], :dependent => :delete_all
   has_many :exercise_setups, :foreign_key => [:exercise_code, :exercise_version], :dependent => :delete_all
   has_many :exercise_measurements, :foreign_key => [:exercise_code, :exercise_version], :dependent => :delete_all
+  has_one :exercise_image, :foreign_key => [:exercise_code, :exercise_version], :dependent => :destroy
+  accepts_nested_attributes_for :exercise_image, allow_destroy: true
   # --- prototypes for v2
   has_many :exercise_realizations, :foreign_key => [:exercise_code, :exercise_version], :dependent => :restrict_with_error
 

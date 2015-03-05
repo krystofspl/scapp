@@ -15,86 +15,147 @@
       = link_to '#', class: 'disabled btn btn-danger' do
         %i.fa.fa-times
         = t('exercise.show.destroy_exercise')
-
 .row
   .col-sm-8
-    .box.box-primary
-      .box-header
-        %h2.box-title= t('exercise.show.detail')
-      .box-body
-        .row
-          .col-sm-7
-            %table.table
-              %tbody
-                - if @exercise.version > 1
-                  %tr
-                    %th= t('exercise.show.version')
-                    %td= @exercise.version
-                %tr
-                  %th= t('exercise.show.owner')
-                  %td= dash_or_object(@exercise.user).to_s
-                %tr
-                  %th= t('exercise.show.accessibility')
-                  %td
-                    %span.label.label-info= t(@exercise.accessibility)
-                - unless @exercise.sources.blank?
-                  %tr
-                    %th= t('exercise.show.sources')
-                    %td= dash_or_value(@exercise, :sources)
-                - unless @exercise.youtube_url.blank?
-                  %tr
-                    %th= t('exercise.show.youtube_url')
-                    %td= link_to t('exercise.show.youtube_url_click'), @exercise.youtube_url
-                - unless @exercise.author_name.blank?
-                  %tr
-                    %th= t('exercise.show.author_name')
-                    %td= dash_or_value(@exercise, :author_name)
-                %tr
-                  %th= t('exercise.show.in_bundles')
-                  - if @exercise.exercise_bundles.blank?
-                    %td
-                      = '-'
-                  - else
-                    %td
-                      - @exercise.exercise_bundles.each do |exercise_bundle|
-                        %span.label.label-success=link_to exercise_bundle.name, exercise_bundle
-          .col-sm-5
-            %table.table#exercise_description
-              %thead
-                %tr
-                  %td
-                    %strong= t('dictionary.description')
+    .row
+      .col-sm-12
+        .box.box-primary
+          .box-header
+            %h2.box-title= t('exercise.show.detail')
+          .box-body
+            .row
+              .col-sm-7
+                %table.table
+                  %tbody
+                    - if @exercise.version > 1
+                      %tr
+                        %th= t('exercise.show.version')
+                        %td= @exercise.version
+                    %tr
+                      %th= t('exercise.show.owner')
+                      %td= dash_or_object(@exercise.user).to_s
+                    %tr
+                      %th= t('exercise.show.accessibility')
+                      %td
+                        %span.label.label-info= t(@exercise.accessibility)
+                    - unless @exercise.sources.blank?
+                      %tr
+                        %th= t('exercise.show.sources')
+                        %td= dash_or_value(@exercise, :sources)
+                    - unless @exercise.youtube_url.blank?
+                      %tr
+                        %th= t('exercise.show.youtube_url')
+                        %td= link_to t('exercise.show.youtube_url_click'), @exercise.youtube_url
+                    - unless @exercise.author_name.blank?
+                      %tr
+                        %th= t('exercise.show.author_name')
+                        %td= dash_or_value(@exercise, :author_name)
+                    %tr
+                      %th= t('exercise.show.in_bundles')
+                      - if @exercise.exercise_bundles.blank?
+                        %td
+                          = '-'
+                      - else
+                        %td
+                          - @exercise.exercise_bundles.each do |exercise_bundle|
+                            %span.label.label-success=link_to exercise_bundle.name, exercise_bundle
+              .col-sm-5
+                %table#exercise_images.table
+                  %thead
+                  %tbody
+                    %tr
+                      %td
+                        - unless @exercise.exercise_image.blank?
+                          = image_tag @exercise.exercise_image.image.medium
+            .row
+              .col-sm-12
+                %table.table#exercise_description
+                  %thead
+                    %tr
+                      %td
+                        %strong= t('dictionary.description')
+                        - unless @exercise.description_long.blank?
+                          =raw "(#{link_to t('exercise.show.show_detailed_description'), '#', {'data-toggle' => 'modal', 'data-target' => '#long_description', 'data-id' => @exercise.relative_url}})"
+                  %tbody
+                    %tr
+                    - unless @exercise.description.blank?
+                      %td= sanitize @exercise.description
+                    - else
+                      %td= t('exercise.show.description_is_empty')
                     - unless @exercise.description_long.blank?
-                      =raw "(#{link_to t('exercise.show.show_detailed_description'), '#', {'data-toggle' => 'modal', 'data-target' => '#long_description', 'data-id' => @exercise.relative_url}})"
-              %tbody
-                %tr
-                - unless @exercise.description.blank?
-                  %td= sanitize @exercise.description
-                - else
-                  %td= t('exercise.show.description_is_empty')
-                - unless @exercise.description_long.blank?
-                  #long_description.modal.fade
-                    .modal-dialog
-                      .modal-content
-                        .modal-header
-                          %button.close{'aria-hiden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} &times;
-                          %h3.modal-title= t('exercise.show.detailed_description')
-                        .modal-body
-                          .modal-body-content
-                            = sanitize @exercise.description_long
-                        .modal-footer
-        .row
-          .col-sm-12
-            %table#exercise_images.table
-              %thead
-              %tbody
-                %tr
-                  %td
-                    %strong Obrázky
-                    %br
-                    Obrázky správně/špatně
-                    %br TODO
+                      #long_description.modal.fade
+                        .modal-dialog
+                          .modal-content
+                            .modal-header
+                              %button.close{'aria-hiden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} &times;
+                              %h3.modal-title= t('exercise.show.detailed_description')
+                            .modal-body
+                              .modal-body-content
+                                = sanitize @exercise.description_long
+                            .modal-footer
+    .row
+      .col-sm-12
+        .box.box-primary#exercise_setups
+          .box-header
+            %h2.box-title= t('exercise.show.exercise_setups')
+          .box-body
+            - if can? :add_setup, @exercise
+              = link_to new_exercise_setup_path(:exercise_code=>@exercise.code, :exercise_version=>@exercise.version), class: 'btn btn-success' do
+                %i.fa.fa-plus
+                = t('exercise.show.add_setup')
+              .row.margin
+            .row
+              .col-sm-12
+                .well.well-sm
+                  .row
+                    .col-sm-12
+                      %h4=t('exercise.filter.filters')
+                  .row
+                    = form_for_filterrific @filterrific_setups, :as => :filterrific_setups do |f|
+                      .col-sm-3
+                        = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
+                      .col-sm-3
+                        = f.select(:sorted_by, @filterrific_setups.select_options[:sorted_by],{},{ :class => 'form-control'})
+                      .col-sm-6
+                        = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
+            .row
+              .col-sm-12
+                #exercise_setups_data
+                  = render partial: 'exercise_setups/list_table', locals: {:exercise_setups => @exercise_setups}
+
+    .row
+      .col-sm-12
+        .box.box-primary#exercise_measurements
+          .box-header
+            %h2.box-title= t('exercise.show.exercise_measurements')
+          .box-body
+            .row
+            - if can? :add_measurement, @exercise
+              = link_to new_exercise_measurement_path(:exercise_code=>@exercise.code, :exercise_version=>@exercise.version), class: 'btn btn-success' do
+                %i.fa.fa-plus
+                = t('exercise.show.add_measurement')
+              .row.margin
+            .row
+              .col-sm-12
+                .well.well-sm
+                  .row
+                    .col-sm-12
+                      %h4=t('exercise.filter.filters')
+                  .row
+                    = form_for_filterrific @filterrific_measurements, :as => :filterrific_measurements do |f|
+                      .col-sm-3
+                        = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
+                      .col-sm-3
+                        = f.select(:sorted_by, @filterrific_measurements.select_options[:sorted_by],{},{ :class => 'form-control'})
+                      .col-sm-6
+                        = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
+            .row
+              .col-sm-12
+                #exercise_measurements_data
+                  = render partial: 'exercise_measurements/list_table', locals: {:exercise_measurements => @exercise_measurements}
+
   .col-sm-4
+    .col-sm-12
     .box.box-primary
       .box-header
         %h2.box-title= t('exercise_steps.index')
@@ -110,8 +171,21 @@
                 - unless @exercise.exercise_steps.blank?
                   - @exercise.exercise_steps.rank(:row_order).each_with_index do |es,i|
                     %tr
-                      %th= i+1
-                      %td= es.name
+                      %td
+                        %div{style:'display:block'}
+                          %div{style:'display:inline'}
+                            = i+1
+                          %div{style:'display:inline'}
+                            %strong= es.name
+                        %div{style:'display:block'}
+                          = sanitize es.description
+                        %div{style:'display:inline-block'}
+                          %ul
+                          - es.exercise_images.right.each do |img|
+                            %li{style: 'display:inline-block'}
+                              = image_tag img.image.small
+
+
                 - else
                   = t('exercise.show.exercise_steps_empty')
                   - if can? :add_steps, @exercise
@@ -120,63 +194,6 @@
                         = link_to exercise_steps_path(@exercise), class: 'btn btn-success btn-sm' do
                           %i.fa.fa-plus
                           = t('exercise.show.add_steps')
-.row
-  .col-sm-12
-    .box.box-primary#exercise_setups
-      .box-header
-        %h2.box-title= t('exercise.show.exercise_setups')
-      .box-body
-        - if can? :add_setup, @exercise
-          = link_to new_exercise_setup_path(:exercise_code=>@exercise.code, :exercise_version=>@exercise.version), class: 'btn btn-success' do
-            %i.fa.fa-plus
-            = t('exercise.show.add_setup')
-          .row.margin
-        .row
-          .col-sm-12
-            .well.well-sm
-              .row
-                .col-sm-12
-                  %h4=t('exercise.filter.filters')
-              .row
-                = form_for_filterrific @filterrific_setups, :as => :filterrific_setups do |f|
-                  .col-sm-3
-                    = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
-                  .col-sm-3
-                    = f.select(:sorted_by, @filterrific_setups.select_options[:sorted_by],{},{ :class => 'form-control'})
-                  .col-sm-6
-                    = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
-        .row
-          .col-sm-12
-            #exercise_setups_data
-              = render partial: 'exercise_setups/list_table', locals: {:exercise_setups => @exercise_setups}
 
-.row
-  .col-sm-12
-    .box.box-primary#exercise_measurements
-      .box-header
-        %h2.box-title= t('exercise.show.exercise_measurements')
-      .box-body
-        .row
-        - if can? :add_measurement, @exercise
-          = link_to new_exercise_measurement_path(:exercise_code=>@exercise.code, :exercise_version=>@exercise.version), class: 'btn btn-success' do
-            %i.fa.fa-plus
-            = t('exercise.show.add_measurement')
-          .row.margin
-        .row
-          .col-sm-12
-            .well.well-sm
-              .row
-                .col-sm-12
-                  %h4=t('exercise.filter.filters')
-              .row
-                = form_for_filterrific @filterrific_measurements, :as => :filterrific_measurements do |f|
-                  .col-sm-3
-                    = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
-                  .col-sm-3
-                    = f.select(:sorted_by, @filterrific_measurements.select_options[:sorted_by],{},{ :class => 'form-control'})
-                  .col-sm-6
-                    = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
-        .row
-          .col-sm-12
-            #exercise_measurements_data
-              = render partial: 'exercise_measurements/list_table', locals: {:exercise_measurements => @exercise_measurements}
+
+

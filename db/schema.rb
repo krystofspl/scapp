@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150224091334) do
+ActiveRecord::Schema.define(version: 20150225093621) do
 
   create_table "attendances", force: true do |t|
     t.string   "participation",                  limit: 9
@@ -84,7 +84,6 @@ ActiveRecord::Schema.define(version: 20150224091334) do
 
   create_table "exercise_images", force: true do |t|
     t.string   "name"
-    t.string   "path",                       null: false
     t.string   "description"
     t.string   "correctness",      limit: 5, null: false
     t.integer  "exercise_step_id"
@@ -92,6 +91,7 @@ ActiveRecord::Schema.define(version: 20150224091334) do
     t.integer  "exercise_version"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image"
   end
 
   add_index "exercise_images", ["exercise_step_id"], name: "index_exercise_images_on_exercise_step_id", using: :btree

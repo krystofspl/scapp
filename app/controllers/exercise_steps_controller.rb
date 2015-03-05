@@ -24,6 +24,7 @@ class ExerciseStepsController < ApplicationController
     @exercise_step.update_attribute :row_order_position, 10000
     respond_to do |format|
       if @exercise_step.save
+        upload_images
         format.html { redirect_to :exercise_steps, notice: t('exercise_steps.successfully_added') }
         format.json { render action: 'index', status: :created, location: @exercise_step }
       else
@@ -40,6 +41,7 @@ class ExerciseStepsController < ApplicationController
     @exercise_step = ExerciseStep.find(exercise_step_params[:exercise_step_id])
     respond_to do |format|
       if @exercise_step.update(exercise_step_params.except(:exercise_step_id))
+        upload_images
         format.html { redirect_to exercise_steps_url, notice: t('exercise_steps.successfully_updated') }
         format.json { head :no_content }
       else
@@ -87,5 +89,20 @@ class ExerciseStepsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def exercise_step_params
       params.require(:exercise_step).permit(:exercise_step_id, :name, :description, :row_order_position, :exercise_code, :exercise_version)
+    end
+
+    def upload_images
+      if params[:images_right]
+        params[:images_right].each { |image|
+          img = ExerciseImage.create(image: image, correctness: :right)
+          @exercise_step.exercise_images << img
+        }
+      end
+      if params[:images_wrong]
+        params[:images_wrong].each { |image|
+          img = ExerciseImage.create(image: image, correctness: :wrong)
+          @exercise_step.exercise_images << img
+        }
+      end
     end
 end

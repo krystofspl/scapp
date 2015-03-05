@@ -1,4 +1,4 @@
-= simple_form_for(@exercise) do |f|
+= simple_form_for @exercise, html: { multipart: true } do |f|
   = f.error_notification
 
   .form-inputs
@@ -12,7 +12,17 @@
     - if current_user.is_admin?
       = f.input :accessibility, :collection => [['private', t('private')],['global', t('global')]],
         :as => :radio_buttons, :value_method => :first, :label_method => :last, :checked => (@exercise.persisted? ? @exercise.accessibility : 'global')
-    #TODO TODO avatar image select
+    = f.label 'images[]', t('exercise_image.exercise_image')
+    .well.well-sm
+      = file_field_tag 'images[]', type: :file, multiple: false
+      - unless @exercise.exercise_image.blank?
+        %strong= t('exercise_image.edit.current_image')
+        %br
+        = image_tag @exercise.exercise_image.image.medium
+        %br
+        = link_to @exercise.exercise_image, :method => :delete, class: 'btn btn-danger', :data => { :confirm => 'Are you sure?' } do
+          %i.fa.fa-times
+          = t('exercise_image.destroy.destroy_image')
 
   .form-actions
     - if ["new","create"].include? params[:action]

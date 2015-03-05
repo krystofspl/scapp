@@ -140,6 +140,7 @@ en:
     continue: "Continue"
     abbreviation: "Abbreviation"
     detailed_description: "Detailed description"
+    image: "Image"
   exercise_bundle:
     edit:
       edit_bundle: "Edit exercise bundle"
@@ -186,3 +187,14 @@ en:
   units:
     index:
       heading: "Units list"
+  exercise_image:
+    exercise_image: "Exercise image"
+    edit:
+      current_image: "Current exercise image"
+      current_images: "Current images"
+      upload_images: "Upload images (multiple)"
+    destroy:
+      destroy_image: "Delete image"
+    exercise_step_images: "Exercise step images"
+    exercise_step_images_right: "Images - right"
+    exercise_step_images_wrong: "Images - wrong"

@@ -1,40 +1,9 @@
 class ExerciseImagesController < ApplicationController
-  before_action :set_exercise_image, only: [:show, :edit, :update, :destroy]
+  before_action :set_exercise_image, only: [:destroy]
 
-  # GET /exercise_images
-  # GET /exercise_images.json
-  def index
-    @exercise_images = ExerciseImage.all
-  end
-
-  # GET /exercise_images/1
-  # GET /exercise_images/1.json
-  def show
-  end
-
-  # GET /exercise_images/new
-  def new
-    @exercise_image = ExerciseImage.new
-  end
-
-  # GET /exercise_images/1/edit
-  def edit
-  end
-
-  # POST /exercise_images
-  # POST /exercise_images.json
   def create
     @exercise_image = ExerciseImage.new(exercise_image_params)
-
-    respond_to do |format|
-      if @exercise_image.save
-        format.html { redirect_to @exercise_image, notice: 'Exercise image was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @exercise_image }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @exercise_image.errors, status: :unprocessable_entity }
-      end
-    end
+    @exercise_image.save
   end
 
   # PATCH/PUT /exercise_images/1
@@ -55,10 +24,7 @@ class ExerciseImagesController < ApplicationController
   # DELETE /exercise_images/1.json
   def destroy
     @exercise_image.destroy
-    respond_to do |format|
-      format.html { redirect_to exercise_images_url }
-      format.json { head :no_content }
-    end
+    redirect_to :back
   end
 
   private
@@ -69,6 +35,6 @@ class ExerciseImagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def exercise_image_params
-      params.require(:exercise_image).permit(:name, :path, :description, :correctness, :exercise_phase_id, :exercise_id)
+      params.require(:exercise_image).permit(:description, :correctness, :exercise_step_id, :exercise_code, :exercise_version)
     end
 end

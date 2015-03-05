@@ -24,28 +24,6 @@ class ExercisesController < ApplicationController
     filterrific_measurements
   end
 
-  def filterrific_setups
-    @filterrific_setups = initialize_filterrific(
-        ExerciseSetup,
-        params[:filterrific_setups],
-        :select_options => {
-            sorted_by: ExerciseSetup.options_for_sorted_by
-        }
-    ) or return
-    @exercise_setups = @filterrific_setups.find.where('exercise_code=? AND exercise_version=?', @exercise.code, @exercise.version).page(params[:page_s]).per(3)
-  end
-
-  def filterrific_measurements
-    @filterrific_measurements = initialize_filterrific(
-        ExerciseMeasurement,
-        params[:filterrific_measurements],
-        :select_options => {
-            sorted_by: ExerciseMeasurement.options_for_sorted_by
-        }
-    ) or return
-    @exercise_measurements = @filterrific_measurements.find.where('exercise_code=? AND exercise_version=?', @exercise.code, @exercise.version).page(params[:page_m]).per(3)
-  end
-
   # GET /exercises/new
   def new
     authorize! :create, Exercise
@@ -61,6 +39,7 @@ class ExercisesController < ApplicationController
 
     respond_to do |format|
       if @exercise.save
+        upload_images
         format.html {
           #TODO zobrazit stranku s odkazy na úpravu detailů
           if params[:commit] == "Create exercise without adding details"
@@ -87,6 +66,7 @@ class ExercisesController < ApplicationController
     authorize! :edit, @exercise
     respond_to do |format|
       if @exercise.update(exercise_params)
+        upload_images
         format.html { redirect_to exercise_path(@exercise), notice: 'Exercise successfully updated.' }
         format.json { head :no_content }
       else
@@ -163,5 +143,37 @@ class ExercisesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def exercise_params
       params.require(:exercise).permit(:code, :version, :name, :author_name, :description, :description_long, :sources, :youtube_url, :accessibility, :type, :user_id, :exercise_image_id)
+    end
+
+    # Filterrific sub-filters
+    def filterrific_setups
+      @filterrific_setups = initialize_filterrific(
+          ExerciseSetup,
+          params[:filterrific_setups],
+          :select_options => {
+              sorted_by: ExerciseSetup.options_for_sorted_by
+          }
+      ) or return
+      @exercise_setups = @filterrific_setups.find.where('exercise_code=? AND exercise_version=?', @exercise.code, @exercise.version).page(params[:page_s]).per(3)
+    end
+
+    def filterrific_measurements
+      @filterrific_measurements = initialize_filterrific(
+          ExerciseMeasurement,
+          params[:filterrific_measurements],
+          :select_options => {
+              sorted_by: ExerciseMeasurement.options_for_sorted_by
+          }
+      ) or return
+      @exercise_measurements = @filterrific_measurements.find.where('exercise_code=? AND exercise_version=?', @exercise.code, @exercise.version).page(params[:page_m]).per(3)
+    end
+
+    def upload_images
+      if params[:images]
+        params[:images].each { |image|
+          img = ExerciseImage.create(image: image, correctness: :right)
+          @exercise.exercise_image = img
+        }
+      end
     end
 end

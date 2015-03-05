@@ -1,13 +1,43 @@
-= simple_form_for(@exercise_step, url: exercise_steps_path) do |f|
+= simple_form_for @exercise_step, url: exercise_steps_path, html: { multipart: true } do |f|
   = f.error_notification
 
   .form-inputs
-    = f.input :name, input_html: {maxlength:255}
-    = f.input :description, as: :text, input_html: { class: 'textarea', rows: 10 }, :label => t('dictionary.description')
-    = f.hidden_field :exercise_code, :value => params[:exercise_code]
-    = f.hidden_field :exercise_version, :value => (params[:exercise_version].nil? ? 1 : params[:exercise_version])
-    - if ['edit','update'].include? params[:action]
-      = f.hidden_field :exercise_step_id, :value => @exercise_step.id
+    .row
+      .col-sm-6
+        = f.input :name, input_html: {maxlength:255}
+        = f.input :description, as: :text, input_html: { class: 'textarea', rows: 10 }, :label => t('dictionary.description')
+        = f.hidden_field :exercise_code, :value => params[:exercise_code]
+        = f.hidden_field :exercise_version, :value => (params[:exercise_version].nil? ? 1 : params[:exercise_version])
+        - if ['edit','update'].include? params[:action]
+          = f.hidden_field :exercise_step_id, :value => @exercise_step.id
+      .col-sm-6
+        %strong= t('exercise_image.exercise_step_images_right')
+        .well.well-sm
+          = f.label 'images_right[]', t('exercise_image.edit.upload_images')
+          = file_field_tag 'images_right[]', type: :file, multiple: true
+          %strong= t('exercise_image.edit.current_images')
+          %ul
+          - @exercise_step.exercise_images.right.each do |img|
+            %li{style: 'display:inline-block'}
+              = link_to image_tag(img.image.small), img.image.url
+              %br
+              = link_to img, :method => :delete, class: 'btn btn-danger btn-xs', :data => { :confirm => 'Are you sure?' } do
+                %i.fa.fa-times
+                = t('exercise_image.destroy.destroy_image')
+      .col-sm-6
+        %strong= t('exercise_image.exercise_step_images_wrong')
+        .well.well-sm
+          = f.label 'images_wrong[]', t('exercise_image.edit.upload_images')
+          = file_field_tag 'images_wrong[]', type: :file, multiple: true
+          %strong= t('exercise_image.edit.current_images')
+          %ul
+          - @exercise_step.exercise_images.wrong.each do |img|
+            %li{style: 'display:inline-block'}
+              = link_to image_tag(img.image.small), img.image.url
+              %br
+              = link_to img, :method => :delete, class: 'btn btn-danger btn-xs', :data => { :confirm => 'Are you sure?' } do
+                %i.fa.fa-times
+                = t('exercise_image.destroy.destroy_image')
   .form-actions
     - if ['edit','update'].include? params[:action]
       = f.button :submit, t('exercise_steps.form_button_update_step'), class: "btn btn-primary"

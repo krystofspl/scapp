@@ -44,6 +44,8 @@ Scapp::Application.routes.draw do
     end
   end
 
+  resources :exercise_images, only: [:destroy]
+
   resources :units
 
   resources :payments

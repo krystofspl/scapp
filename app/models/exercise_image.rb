@@ -1,12 +1,17 @@
 class ExerciseImage < ActiveRecord::Base
+  #TODO muze byt rozsireno o name a desc v budoucnu, v migraci to uz je
   CORRECTNESS = [:right, :wrong]
+  mount_uploader :image, ExerciseImageUploader
+
+  # =================== SCOPES =======================================
+  scope :right, -> { where(correctness: :right) }
+  scope :wrong, -> { where(correctness: :wrong) }
 
   # =================== ASSOCIATIONS =================================
   belongs_to :exercise_step
   belongs_to :exercise,  :foreign_key => [:exercise_code, :exercise_version]
 
   # =================== VALIDATIONS ==================================
-  validates :path, presence: true
   validates :correctness, inclusion: { in: CORRECTNESS }
 
   # =================== GETTERS / SETTERS ============================
@@ -23,5 +28,11 @@ class ExerciseImage < ActiveRecord::Base
   #   @option :wrong
   def correctness=(correctness)
     write_attribute(:correctness, correctness.to_s)
+  end
+
+  # Remove avatars first, then the entity
+  def destroy
+    self.remove_image!
+    super
   end
 end
