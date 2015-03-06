@@ -8,6 +8,7 @@ class TrainingLessonRealization < ActiveRecord::Base
   has_many :present_coaches, dependent: :destroy
   has_many :attendances, dependent: :destroy
   has_many :variable_field_measurements, dependent: :nullify
+  has_many :plans
 
   # =================== VALIDATIONS ==================================
   validates :status, presence: true, inclusion: { in: STATUS }

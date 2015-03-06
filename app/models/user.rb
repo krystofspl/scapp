@@ -25,6 +25,12 @@ class User < ActiveRecord::Base
   has_many :user_relations
   has_and_belongs_to_many :user_groups
   belongs_to :locale
+  has_many :exercises, :foreign_key => [:exercise_code, :exercise_version]
+  has_many :exercise_realizations_created, :class_name => 'ExerciseRealization', :inverse_of => :user_created
+  has_many :exercise_realizations_measured, :class_name => 'ExerciseRealization', :inverse_of => :user_measured
+  has_many :plans_created, :class_name => 'Plan', :inverse_of => :user_created
+  has_many :plans_partook, :class_name => 'Plan', :inverse_of => :user_partook
+  has_many :favorite_plans
 
   # =================== VALIDATIONS ==================================
   validates :locale_id, presence: true

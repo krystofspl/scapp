@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150225093621) do
+ActiveRecord::Schema.define(version: 20150306201736) do
 
   create_table "attendances", force: true do |t|
     t.string   "participation",                  limit: 9
@@ -116,13 +116,33 @@ ActiveRecord::Schema.define(version: 20150225093621) do
   end
 
   create_table "exercise_realization_setups", force: true do |t|
-    t.string "exercise_setup_code"
+    t.string   "exercise_setup_code"
+    t.integer  "exercise_realization_id"
+    t.float    "numeric_value",           limit: 24
+    t.string   "string_value"
+    t.text     "note"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
+  add_index "exercise_realization_setups", ["exercise_realization_id"], name: "index_exercise_realization_setups_on_exercise_realization_id", using: :btree
+
   create_table "exercise_realizations", force: true do |t|
-    t.string  "exercise_code"
-    t.integer "exercise_version"
+    t.string   "exercise_code"
+    t.integer  "exercise_version"
+    t.integer  "order",                           null: false
+    t.integer  "time_duration",                   null: false
+    t.integer  "rest_after"
+    t.text     "note"
+    t.boolean  "completed",        default: true, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_created"
+    t.integer  "user_measured"
+    t.integer  "plan_id",                         null: false
   end
+
+  add_index "exercise_realizations", ["plan_id"], name: "index_exercise_realizations_on_plan_id", using: :btree
 
   create_table "exercise_setup_types", primary_key: "code", force: true do |t|
     t.string   "name",        null: false
@@ -180,6 +200,18 @@ ActiveRecord::Schema.define(version: 20150225093621) do
   add_index "exercises", ["code"], name: "index_exercises_on_code", using: :btree
   add_index "exercises", ["user_id"], name: "index_exercises_on_user_id", using: :btree
 
+  create_table "favorite_plans", force: true do |t|
+    t.integer  "plan_id"
+    t.integer  "user_id"
+    t.string   "name",       null: false
+    t.text     "note"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "favorite_plans", ["plan_id"], name: "index_favorite_plans_on_plan_id", using: :btree
+  add_index "favorite_plans", ["user_id"], name: "index_favorite_plans_on_user_id", using: :btree
+
   create_table "friendly_id_slugs", force: true do |t|
     t.string   "slug",                      null: false
     t.integer  "sluggable_id",              null: false
@@ -220,6 +252,17 @@ ActiveRecord::Schema.define(version: 20150225093621) do
 
   add_index "payments", ["currency_id"], name: "index_payments_on_currency_id", using: :btree
   add_index "payments", ["received_by_id"], name: "index_payments_on_received_by_id", using: :btree
+
+  create_table "plans", force: true do |t|
+    t.integer  "training_lesson_realization_id"
+    t.boolean  "is_scheduled"
+    t.integer  "user_created"
+    t.integer  "user_partook"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "plans", ["training_lesson_realization_id"], name: "index_plans_on_training_lesson_realization_id", using: :btree
 
   create_table "present_coaches", force: true do |t|
     t.float    "salary_without_tax",             limit: 24
