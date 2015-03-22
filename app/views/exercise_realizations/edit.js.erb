@@ -1,0 +1,3 @@
+$("#realization-settings").html("<%= escape_javascript(render(:partial => "exercise_realizations/form.html.haml", :locals => {:exercise_realization => @exercise_realization})) %>");
+// Make settings tab active
+$("#settings ul li:first a").tab("show");

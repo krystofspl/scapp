@@ -1,0 +1,58 @@
+= simple_form_for(:exercise_realization, :url => {controller: 'exercise_realizations', action: 'update'}, remote: true, format: :json, method: :put) do |f|
+  .form-errors
+  = f.error_notification
+  .form-inputs
+    .form-group
+      .row
+        .col-sm-12
+          %strong=t('exercise_realizations.form.time_duration')
+      .row
+        .col-sm-4
+          = f.input :duration_partial_hours, :as => :integer, label: t('exercise_realizations.form.hours'), input_html: {min: '0', max: '59'}
+        .col-sm-4
+          = f.input :duration_partial_minutes, :as => :integer, label: t('exercise_realizations.form.minutes'), input_html: {min: '0', max: '59'}
+        .col-sm-4
+          = f.input :duration_partial_seconds, :as => :integer, label: t('exercise_realizations.form.seconds'), input_html: {min: '0', max: '59'}
+    .form-group
+      .row
+        .col-sm-12
+          %strong=t('exercise_realizations.form.rest_after')
+      .row
+        .col-sm-4
+          = f.input :rest_partial_minutes, :as => :integer, label: t('exercise_realizations.form.minutes'), input_html: {min: '0', max: '59'}
+        .col-sm-4
+          = f.input :rest_partial_seconds, :as => :integer, label: t('exercise_realizations.form.seconds'), input_html: {min: '0', max: '59'}
+    = f.input :note, as: :text, input_html: { class: 'textarea', rows: 5 }
+  .form-actions
+    = link_to t('dictionary.cancel'), '#', class: 'btn btn-default btn-cancel'
+    = f.button :submit, t('exercise_realizations.form.save_realization'), class: 'btn btn-primary'
+
+:javascript
+  $('abbr[title=required]').hide(); // temporary fix - required is shown everywhere by error
+  $(".btn-cancel").click(function(){
+    switchExercisesSettingsPanesVisibility();
+  });
+  $('form')
+    .bind('ajax:complete', function (evt, xhr, status) {
+    })
+    .bind('ajax:success', function (evt,xhr,status){
+      refreshRealizationsInPlan(getPlanIdForRealization(#{@exercise_realization.id}));
+      switchExercisesSettingsPanesVisibility();
+    })
+    .bind("ajax:error", function (evt, xhr, status, error) {
+      var $form = $(this), errors, errorText;
+      try {
+        errors = $.parseJSON(xhr.responseText);
+      } catch (err) {
+        // If the responseText is not valid JSON (like if a 500 exception was thrown), populate errors with a generic error message.
+        errors = {message: "#{t('exercise_realizations.form.please_reload_try_again')}"};
+      }
+      // Build an unordered list from the list of errors
+      errorText = "#{t('dictionary.following_errors_occured')}<ul>";
+      for (error in errors) {
+        errorText += "<li>" + errors[error] + "</li> ";
+      }
+      errorText += "</ul>";
+      // Insert error list into form
+      $form.find('div.form-errors').html(errorText);
+    });

@@ -19,7 +19,7 @@ Feature: Show exercise setups
     And Following units exist in the system
       | name      | unit_type | description   | abbreviation |
       | kilogramy | decimal   | váha v kg     | kg           |
-      | stupne C  | decimal   | stupne celsia | °C           |
+      | stupne-C  | decimal   | stupne celsia | °C           |
     And Following exercise setups exist in the system
       | name    | description | required | unit | exercise |
       | vaha    | asd         | true     | kilogramy   | exc1     |

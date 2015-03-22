@@ -31,7 +31,7 @@
       %tbody
         %tr
           %th= t('regular_trainings.show.public')
-          %td!= ApplicationHelper.labelize_boolean(@regular_training.public)
+          %td!= ApplicationHelper.labelize_boolean(@regular_training.public_available)
         %tr
           %th= t('regular_trainings.show.owner')
           %td

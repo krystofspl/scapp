@@ -1,0 +1,33 @@
+- time_duration_height =  realization.time_duration/60*20
+- rest_after_height = realization.rest_after/60*20
+
+.box.box-body.realization-duration{style: 'min-height:'+time_duration_height.to_s+'px;'}
+  %span= link_to realization.exercise, realization.exercise
+  -# unless realization.exercise.exercise_image.blank?
+    = image_tag realization.exercise.exercise_image.image.medium
+  %br
+  %span.fa.fa-clock-o
+  %strong
+    = " "+Time.at(realization.from).utc.strftime((realization.from.to_i%60==0)?"%H:%M":"%H:%M:%S")
+    = "-"
+    = Time.at(realization.until).utc.strftime((realization.until.to_i%60==0)?"%H:%M":"%H:%M:%S")
+  %br
+  = distance_of_time_in_words(realization.time_duration)
+  .btns-block
+    = link_to t('dictionary.edit'), edit_training_lesson_realization_exercise_realization_path(:id => realization.id), :remote => true, class: 'btn btn-xs btn-warning btn-edit'
+    = link_to t('dictionary.delete'), training_lesson_realization_exercise_realization_path(:id => realization.id), class: 'btn btn-xs btn-danger btn-destroy', :method => :delete, :remote => true, :data => { :confirm => 'Are you sure?' }
+
+- unless realization.rest_after.blank? || realization.rest_after==0
+  .box.box-body.realization-rest{style: 'min-height:'+rest_after_height.to_s+'px;'}
+    = t('exercise_realizations.dictionary.rest_after')+' ('+distance_of_time_in_words(realization.rest_after)+')'
+    %br
+    %span.fa.fa-clock-o
+    %strong
+      = " "+Time.at(realization.until).utc.strftime((realization.until.to_i%60==0)?"%H:%M":"%H:%M:%S")
+      = "-"
+      = Time.at(realization.until_with_rest_time).utc.strftime((realization.until_with_rest_time.to_i%60==0)?"%H:%M":"%H:%M:%S")
+
+:javascript
+  $(".realization-duration .btn-edit").unbind().click(function(){
+    showSettingsPane();
+  });

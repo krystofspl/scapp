@@ -4,7 +4,7 @@ class Exercise < ActiveRecord::Base
   self.primary_keys = [:code, :version]
   extend FriendlyId
   friendly_id :name, :use => :slugged, :slug_column => :code
-  filterrific :default_filter_params => {sorted_by: 'realizations_desc' },
+  filterrific :default_filter_params => {sorted_by: 'created_at_desc' },
       :available_filters => [:sorted_by,:search_query]
 
   # =================== SCOPES =======================================
@@ -40,10 +40,16 @@ class Exercise < ActiveRecord::Base
         order("LOWER(exercises.name) #{ direction }")
       when /^realizations_/
         # Number of realizations of the exercise
-        order("exercise_realizations_count #{ direction }")
+        select("exercises.*, count(exercise_realizations.id) as realizations_count")
+            .joins("LEFT OUTER JOIN exercise_realizations ON exercises.code=exercise_realizations.exercise_code AND exercises.version=exercise_realizations.exercise_version")
+            .where("exercise_realizations.id IS NULL OR exercise_realizations.id IS NOT NULL")
+            .order("realizations_count #{direction}")
       else
         raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
     end
+  }
+  scope :accessible, lambda { |user|
+    where('accessibility=? OR user_id=?',:global,user)
   }
 
   # =================== ASSOCIATIONS =================================
@@ -91,6 +97,12 @@ class Exercise < ActiveRecord::Base
   def relative_url
     read_attribute(:code) + ((read_attribute(:version).to_i>1) ? ("/v/"+read_attribute(:version).to_s) : "")
   end
+
+  # Override to_S and return name with version string
+  def to_s
+    read_attribute(:name) + ((read_attribute(:version).to_i>1) ? (" (v"+read_attribute(:version).to_s+")") : "")
+  end
+
 
   # Return exercises/exercise_code(/version/) string
   def url

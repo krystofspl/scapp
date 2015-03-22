@@ -7,12 +7,19 @@ Scapp::Application.routes.draw do
   get '/help/:locale/:theme' => 'helps#show', as: 'show_help'
   get '/help_modal/:locale/:theme' => 'helps#show_ajax', as: 'show_modal_help'
 
-  resources :exercises, except: [:show,:edit,:update,:destroy]
+  resources :exercises, except: [:show,:edit,:update,:destroy] do
+    collection do
+      get 'list_small' => 'exercises#list_small'
+    end
+  end
   get '/exercises/:exercise_code(/v/:exercise_version)' => 'exercises#show', :as => :exercise
   get '/exercises/:exercise_code(/v/:exercise_version)/edit(:exercise_step_id)' => 'exercises#edit', :as => :edit_exercise
   get '/exercises/:exercise_code(/v/:exercise_version)/clone' => 'exercises#clone', :as => :clone_exercise
   patch '/exercises/:exercise_code(/v/:exercise_version)' => 'exercises#update', :as => :update_exercise
   delete '/exercises/:exercise_code(/v/:exercise_version)' => 'exercises#destroy', :as => :destroy_exercise
+
+  get '/exercises/:exercise_code(/v/:exercise_version)/filterrific_setups' => 'exercises#filterrific_setups'
+  get '/exercises/:exercise_code(/v/:exercise_version)/filterrific_measurements' => 'exercises#filterrific_measurements'
 
   get '/exercises/:exercise_code(/v/:exercise_version)/steps' => 'exercise_steps#index', :as =>:exercise_steps
   post '/exercises/:exercise_code(/v/:exercise_version)/steps' => 'exercise_steps#create', :as =>:create_exercise_step
@@ -70,6 +77,14 @@ Scapp::Application.routes.draw do
 
       collection do
         get 'new_measurement_vf_select' => 'variable_fields#scheduled_lesson_add_measurements_vf_select'
+      end
+    end
+
+    resources :exercise_realizations do
+      collection do
+        post 'update_row_order' => 'exercise_realizations#update_row_order'
+        get 'show_short' => 'exercise_realizations#show_short'
+        get 'list_exercises' => 'exercise_realizations#list_exercises'
       end
     end
 

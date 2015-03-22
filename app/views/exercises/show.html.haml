@@ -111,7 +111,7 @@
                     .col-sm-12
                       %h4=t('exercise.filter.filters')
                   .row
-                    = form_for_filterrific @filterrific_setups, :as => :filterrific_setups do |f|
+                    = form_for_filterrific @filterrific_setups, url: {action: 'filterrific_setups'}, :as => :filterrific_setups do |f|
                       .col-sm-3
                         = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
                       .col-sm-3
@@ -142,7 +142,7 @@
                     .col-sm-12
                       %h4=t('exercise.filter.filters')
                   .row
-                    = form_for_filterrific @filterrific_measurements, :as => :filterrific_measurements do |f|
+                    = form_for_filterrific @filterrific_measurements, url: {action: 'filterrific_measurements'}, :as => :filterrific_measurements do |f|
                       .col-sm-3
                         = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
                       .col-sm-3

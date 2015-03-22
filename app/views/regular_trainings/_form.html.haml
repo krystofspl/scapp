@@ -4,7 +4,7 @@
   .form-inputs
     = f.input :name
     = f.input :description, as: :text, input_html: { class: 'textarea' }
-    = f.input :public
+    = f.input :public_available
     - if @regular_training.user_group
       = f.input :user_group, as: :select, collection: @groups_select, selected: @regular_training.user_group.id
     - else

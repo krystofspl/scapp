@@ -138,7 +138,7 @@ class Ability
     # =============
     # @7.2
     can [:show], RegularTraining do |t|
-      t.public? || t.user == @user || t.has_player?(@user) || t.has_coach?(@user) || t.has_watcher?(@user)
+      t.public_available? || t.user == @user || t.has_player?(@user) || t.has_coach?(@user) || t.has_watcher?(@user)
     end
 
     # =============
@@ -159,12 +159,12 @@ class Ability
     # =============
     # @11.1
     can [:list_training_lesson_realizations], RegularTraining do |rt|
-      rt.public?
+      rt.public_available?
     end
 
     # @11.2
     can [:show], TrainingLessonRealization do |tlr|
-      tlr.is_open? || (tlr.is_regular? && tlr.training_lesson.regular_training.public?) || tlr.has_watcher?(@user)
+      tlr.is_open? || (tlr.is_regular? && tlr.training_lesson.regular_training.public_available?) || tlr.has_watcher?(@user)
     end
 
     # =============
@@ -303,7 +303,7 @@ class Ability
         player = User.friendly.find(@request.params[:user_id])
       end
 
-      tlr.is_open? || (tlr.is_regular? && tlr.training_lesson.regular_training.public?) || (player.nil? && tlr.has_player?(@user)) || (!player.nil? && @user.in_relation?(player, :watcher))
+      tlr.is_open? || (tlr.is_regular? && tlr.training_lesson.regular_training.public_available?) || (player.nil? && tlr.has_player?(@user)) || (!player.nil? && @user.in_relation?(player, :watcher))
     end
 
     # =============

@@ -10,10 +10,10 @@ class RegularTrainingsController < ApplicationController
       @regular_trainings = RegularTraining.all.page(params[:page])
       @groups = UserGroup.all
     elsif is_coach?
-      @regular_trainings = RegularTraining.where('public = true OR user_id = ?', current_user.id).page(params[:page])
+      @regular_trainings = RegularTraining.where('public_available = true OR user_id = ?', current_user.id).page(params[:page])
       @groups = UserGroup.registered_visible(current_user)
     else
-      @regular_trainings = RegularTraining.where('public = true').page(params[:page])
+      @regular_trainings = RegularTraining.where('public_available = true').page(params[:page])
     end
   end
 
@@ -193,7 +193,7 @@ class RegularTrainingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def regular_training_params
-      params.require(:regular_training).permit(:name, :description, :public, :user_id)
+      params.require(:regular_training).permit(:name, :description, :public_available, :user_id)
     end
 
     # Get groups which current user can use for assignment

@@ -8,10 +8,12 @@ end
 
 And(/^Exercise "([^"]*)" is in use$/) do |arg|
   exercise = Exercise.where(:name => arg).first
-  exerciseRealization = ExerciseRealization.new
-  exerciseRealization.exercise = exercise
-  exerciseRealization.save
-  exercise.save
+  er = ExerciseRealization.new
+  er.exercise = exercise
+  er.plan = Plan.create()
+  er.user_created = User.first
+  er.order = 0
+  er.save!
 end
 
 And(/^Exercise "([^"]*)" is not in use$/) do |arg|

@@ -1,0 +1,28 @@
+.row
+  .col-sm-12
+    %ul
+    - exercises.each do |exercise|
+      %li.box.box-body.col-sm-6.draggable{:data => {'exercise-code' => exercise.code, 'exercise-version' => exercise.version}}
+        %strong= link_to exercise.to_s, exercise
+        %br
+        =sanitize truncate(exercise.description, :length => 100)
+.row
+  .col-sm-12.text-center#paginator
+
+:javascript
+  $(function() {
+    $('#paginator').html('#{escape_javascript(paginate(exercises, :remote => true, :params => {:controller => 'exercise_realizations', :action => 'list_exercises'}).to_s)}');
+    // DRAGGABLE
+    $(".draggable").draggable({
+        appendTo: '#owl-carousel',
+        forceHelperSize: true,
+        connectToSortable: $('.player-plan'),
+        opacity: 0.8,
+        cursorAt: { left: 5 , top: 5},
+        helper: 'clone',
+        start: function(e, ui){
+          $(ui.helper).removeClass('col-sm-6');
+          $(ui.helper).addClass('draggable-helper');
+        }
+    });
+  });

@@ -19,7 +19,7 @@
     - @regular_trainings.each do |regular_training|
       %tr
         %td= regular_training.name
-        %td!= ApplicationHelper.labelize_boolean regular_training.public
+        %td!= ApplicationHelper.labelize_boolean regular_training.public_available
         %td
           - if regular_training.user
             = link_to regular_training.user.name, regular_training.user

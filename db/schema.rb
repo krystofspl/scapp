@@ -131,14 +131,14 @@ ActiveRecord::Schema.define(version: 20150306201736) do
     t.string   "exercise_code"
     t.integer  "exercise_version"
     t.integer  "order",                           null: false
-    t.integer  "time_duration",                   null: false
-    t.integer  "rest_after"
+    t.integer  "time_duration",    default: 300,  null: false
+    t.integer  "rest_after",       default: 0
     t.text     "note"
     t.boolean  "completed",        default: true, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_created"
-    t.integer  "user_measured"
+    t.integer  "user_created_id"
+    t.integer  "user_measured_id"
     t.integer  "plan_id",                         null: false
   end
 
@@ -255,9 +255,9 @@ ActiveRecord::Schema.define(version: 20150306201736) do
 
   create_table "plans", force: true do |t|
     t.integer  "training_lesson_realization_id"
-    t.boolean  "is_scheduled"
-    t.integer  "user_created"
-    t.integer  "user_partook"
+    t.boolean  "is_scheduled",                   default: false, null: false
+    t.integer  "user_created_id"
+    t.integer  "user_partook_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -283,7 +283,7 @@ ActiveRecord::Schema.define(version: 20150306201736) do
   create_table "regular_trainings", force: true do |t|
     t.string   "name"
     t.text     "description"
-    t.boolean  "public"
+    t.boolean  "public_available"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"

@@ -36,6 +36,7 @@ en:
       detailed_description: "Detailed description"
     index:
       exercises_list: "Exercises list"
+      exercises: "Exercises"
     new_exercise: "New exercise"
     successfully_removed: "Exercise successfully removed."
     simple_exercise: "Simple exercise"
@@ -84,6 +85,7 @@ en:
     units: "Units"
     edit_unit: "Edit unit"
     unit_detail: "Unit detail"
+    regular_training_lesson_plans: "Plans specification"
   private: "Private"
   global: "Global"
   exercise_measurement:
@@ -141,6 +143,7 @@ en:
     abbreviation: "Abbreviation"
     detailed_description: "Detailed description"
     image: "Image"
+    submitting: "Submitting..."
   exercise_bundle:
     edit:
       edit_bundle: "Edit exercise bundle"
@@ -198,3 +201,26 @@ en:
     exercise_step_images: "Exercise step images"
     exercise_step_images_right: "Images - right"
     exercise_step_images_wrong: "Images - wrong"
+  exercise_realizations:
+    index:
+      exercise_realizations: "Exercise realizations"
+      heading: "Plans specification"
+    form:
+      please_reload_try_again: "Please reload the page and try again."
+      save_realization: "Save realization"
+      hours: "Hours"
+      minutes: "Minutes"
+      seconds: "Seconds"
+      time_duration: "Time duration"
+      rest_after: "Rest after exercise"
+      heading: "Edit realization"
+    error:
+      doesnt_fit_into_lesson: "Realization duration is too long for the lesson."
+    dictionary:
+      rest_after: "Rest"
+  favorite_plan:
+    index:
+      favorite_plans: "My favorite plans"
+  exercise_realization_setups:
+    form:
+      heading: "Edit setups"

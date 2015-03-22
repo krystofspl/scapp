@@ -1,0 +1,63 @@
+%p#notice= notice
+- content_for :heading do
+  = "#{t('exercise_realizations.index.heading')}"
+- breadcrumb :regular_training_lesson_realizations_plans, @training_lesson_realization
+
+#left-pane-container.col-sm-4
+  #left-pane
+    .box.box-primary
+      .box-body
+        #exercises
+          %ul.nav.nav-tabs
+            %li.active
+              = link_to t('exercise.index.exercises'), '#exercises-list', {:data => {'toggle' => 'tab'}}
+            %li
+              = link_to t('favorite_plan.index.favorite_plans'), '#favorite-plans', {:data => {'toggle' => 'tab'}}
+          .tab-content
+            #exercises-list.tab-pane.fade.in.active
+              = render partial: 'list_exercises', locals: {:exercises => @exercises}
+            #favorite-plans.tab-pane.fade
+              = "todo"
+        #settings
+          %ul.nav.nav-tabs
+            %li.active
+              = link_to t('exercise_realizations.form.heading'), '#realization-settings', {:data => {'toggle' => 'tab'}}
+            %li
+              = link_to t('exercise_realization_setups.form.heading'), '#realization-setups', {:data => {'toggle' => 'tab'}}
+          .tab-content
+            #realization-settings.tab-pane.fade.in.active
+            #realization-setups.tab-pane.fade
+              = "todo"
+      %br{:style=>'clear:both;'}
+
+.col-sm-8
+  #right-pane.box.box-primary
+    .box-body
+      .owl-carousel-before
+        .owl-carousel-prev.fa.fa-arrow-left.fa-2x
+      -#
+          - tlr_time = @training_lesson_realization.from
+          - tlr_until = @training_lesson_realization.until
+          - while tlr_time <= tlr_until
+            .dynamic-size-time
+              = tlr_time.strftime("%H:%M")
+            - tlr_time+=300
+      .owl-carousel#owl-carousel
+        - @training_lesson_realization.plans.each do |plan|
+          - player = plan.user_partook
+          %div.player-plan-wrapper.box
+            %h4.box-title
+              .title
+                -# avatar?
+                = player
+            .box-body
+              %ul.player-plan{:id => "player-#{player.id}", :data => {'plan-id' => plan.id}}
+                - plan.ordered_realizations.each do |realization|
+                  %li.realization{:data => {'realization-id' => realization.id}}
+                    = render partial: 'exercise_realizations/detail_short', locals: {:realization => realization}
+      .owl-carousel-after
+        .owl-carousel-next.fa.fa-arrow-right.fa-2x
+      %br{:style=>'clear:both;'}
+%br{:style=>'clear:both;'}
+
+= render partial: 'index.js.haml'

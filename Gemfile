@@ -58,6 +58,7 @@ gem 'composite_primary_keys', '~>7.0.0'
 gem 'ranked-model'
 # filtering results
 gem 'filterrific'
+gem 'owlcarousel-rails', github: 'acrogenesis/owlcarousel-rails', branch: 'OwlCarousel2'
 
 group :development do
   gem 'better_errors'

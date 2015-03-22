@@ -33,3 +33,6 @@
 //= require_tree .
 //= require turbolinks
 //= require filterrific/filterrific-jquery
+//= require owl.carousel
+// This is currently only used in exc.realizations testing
+//= require jquery.simulate.drag-sortable

@@ -3,7 +3,7 @@ And(/^Following regular trainings exist in the system$/) do |table|
   table.hashes.each do |f|
     owner = User.friendly.find(f[:owner])
     group = UserGroup.where(name: f[:for_group]).first
-    rt = RegularTraining.new({name: f[:name], description: f[:description], public: f[:is_public]})
+    rt = RegularTraining.new({name: f[:name], description: f[:description], public_available: f[:is_public]})
     rt.user = owner
     rt.user_group = group
     rt.save!
@@ -16,7 +16,7 @@ When(/^I fill all required fields for regular training$/) do |table|
   fill_in 'Name', with: f[:name]
   fill_in 'Description', with: f[:description]
   if f[:public] == 'true'
-    find(:css,'#regular_training_public').set(true)
+    find(:css,'#regular_training_public_available').set(true)
   end
   find(:xpath, "//select/option[contains(text(), '#{f[:for_group]}')]").select_option
 end

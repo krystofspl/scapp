@@ -1,0 +1,3 @@
+<% js = escape_javascript(render partial: 'exercises/list_small', locals: {:exercises => @exercises}) %>
+$("#exercises-wrapper").html("<%= js %>");
+$("#entries-info").html("<%= page_entries_info @exercises %>");

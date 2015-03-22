@@ -9,7 +9,7 @@ end
 And(/^Following exercise setups exist in the system$/) do |table|
   # table is a table.hashes.keys # => [:name, :description, :required, :unit, :exercise]
   table.hashes.each do |t|
-    ExerciseSetup.create(:name=>t[:name],:description=>t[:description],:required=>t[:required],:unit_code=>Unit.friendly.find(t[:unit]),:exercise_code=>t[:exercise],:exercise_version=>1)
+    ExerciseSetup.create(:name=>t[:name],:description=>t[:description],:required=>t[:required],:unit_code=>Unit.friendly.find(t[:unit]).code,:exercise_code=>t[:exercise],:exercise_version=>1)
   end
 end
 

@@ -1,5 +1,5 @@
 class ExercisesController < ApplicationController
-  before_action :set_exercise, only: [:show, :edit, :update, :destroy]
+  before_action :set_exercise, only: [:show, :edit, :update, :destroy, :filterrific_setups, :filterrific_measurements]
   include ExercisesHelper
 
   # GET /exercises
@@ -13,7 +13,7 @@ class ExercisesController < ApplicationController
             sorted_by: Exercise.options_for_sorted_by
         }
     ) or return
-    @exercises = @filterrific.find.where('user_id=? OR accessibility=?', current_user.id, :global).uniq.page(params[:page]).per(10)
+    @exercises = @filterrific.find.accessible(current_user).uniq.page(params[:page]).per(10)
   end
 
   # GET /exercises/1
@@ -86,6 +86,7 @@ class ExercisesController < ApplicationController
   end
 
   def clone
+    #TODO presunout do modelu?
     existing_exercise_version = (params[:exercise_version].blank?) ? 1 : params[:exercise_version]
     new_exercise_version = Exercise.all.order('version').last.version+1
     # Exercise
@@ -129,6 +130,29 @@ class ExercisesController < ApplicationController
     render 'users/exercises/list'
   end
 
+  # Filterrific sub-filters
+  def filterrific_setups
+    @filterrific_setups = initialize_filterrific(
+        ExerciseSetup,
+        params[:filterrific_setups],
+        :select_options => {
+            sorted_by: ExerciseSetup.options_for_sorted_by
+        }
+    ) or return
+    @exercise_setups = @filterrific_setups.find.where('exercise_code=? AND exercise_version=?', @exercise.code, @exercise.version).page(params[:page_s]).per(3)
+  end
+
+  def filterrific_measurements
+    @filterrific_measurements = initialize_filterrific(
+        ExerciseMeasurement,
+        params[:filterrific_measurements],
+        :select_options => {
+            sorted_by: ExerciseMeasurement.options_for_sorted_by
+        }
+    ) or return
+    @exercise_measurements = @filterrific_measurements.find.where('exercise_code=? AND exercise_version=?', @exercise.code, @exercise.version).page(params[:page_m]).per(3)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_exercise
@@ -143,29 +167,6 @@ class ExercisesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def exercise_params
       params.require(:exercise).permit(:code, :version, :name, :author_name, :description, :description_long, :sources, :youtube_url, :accessibility, :type, :user_id, :exercise_image_id)
-    end
-
-    # Filterrific sub-filters
-    def filterrific_setups
-      @filterrific_setups = initialize_filterrific(
-          ExerciseSetup,
-          params[:filterrific_setups],
-          :select_options => {
-              sorted_by: ExerciseSetup.options_for_sorted_by
-          }
-      ) or return
-      @exercise_setups = @filterrific_setups.find.where('exercise_code=? AND exercise_version=?', @exercise.code, @exercise.version).page(params[:page_s]).per(3)
-    end
-
-    def filterrific_measurements
-      @filterrific_measurements = initialize_filterrific(
-          ExerciseMeasurement,
-          params[:filterrific_measurements],
-          :select_options => {
-              sorted_by: ExerciseMeasurement.options_for_sorted_by
-          }
-      ) or return
-      @exercise_measurements = @filterrific_measurements.find.where('exercise_code=? AND exercise_version=?', @exercise.code, @exercise.version).page(params[:page_m]).per(3)
     end
 
     def upload_images

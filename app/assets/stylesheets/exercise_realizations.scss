@@ -1,0 +1,140 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+$blue: #3C8DBC;
+$blue2: #C4DDEB;
+$blue3: #ECF4F8;
+
+#left-pane-container {
+  position: relative;
+  #left-pane {
+    position: absolute;
+    width: 90%;
+    padding: 0;
+    .tab-content {
+      margin-top: 10px;
+    }
+    #exercises {
+      ul {
+        list-style-type: none;
+      }
+      .nav a {
+        outline: 0;
+      }
+      .well {
+        margin-bottom: 0;
+        margin-top: 10px;
+      }
+      #entries-info {
+        display: inline;
+      }
+    }
+    #settings {
+      display: none;
+    }
+    .draggable {
+      list-style-type: none;
+      margin: 0;
+      height: 130px;
+      width: 50%;
+      overflow: hidden;
+      &:hover{
+        cursor: move;
+      }
+    }
+  }
+}
+
+#right-pane {
+  #owl-carousel {
+    z-index: 10000;
+  }
+  .owl-carousel-before {
+    margin-right: 1%;
+    width: 3%;
+  }
+  .owl-carousel-after {
+    margin-left: 1%;
+    width: 3%;
+  }
+  .owl-carousel-before, .owl-carousel-after {
+    float: left;
+    .owl-carousel-prev, .owl-carousel-next {
+      cursor: pointer;
+      margin: 5px 0 0 0;
+      &:hover {
+        color: #3C8DBC;
+      }
+    }
+  }
+
+  .owl-carousel {
+    float: left;
+    width: 92%;
+  }
+  .player-plan-wrapper {
+    &:hover {
+      cursor: ew-resize;
+    }
+    ul.player-plan {
+      list-style-type: none;
+      min-height: 50px;
+      margin: 0;
+      padding: 0;
+      &:hover {
+        cursor: ns-resize;
+      }
+      .realization {
+        .realization-duration, .realization-rest {
+          margin: 0;
+        }
+        .realization-duration {
+          position: relative;
+          background: $blue2;
+          .btns-block {
+            position: absolute;
+            right: 5px;
+            bottom: 5px;
+          }
+          .btn {
+            visibility: hidden;
+            display: inline;
+          }
+        }
+        .realization-rest {
+          background: $blue3;
+          border-top-color: #ebebeb;
+        }
+        &:hover {
+          .btn {
+            visibility: visible;
+          }
+          .realization-duration, .realization-rest {
+            background: $blue;
+          }
+        }
+      }
+    }
+    .title {
+      margin-left: 10px;
+    }
+  }
+}
+
+/* Special states */
+.draggable-helper {
+  list-style-type: none;
+  width: 200px;
+  height: 50px;
+  overflow: hidden;
+}
+.sortable-active {
+  background: $blue;
+  color: white;
+}
+.player-plan-dragged {
+}
