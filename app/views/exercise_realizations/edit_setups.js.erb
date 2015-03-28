@@ -1,0 +1,68 @@
+// Render contents of edit_setup
+$('#realization-setups').html('<%=escape_javascript(render partial: 'exercise_realizations/edit_setups', locals: {:filterrific_setups => @filterrific_setups})%>');
+// Filterrific - dont send form when enter pressed
+preventFormEnterKeypress('form');
+
+// Global helper variable for identification of added realization setup
+var addedRealizationSetup;
+
+// AJAX CALLS
+// Get contents for exercise realization setups
+function getExerciseRealizationSetups(){
+    $.get('<%=url_for :controller => "exercise_realizations", :action => "list_exercise_realization_setups"%>',{id:$("#realization-settings").data("exercise-realization-id")});
+}
+// Get contents for available exercise setups
+function getAvailableExerciseSetups(){
+    $.get('<%=url_for :controller => "exercise_realizations", :action => "list_exercise_setups"%>',{id:$("#realization-settings").data("exercise-realization-id")});
+}
+// Get form for realization
+function renderRealizationSetupFormNew(er_id, es_code){
+    var url = '<%=url_for :controller => "exercise_realization_setups", :action => "new"%>';
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'html',
+        data: {action: 'new', exercise_realization_setup: {exercise_realization_id: er_id, exercise_setup_code: es_code}},
+        success: function(data) {
+            $('#exercise-setups-edit-wrapper').html(data);
+        }
+    });
+}
+function renderRealizationSetupFormEdit(ers_id){
+    var url = Routes.edit_exercise_realization_setup_path(ers_id);
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'html',
+        data: {action: 'edit', exercise_realization_setup: {id: ers_id}},
+        success: function(data) {
+            $('#exercise-setups-edit-wrapper').html(data);
+        }
+    });
+}
+
+// SHOW/HIDE panes
+var availableSetups = $('#exercise-setups-available');
+var editSetup = $('#exercise-setups-edit');
+function showAvailableSetupsPane(){
+    editSetup.hide();
+    availableSetups.fadeIn(1000);
+}
+function showEditSetupPane(){
+    availableSetups.hide();
+    editSetup.fadeIn(1000);
+}
+function switchAvailableSetupsEditPanesVisibility(){
+    if(availableSetups.css("display")!='none'){
+        showEditSetupPane();
+    } else if(editSetup.css("display")!='none'){
+        showAvailableSetupsPane();
+    }
+}
+
+// DOCUMENT READY
+$(function(){
+    var realizationSetupsPane = $('#realization-setups');
+    getExerciseRealizationSetups();
+    getAvailableExerciseSetups();
+});

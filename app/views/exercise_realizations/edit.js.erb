@@ -1,3 +1,19 @@
-$("#realization-settings").html("<%= escape_javascript(render(:partial => "exercise_realizations/form.html.haml", :locals => {:exercise_realization => @exercise_realization})) %>");
+<% exercise_type=@exercise_realization.exercise.type %>
+// Set content for realization settings
+$("#realization-settings")
+        .html("<%= escape_javascript(render(:partial => "exercise_realizations/form.html.haml", :locals => {:exercise_realization => @exercise_realization})) %>")
+        .data("exercise-realization-id","<%=@exercise_realization.id%>")
+        .attr('data-realization-id', "<%=@exercise_realization.id%>");
 // Make settings tab active
-$("#settings ul li:first a").tab("show");
+var settingsPane = $("#settings ul");
+settingsPane.find("li:first a").tab("show");
+if ('<%=exercise_type%>'=='ExerciseWithSets') {
+    settingsPane.find("li#realization-sets-tab-button")
+            .show()
+            .find('a').attr('data-toggle','tab');
+} else {
+    settingsPane.find("li#realization-sets-tab-button")
+            .hide()
+            .find('a').attr('data-toggle','');
+}
+settingsPane

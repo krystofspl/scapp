@@ -1,0 +1,10 @@
+.col-sm-12
+  %ul#exercise-setups-available-list
+    - exercise_setups.each do |exercise_setup|
+      %li.col-sm-4.box{:data=>{:exercise_setup_code => exercise_setup.code}}
+        .box-body
+          %h5= exercise_setup.name
+          = truncate((sanitize exercise_setup.description), length: 100)
+        .btn.btn-success.btn-sm.fa.fa-plus.btn-add
+#paginator-setups.col-sm-12.text-center
+%br{:style=>'clear: both;'}

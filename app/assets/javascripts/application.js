@@ -36,3 +36,4 @@
 //= require owl.carousel
 // This is currently only used in exc.realizations testing
 //= require jquery.simulate.drag-sortable
+//= require js-routes

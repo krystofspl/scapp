@@ -1,4 +1,5 @@
 :javascript
+  // PANES VISIBILITY
   var exercises = $("#exercises");
   var settings = $("#settings");
   function showSettingsPane(){
@@ -16,13 +17,8 @@
       showExercisesPane();
     }
   }
-  function makeElementsSameHeight(selector){
-    // Get title box with max height
-    var maxHeight = Math.max.apply(null, $(selector).map(function ()
-      {return $(this).innerHeight();}).get());
-    // Set all heights accordingly
-    $(selector).css('min-height', maxHeight);
-  }
+
+  // GET AND REFRESH ELEMENTS
   function getPlanIdForRealization(realizationId){
     var realization = $('.realization[data-realization-id='+realizationId+']');
     return realization.parent().data('plan-id');
@@ -42,6 +38,23 @@
     });
   }
 
+  // TWEAKS
+  function makeElementsSameHeight(selector){
+    // Get title box with max height
+    var maxHeight = Math.max.apply(null, $(selector).map(function ()
+      {return $(this).innerHeight();}).get());
+    // Set all heights accordingly
+    $(selector).css('min-height', maxHeight);
+  }
+  function preventFormEnterKeypress(selector){
+    // PREVENT ENTER IN FORMS
+    $(selector).on("keypress", function (e) {
+      if (e.keyCode == 13) {
+        return false;
+      }
+    });
+  }
+
   // DOCUMENT READY
   $(function() {
     // CSS
@@ -53,8 +66,21 @@
     // CAROUSEL INIT
     var owl = $('.owl-carousel');
     owl.owlCarousel({
-        items: 3,
-        margin: 10
+      margin: 10,
+      responsive : {
+        0 : {
+          items: 1
+        },
+        900 : {
+          items: 2
+        },
+        1200 : {
+          items: 3
+        },
+        1600 : {
+          items: 4
+        }
+      }
     });
 
     // CAROUSEL PREV, NEXT BUTTONS
@@ -65,6 +91,14 @@
     $(window).scroll(function() {
       $('#left-pane > .box').css('top', $(this).scrollTop() + "px");
     });
+
+    // EDIT SETUPS BUTTON TRIGGER
+    $('#settings #realization-setups-tab-button a').click(function(){
+      $.get('#{url_for :controller => "exercise_realizations", :action => "edit_setups"}',{id:$("#realization-settings").data("exercise-realization-id")});
+    });
+
+    // PREVENT ENTER KEYPRESS ON LOADED FORMS
+    preventFormEnterKeypress('form');
 
     // SORTABLE
     $('.player-plan').sortable({

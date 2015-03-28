@@ -53,7 +53,7 @@ en:
     filter:
       name_asc: "Name ▲"
       name_desc: "Name ▼"
-      reset: "Reset filters"
+      reset: "Reset"
       sort_by: "Sort by"
       search: "Search"
       created_at_asc: "Created at ▲"
@@ -144,6 +144,8 @@ en:
     detailed_description: "Detailed description"
     image: "Image"
     submitting: "Submitting..."
+    following_errors_occured_text_only: "Following errors occured:"
+    filter: "Filter"
   exercise_bundle:
     edit:
       edit_bundle: "Edit exercise bundle"
@@ -218,9 +220,22 @@ en:
       doesnt_fit_into_lesson: "Realization duration is too long for the lesson."
     dictionary:
       rest_after: "Rest"
+      setups: "setups"
+      setup: "setup"
+    edit:
+      available_unused_setups: "Available unused setups"
+      used_setups: "Used setups"
+      edit_realization: "Edit realization"
+      edit_setup: "Edit setup"
   favorite_plan:
     index:
       favorite_plans: "My favorite plans"
   exercise_realization_setups:
     form:
       heading: "Edit setups"
+      save: "Save"
+    errors:
+      cannot_delete_required: "Cannot delete setup - it is required."
+  exercise_set_realization:
+    form:
+      heading: "Edit sets"

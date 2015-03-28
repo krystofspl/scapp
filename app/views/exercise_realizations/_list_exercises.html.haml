@@ -1,10 +1,14 @@
 .col-sm-12.well.well-sm
-  = form_for_filterrific @filterrific, url: {action: 'list_exercises'}, format: 'js' do |f|
-    .form-group.form-inline
-      = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control input-sm', :placeholder => t('exercise.filter.search'))
-      = f.select(:sorted_by, @filterrific.select_options[:sorted_by],{},{ :class => 'form-control input-sm'})
-  = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
-  = render_filterrific_spinner
-  #entries-info= page_entries_info exercises
+  = form_for_filterrific filterrific, remote: true, url: {action: 'list_exercises'}, format: 'js' do |f|
+    .form-group
+      .col-sm-4.nopadding
+        = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control input-sm', :placeholder => t('exercise.filter.search'))
+      .col-sm-4.nopadding
+        = f.select(:sorted_by, filterrific.select_options[:sorted_by],{},{ :class => 'form-control input-sm'})
+      .col-sm-4.nopadding
+        = f.submit t('dictionary.filter'), class: 'btn btn-sm btn-default'
+  #entries-info.col-sm-12.no-padding
+    = render_filterrific_spinner
+    = page_entries_info exercises
 #exercises-wrapper
   = render partial: 'exercises/list_small', locals: {:exercises => exercises}

@@ -1,17 +1,17 @@
-.row
-  .col-sm-12
-    %ul
+.col-sm-12.nopadding
+  %ul
     - exercises.each do |exercise|
-      %li.box.box-body.col-sm-6.draggable{:data => {'exercise-code' => exercise.code, 'exercise-version' => exercise.version}}
+      %li.box.box-body.col-sm-12.draggable{:data => {'exercise-code' => exercise.code, 'exercise-version' => exercise.version}}
+        - unless exercise.exercise_image.blank?
+          = image_tag exercise.exercise_image.image.small, class: 'img-rounded margin no-padding', style: 'float:left; width: 50px;'
         %strong= link_to exercise.to_s, exercise
         %br
-        =sanitize truncate(exercise.description, :length => 100)
-.row
-  .col-sm-12.text-center#paginator
+        =sanitize truncate(exercise.description, :length => 85)
+.col-sm-12.text-center#paginator
 
 :javascript
   $(function() {
-    $('#paginator').html('#{escape_javascript(paginate(exercises, :remote => true, :params => {:controller => 'exercise_realizations', :action => 'list_exercises'}).to_s)}');
+    $('#exercises #paginator').html('#{escape_javascript(paginate(exercises, :remote => true, :params => {:controller => 'exercise_realizations', :action => 'list_exercises'}))}');
     // DRAGGABLE
     $(".draggable").draggable({
         appendTo: '#owl-carousel',
@@ -21,7 +21,7 @@
         cursorAt: { left: 5 , top: 5},
         helper: 'clone',
         start: function(e, ui){
-          $(ui.helper).removeClass('col-sm-6');
+          $(ui.helper).removeClass('col-sm-12');
           $(ui.helper).addClass('draggable-helper');
         }
     });

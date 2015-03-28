@@ -1,0 +1,16 @@
+.accordion-header-wrapper
+  %h5= exercise_realization_setup.exercise_setup.name
+  = t('dictionary.value') + ": " + exercise_realization_setup.value.to_s + " " + exercise_realization_setup.exercise_setup.unit.abbreviation
+%div
+  - unless exercise_realization_setup.note.blank?
+    %p.no-margin
+      = t('dictionary.note')+": "
+      = sanitize exercise_realization_setup.note
+  - unless exercise_realization_setup.exercise_setup.description.blank?
+    %p.no-margin
+      = t('dictionary.description')+": "
+      = sanitize exercise_realization_setup.exercise_setup.description
+.btns-block
+  = link_to t('dictionary.edit'), '#', class: 'btn btn-xs btn-warning btn-edit'
+  - unless exercise_realization_setup.exercise_setup.is_required?
+    = link_to t('dictionary.delete'), exercise_realization_setup, :method => :delete, :remote => true, data: { confirm: t('dictionary.are_you_sure') }, class: 'btn btn-xs btn-danger btn-destroy'

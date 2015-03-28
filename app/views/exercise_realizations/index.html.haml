@@ -3,7 +3,7 @@
   = "#{t('exercise_realizations.index.heading')}"
 - breadcrumb :regular_training_lesson_realizations_plans, @training_lesson_realization
 
-#left-pane-container.col-sm-4
+#left-pane-container.col-xs-6.col-sm-6.col-lg-4
   #left-pane
     .box.box-primary
       .box-body
@@ -15,22 +15,24 @@
               = link_to t('favorite_plan.index.favorite_plans'), '#favorite-plans', {:data => {'toggle' => 'tab'}}
           .tab-content
             #exercises-list.tab-pane.fade.in.active
-              = render partial: 'list_exercises', locals: {:exercises => @exercises}
+              = render partial: 'list_exercises', locals: {:exercises => @exercises, :filterrific => @filterrific}
             #favorite-plans.tab-pane.fade
-              = "todo"
         #settings
           %ul.nav.nav-tabs
             %li.active
               = link_to t('exercise_realizations.form.heading'), '#realization-settings', {:data => {'toggle' => 'tab'}}
-            %li
+            %li#realization-setups-tab-button
               = link_to t('exercise_realization_setups.form.heading'), '#realization-setups', {:data => {'toggle' => 'tab'}}
+              -# clicking this triggers ajax load of edit partial
+            %li#realization-sets-tab-button
+              = link_to t('exercise_set_realization.form.heading'), '#realization-sets', {:data => {'toggle' => 'tab'}}
           .tab-content
             #realization-settings.tab-pane.fade.in.active
             #realization-setups.tab-pane.fade
-              = "todo"
+            #realization-sets.tab-pane.fade
       %br{:style=>'clear:both;'}
 
-.col-sm-8
+.col-xs-6.col-sm-6.col-lg-8
   #right-pane.box.box-primary
     .box-body
       .owl-carousel-before
@@ -43,7 +45,11 @@
               = tlr_time.strftime("%H:%M")
             - tlr_time+=300
       .owl-carousel#owl-carousel
-        - @training_lesson_realization.plans.each do |plan|
+        - plans = @training_lesson_realization.plans.sort do |a,b|
+          - comp = (a.user_partook.last_name <=> b.user_partook.last_name)
+          - comp.zero? ? (a.user_partook.first_name <=> b.user_partook.first_name) : comp
+          - #TODO utf8 chars se radi na konec, pridat gem
+        - plans.each do |plan|
           - player = plan.user_partook
           %div.player-plan-wrapper.box
             %h4.box-title

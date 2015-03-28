@@ -32,7 +32,13 @@ class Unit < ActiveRecord::Base
   end
   # =================== METHODS ======================================
   def to_s
-    read_attribute(:name).to_s
+    self.name.to_s
+  end
+
+  def to_s_complete
+    str = self.name
+    str+=" ["+self.abbreviation+"]" unless self.abbreviation.blank?
+    str
   end
 
   # Destroy validation

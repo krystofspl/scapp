@@ -15,7 +15,7 @@ gem 'turbolinks'
 gem 'jquery-turbolinks'
 gem 'jbuilder', '~> 1.2'
 # twitter bootstrap tem,plate framework
-gem 'bootstrap-sass', '>= 3.3.0'
+gem 'bootstrap-sass', '~> 3.3.4'
 # add user permissions support for controller actions
 gem 'cancan'
 # user authentication
@@ -59,6 +59,9 @@ gem 'ranked-model'
 # filtering results
 gem 'filterrific'
 gem 'owlcarousel-rails', github: 'acrogenesis/owlcarousel-rails', branch: 'OwlCarousel2'
+# makes routes accessible in JS (url_for not sufficient sometimes)
+gem 'js-routes'
+
 
 group :development do
   gem 'better_errors'

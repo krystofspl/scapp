@@ -1,5 +1,5 @@
 class ExerciseRealizationsController < ApplicationController
-  before_action :set_exercise_realization, only: [:edit, :update, :destroy]
+  before_action :set_exercise_realization, only: [:edit, :update, :destroy, :list_exercise_realization_setups]
   def index
     @training_lesson_realization = TrainingLessonRealization.friendly.find(params[:training_lesson_realization_id])
     #TODO presunout nekam, kde se to nebude volat tak casto?
@@ -73,7 +73,34 @@ class ExerciseRealizationsController < ApplicationController
             sorted_by: Exercise.options_for_sorted_by
         }
     ) or return
-    @exercises = @filterrific.find.accessible(current_user).uniq.page(params[:page]).per(4)
+    #TODO následující query je asi neoptimální
+    @exercises = @filterrific.find.accessible(current_user).uniq.page(params[:page]).per(3)
+  end
+
+  # List exercise setups with filtering enabled
+  def list_exercise_setups
+    @filterrific_setups = initialize_filterrific(
+        ExerciseSetup,
+        params[:filterrific_setups],
+        :select_options => {
+            sorted_by: ExerciseSetup.options_for_sorted_by
+        }
+    ) or return
+    exercise_id = params[:id].blank? ? params[:filterrific_setups][:id] : params[:id]
+    exercise = ExerciseRealization.find(exercise_id).exercise
+    #TODO následující query je asi neoptimální
+    # I chose to exclude required exercise steps, realizations for these are added when
+    # the realization is created and cant be removed, because they are required
+    # If it is needed to add required setups more than once, a special "required" boolean should be added to the realization
+    @exercise_setups = @filterrific_setups.find.for_exercise(exercise).except_required.uniq.page(params[:page_s]).per(3)
+  end
+
+  def list_exercise_realization_setups
+    @exercise_realization_setups = @exercise_realization.exercise_realization_setups
+  end
+
+  def edit_setups
+    list_exercise_setups
   end
 
   private

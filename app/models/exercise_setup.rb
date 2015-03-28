@@ -3,7 +3,7 @@ class ExerciseSetup < ActiveRecord::Base
   self.primary_key = :code
   extend FriendlyId
   friendly_id :name, :use => :slugged, :slug_column => :code
-  filterrific :default_filter_params => {sorted_by: 'realizations_desc' },
+  filterrific :default_filter_params => {sorted_by: 'name_asc' },
               :available_filters => [:sorted_by,:search_query]
 
   # =================== SCOPES =======================================
@@ -44,6 +44,15 @@ class ExerciseSetup < ActiveRecord::Base
         raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
     end
   }
+
+  # Scope for filtering by given exercise, it's used by Filterrific
+  scope :for_exercise, lambda { |exercise|
+    where('exercise_code=? AND exercise_version=?', exercise.code, exercise.version)
+  }
+
+  scope :required, -> {where(required: true)}
+
+  scope :except_required, -> {where(required: false)}
 
   # =================== ASSOCIATIONS =================================
   belongs_to :exercise_setup_type, :foreign_key => :exercise_setup_type_code

@@ -1,0 +1,33 @@
+- content_for :spinner do
+  %i.fa.fa-2x.fa-spinner.fa-spin.col-sm-12.text-center.text-muted
+  %br{:style=>'clear:both;'}
+
+.col-sm-12
+  #exercise-setups-used
+    %strong= t('exercise_realizations.edit.used_setups')
+    .box.box-body
+      #exercise-setups-used-wrapper
+        = yield :spinner
+
+
+.col-sm-12
+  #exercise-setups-available
+    %strong= t('exercise_realizations.edit.available_setups')
+    .box.box-body
+      #exercise-setups-available-form
+        = form_for_filterrific @filterrific_setups, remote: true, url: {action: 'list_exercise_setups'}, :as => :filterrific_setups, format: 'js' do |f|
+          .form-group
+            .col-sm-4.nopadding
+              = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control input-sm', :placeholder => t('exercise.filter.search'))
+            .col-sm-4.nopadding
+              = f.select(:sorted_by, @filterrific_setups.select_options[:sorted_by],{},{ :class => 'form-control input-sm'})
+              = f.hidden_field :id, value: params[:id]
+            .col-sm-4.nopadding
+              = f.submit 'Filter', class: 'btn btn-sm btn-default'
+              = render_filterrific_spinner
+      #exercise-setups-available-wrapper
+        = yield :spinner
+  #exercise-setups-edit
+    %strong= t('exercise_realizations.edit.edit_setup')
+    .box.box-body
+      #exercise-setups-edit-wrapper

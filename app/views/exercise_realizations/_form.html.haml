@@ -3,27 +3,24 @@
   = f.error_notification
   .form-inputs
     .form-group
-      .row
-        .col-sm-12
-          %strong=t('exercise_realizations.form.time_duration')
-      .row
-        .col-sm-4
-          = f.input :duration_partial_hours, :as => :integer, label: t('exercise_realizations.form.hours'), input_html: {min: '0', max: '59'}
-        .col-sm-4
-          = f.input :duration_partial_minutes, :as => :integer, label: t('exercise_realizations.form.minutes'), input_html: {min: '0', max: '59'}
-        .col-sm-4
-          = f.input :duration_partial_seconds, :as => :integer, label: t('exercise_realizations.form.seconds'), input_html: {min: '0', max: '59'}
+      .col-sm-12.nopadding
+        %strong=t('exercise_realizations.form.time_duration')
+      .col-sm-4.nopadding
+        = f.input :duration_partial_hours, :as => :integer, label: t('exercise_realizations.form.hours'), input_html: {min: '0', max: '59'}
+      .col-sm-4.nopadding
+        = f.input :duration_partial_minutes, :as => :integer, label: t('exercise_realizations.form.minutes'), input_html: {min: '0', max: '59'}
+      .col-sm-4.nopadding
+        = f.input :duration_partial_seconds, :as => :integer, label: t('exercise_realizations.form.seconds'), input_html: {min: '0', max: '59'}
     .form-group
-      .row
-        .col-sm-12
-          %strong=t('exercise_realizations.form.rest_after')
-      .row
-        .col-sm-4
-          = f.input :rest_partial_minutes, :as => :integer, label: t('exercise_realizations.form.minutes'), input_html: {min: '0', max: '59'}
-        .col-sm-4
-          = f.input :rest_partial_seconds, :as => :integer, label: t('exercise_realizations.form.seconds'), input_html: {min: '0', max: '59'}
-    = f.input :note, as: :text, input_html: { class: 'textarea', rows: 5 }
-  .form-actions
+      .col-sm-12.nopadding
+        %strong=t('exercise_realizations.form.rest_after')
+      .col-sm-4.nopadding
+        = f.input :rest_partial_minutes, :as => :integer, label: t('exercise_realizations.form.minutes'), input_html: {min: '0', max: '59'}
+      .col-sm-4.nopadding
+        = f.input :rest_partial_seconds, :as => :integer, label: t('exercise_realizations.form.seconds'), input_html: {min: '0', max: '59'}
+    .col-sm-12.nopadding
+      = f.input :note, as: :text, input_html: { class: 'textarea', rows: 5 }
+  .form-actions.col-sm-12.margin.text-right
     = link_to t('dictionary.cancel'), '#', class: 'btn btn-default btn-cancel'
     = f.button :submit, t('exercise_realizations.form.save_realization'), class: 'btn btn-primary'
 
@@ -48,7 +45,7 @@
         errors = {message: "#{t('exercise_realizations.form.please_reload_try_again')}"};
       }
       // Build an unordered list from the list of errors
-      errorText = "#{t('dictionary.following_errors_occured')}<ul>";
+      errorText = "#{t('dictionary.following_errors_occured_text_only')}<ul>";
       for (error in errors) {
         errorText += "<li>" + errors[error] + "</li> ";
       }

@@ -175,6 +175,9 @@ GEM
       turbolinks
     jquery-ui-rails (5.0.3)
       railties (>= 3.2.16)
+    js-routes (1.0.0)
+      railties (>= 3.2)
+      sprockets-rails
     json (1.8.2)
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
@@ -336,7 +339,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-kaminari-views
-  bootstrap-sass (>= 3.3.0)
+  bootstrap-sass (~> 3.3.4)
   cancan
   capybara
   carrierwave
@@ -361,6 +364,7 @@ DEPENDENCIES
   jquery-scrollto-rails
   jquery-turbolinks
   jquery-ui-rails
+  js-routes
   kaminari
   launchy
   momentjs-rails (>= 2.8.1)!

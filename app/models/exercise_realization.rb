@@ -5,20 +5,23 @@ class ExerciseRealization < ActiveRecord::Base
     set_time_duration
     set_rest_after
   end
+  after_create do
+    set_required_realization_setups
+  end
 
   # =================== ASSOCIATIONS =================================
   belongs_to :exercise, :foreign_key => [:exercise_code, :exercise_version]
   belongs_to :user_measured, :class_name => 'User'
   belongs_to :user_created, :class_name => 'User'
   belongs_to :plan
-  has_many :exercise_realization_setups
+  has_many :exercise_realization_setups, :dependent => :destroy
   has_many :exercise_realization_measurements
 
   # =================== VALIDATIONS ==================================
   validates :user_created, presence: true
   validates :plan_id, presence: true
-  validates :time_duration, numericality: {greater_than: 5}
-  validates :rest_after, numericality: true
+  validates :time_duration, numericality: {greater_than_or_equal_to: 5}
+  validates :rest_after, numericality: {greater_than_or_equal_to: 0}
   validates :order, presence: true
   validate :fits_into_lesson
 
@@ -113,4 +116,11 @@ class ExerciseRealization < ActiveRecord::Base
       write_attribute(:rest_after, (@rest_partial_minutes.to_i*60+@rest_partial_seconds.to_i))
     end
   end
+
+  private
+    def set_required_realization_setups
+      self.exercise.exercise_setups.required.each do |es|
+        ExerciseRealizationSetup.create(:exercise_realization_id => self.id, :exercise_setup_code => es.code, :numeric_value => 0)
+      end
+    end
 end
