@@ -1,0 +1,10 @@
+var wrapper = $("#exercise-set-realizations-wrapper");
+wrapper.html("<%= escape_javascript(render partial: 'exercise_set_realizations/list_small', locals: {:exercise_set_realizations => @exercise_set_realizations}) %>")
+    .find('li').disableSelection();
+wrapper.find(".btn-destroy")
+    .bind('ajax:success',function(){
+        $(this).closest('li').fadeOut(1000, function(){$(this).remove();});
+    })
+    .bind('ajax:error',function(e,xhr,status,err){
+        showAjaxError($.parseJSON(xhr.responseText));
+    });

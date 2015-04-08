@@ -3,8 +3,8 @@ class ExerciseSetup < ActiveRecord::Base
   self.primary_key = :code
   extend FriendlyId
   friendly_id :name, :use => :slugged, :slug_column => :code
-  filterrific :default_filter_params => {sorted_by: 'name_asc' },
-              :available_filters => [:sorted_by,:search_query]
+  filterrific :default_filter_params => {sorted_by: 'name_asc', type: 'all'},
+              :available_filters => [:sorted_by,:type,:search_query]
 
   # =================== SCOPES =======================================
   scope :search_query, lambda { |query|
@@ -44,6 +44,18 @@ class ExerciseSetup < ActiveRecord::Base
         raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
     end
   }
+  scope :type, lambda { |type|
+    case type.to_s
+      when /^all/
+        where('exercise_setups.type = ? OR exercise_setups.type = ?','ExerciseSetup','ExerciseSetSetup')
+      when /^simple_setups/
+        where('exercise_setups.type = ?','ExerciseSetup')
+      when /^set_setups/
+        where('exercise_setups.type = ?','ExerciseSetSetup')
+      else
+        raise(ArgumentError, "Invalid type option: #{ type.inspect }")
+    end
+  }
 
   # Scope for filtering by given exercise, it's used by Filterrific
   scope :for_exercise, lambda { |exercise|
@@ -58,7 +70,6 @@ class ExerciseSetup < ActiveRecord::Base
   belongs_to :exercise_setup_type, :foreign_key => :exercise_setup_type_code
   belongs_to :unit, :foreign_key => :unit_code
   belongs_to :exercise, :foreign_key => [:exercise_code, :exercise_version]
-  # --- prototypes for v2
   has_many :exercise_realization_setups, :foreign_key => :exercise_setup_code
 
   # =================== VALIDATIONS ==================================
@@ -88,6 +99,16 @@ class ExerciseSetup < ActiveRecord::Base
       [I18n.t('exercise.filter.created_at_desc'), 'created_at_desc'],
       [I18n.t('exercise.filter.realizations_asc'), 'realizations_asc'],
       [I18n.t('exercise.filter.realizations_desc'), 'realizations_desc'],
+    ]
+  end
+
+  # This method provides select options for the `type` filter select input.
+  # It is called in the controller as part of `initialize_filterrific`.
+  def self.options_for_type
+    [
+        [I18n.t('dictionary.all'), 'all'],
+        [I18n.t('exercise_setup.simple_setup'), 'simple_setups'],
+        [I18n.t('exercise_setup.set_setup'), 'set_setups']
     ]
   end
 end

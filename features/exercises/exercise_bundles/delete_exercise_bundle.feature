@@ -10,9 +10,9 @@ Feature: Delete an existing exercise bundle
       | exc1 | exc1 desc   | private       | test1 |
       | exc2 | exc1 desc   | global        | test1 |
     And Following exercise bundles exist in the system
-      | name | description | accessibility | owner | exercise |
-      | bundle1 | bundle1 desc   | private       | test1 | exc1     |
-      | bundle2 | bundle2 desc   | global        | test1 | exc2     |
+      | name    | description  | accessibility | owner | exercise |
+      | bundle1 | bundle1 desc | private       | test1 | exc1     |
+      | bundle2 | bundle2 desc | global        | test1 | exc2     |
 
   @javascript
   Scenario: As a coach who owns the private bundle, I can delete it, I should be warned before doing so

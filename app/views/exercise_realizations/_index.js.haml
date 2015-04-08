@@ -1,7 +1,6 @@
 :javascript
   // PANES VISIBILITY
-  var exercises = $("#exercises");
-  var settings = $("#settings");
+  var exercises = $("#exercises"), settings = $("#settings");
   function showSettingsPane(){
     exercises.hide();
     settings.fadeIn(1000);
@@ -19,26 +18,46 @@
   }
 
   // GET AND REFRESH ELEMENTS
+  // Refresh/initialize Exercises draggable
+  function refreshExercisesDraggable(){
+    $('.draggable').draggable({
+      appendTo: '#owl-carousel',
+      forceHelperSize: true,
+      connectToSortable: $('.player-plan'),
+      opacity: 0.8,
+      cursorAt: { left: 5 , top: 5},
+      helper: 'clone',
+      start: function(e, ui){
+        $(ui.helper).removeClass('col-sm-12');
+        $(ui.helper).addClass('draggable-helper');
+      }
+    });
+  }
   function getPlanIdForRealization(realizationId){
     var realization = $('.realization[data-realization-id='+realizationId+']');
     return realization.parent().data('plan-id');
   }
+  // Refreshes whole plan with all realizations with current data
   function refreshRealizationsInPlan(plan){
-    $('ul[data-plan-id='+plan+'] > .realization').each(function(){
-      var realization = $(this);
-      $.ajax({
-        url : '#{url_for :controller => "exercise_realizations", :action => "show_short"}',
-        data: { "realization_id": realization.data('realization-id') },
-        type: 'GET',
-        async: false,
-        success: function(data){
-            realization.html(data);
-        }
-      });
+    var plan = $('ul[data-plan-id='+plan+']');
+    var planParent = plan.parent()
+    $.ajax({
+      url : '#{url_for :controller => "exercise_realizations", :action => "list_exercise_realizations"}',
+      data: { plan_id : plan.data('plan-id') },
+      type: 'GET',
+      success: function(data){
+        // Replace ExerciseRealization html with updated plan
+        planParent.html(data);
+        // Exercises .draggable needs to get refreshed,
+        // otherwise it doesn't recognize changed .player-plan sortables
+        refreshExercisesDraggable();
+      }
     });
   }
 
+
   // TWEAKS
+  // Make elements with string selector the same height
   function makeElementsSameHeight(selector){
     // Get title box with max height
     var maxHeight = Math.max.apply(null, $(selector).map(function ()
@@ -46,8 +65,8 @@
     // Set all heights accordingly
     $(selector).css('min-height', maxHeight);
   }
+  // Prevent enter keypress in forms (it triggers html request by default)
   function preventFormEnterKeypress(selector){
-    // PREVENT ENTER IN FORMS
     $(selector).on("keypress", function (e) {
       if (e.keyCode == 13) {
         return false;
@@ -58,94 +77,52 @@
   // DOCUMENT READY
   $(function() {
     // CSS
-    // tohle nevimproc rozbiji drag+sort
+    // (why?) this breaks drag+drop, probably css issue
     //makeElementsSameHeight(".player-plan-wrapper .title");
     //makeElementsSameHeight("#exercises-wrapper li");
+
     $("ul, li").disableSelection();
 
     // CAROUSEL INIT
     var owl = $('.owl-carousel');
     owl.owlCarousel({
-      margin: 10,
-      responsive : {
-        0 : {
-          items: 1
-        },
-        900 : {
-          items: 2
-        },
-        1200 : {
-          items: 3
-        },
-        1600 : {
-          items: 4
-        }
+      margin: 5,
+      //onTranslated: owlCarouselCallback, -> need to fire this on initialization as well
+      responsive: {
+        0: {items: 1}, 900: {items: 2}, 1200: {items: 3}, 1600: {items: 4}
       }
     });
-
+    // Set before+after plan counts for carousel arrows
+    // Currently disabled, because onInitialization doesnt provide "page" event,
+    // which is needed, so it only works when a page has been changed now
+    function owlCarouselCallback(event){
+      var prevText = $('.owl-carousel-before span');
+      var nextText = $('.owl-carousel-after span');
+      if(event.page.index>0){
+        prevText.html(event.page.index);
+      } else {
+        prevText.html('');
+      }
+      if(event.page.count-event.page.index-1>0){
+        nextText.html(event.page.count-event.page.index-1);
+      } else {
+        nextText.html('');
+      }
+    }
     // CAROUSEL PREV, NEXT BUTTONS
-    $('.owl-carousel-next').click(function() {owl.trigger('next.owl.carousel');});
     $('.owl-carousel-prev').click(function() {owl.trigger('prev.owl.carousel');});
+    $('.owl-carousel-next').click(function() {owl.trigger('next.owl.carousel');});
 
     // SCROLLABLE LEFT PANE
     $(window).scroll(function() {
-      $('#left-pane > .box').css('top', $(this).scrollTop() + "px");
-    });
-
-    // EDIT SETUPS BUTTON TRIGGER
-    $('#settings #realization-setups-tab-button a').click(function(){
-      $.get('#{url_for :controller => "exercise_realizations", :action => "edit_setups"}',{id:$("#realization-settings").data("exercise-realization-id")});
+      var offset = $("#right-pane").offset().top, scrollTop = $(this).scrollTop();
+      if(scrollTop>offset){
+        $('#left-pane > .box').css('top', scrollTop-offset+10 + 'px');
+      } else if(scrollTop<=offset){
+        $('#left-pane > .box').css('top', '0');
+      }
     });
 
     // PREVENT ENTER KEYPRESS ON LOADED FORMS
     preventFormEnterKeypress('form');
-
-    // SORTABLE
-    $('.player-plan').sortable({
-        axis: 'y',
-        opacity: 0.9,
-        start: function(event, ui) {
-          ui.item.addClass('sortable-active');
-        },
-
-        // SORT: An item has been sorted within the plan
-        stop: function(event, ui) {
-          ui.item.removeClass('sortable-active draggable-helper');
-          var realization_id = ui.item.data('realization-id'), position = ui.item.index();
-          $.ajax({
-              type: 'POST',
-              url: '#{url_for :controller => "exercise_realizations", :action => "update_row_order"}',
-              dataType: 'json',
-              data: { exercise_realization: {id: realization_id, order_position: position } }
-          });
-          var plan = $(this).data('plan-id');
-          refreshRealizationsInPlan(plan);
-        },
-
-        // CREATE: A draggable item has been received from exercises list (exc has been added)
-        receive: function(event, ui){
-          var code = ui.item.data('exercise-code'), version = ui.item.data('exercise-version');
-          var droppedItem = $(this).data().uiSortable.currentItem;
-          var position = droppedItem.index();
-          var plan = $(this).data('plan-id');
-          $.ajax({
-              type: 'POST',
-              url: '#{url_for :controller => "exercise_realizations", :action => "create"}',
-              dataType: 'json',
-              async: false,
-              data: { exercise_realization: {exercise_code: code, exercise_version: version, order_position: position, plan_id: plan } },
-              success: function(e) {
-                // Add data attributes
-                droppedItem.data('realization-id', e.id); // updates the data object
-                droppedItem.attr('data-realization-id', e.id); // updates the attribute
-                // Change styles
-                droppedItem.removeClass().removeAttr('style');
-                droppedItem.addClass('realization ui-sortable-handle');
-              },
-              error: function(e) {
-                  alert('An error has occured, could not add the realization.');
-              }
-          })
-        }
-    });
   });

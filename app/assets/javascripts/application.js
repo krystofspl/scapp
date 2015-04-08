@@ -14,9 +14,8 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-ui
-//= require jquery-ui/sortable
-//= require jquery-ui/effect-highlight
 //= require jquery.scrollTo
+//= require js-routes
 // special template plugins
 //= require plugins/sparkline/jquery.sparkline.min
 //= require plugins/highcharts/highcharts
@@ -32,8 +31,10 @@
 //= require pickers
 //= require_tree .
 //= require turbolinks
+// Filterrific - filtering (Exercise,ExerciseRealization,Setup,...)
 //= require filterrific/filterrific-jquery
+// Owl carousel (ExerciseRealizations#index)
 //= require owl.carousel
+//= require owl.navigation
 // This is currently only used in exc.realizations testing
 //= require jquery.simulate.drag-sortable
-//= require js-routes

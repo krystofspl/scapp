@@ -49,7 +49,13 @@ class Exercise < ActiveRecord::Base
     end
   }
   scope :accessible, lambda { |user|
-    where('accessibility=? OR user_id=?',:global,user)
+    if user.is_admin?
+      Exercise.all
+    elsif user.is_coach?
+      where('accessibility=? OR user_id=?',:global,user)
+    elsif user.is_player?
+      Exercise.joins({:exercise_realizations=>{:plan=>:user_partook}}).where('plans.user_partook_id=?',user.id)
+    end
   }
 
   # =================== ASSOCIATIONS =================================
@@ -62,7 +68,7 @@ class Exercise < ActiveRecord::Base
   has_one :exercise_image, :foreign_key => [:exercise_code, :exercise_version], :dependent => :destroy
   accepts_nested_attributes_for :exercise_image, allow_destroy: true
   # --- prototypes for v2
-  has_many :exercise_realizations, :foreign_key => [:exercise_code, :exercise_version], :dependent => :restrict_with_error
+  has_many :exercise_realizations, :foreign_key => [:exercise_code, :exercise_version], :dependent => :restrict_with_error, :inverse_of => :exercise
 
   # =================== VALIDATIONS ==================================
   validates :code, presence: true
@@ -93,6 +99,18 @@ class Exercise < ActiveRecord::Base
     !self.exercise_realizations.empty?
   end
 
+  def has_sets?
+    self.type=='ExerciseWithSets'
+  end
+
+  def is_private?
+    self.accessibility == :private
+  end
+
+  def is_global?
+    self.accessibility == :global
+  end
+
   # Return exercise_code(/version/) string
   def relative_url
     read_attribute(:code) + ((read_attribute(:version).to_i>1) ? ("/v/"+read_attribute(:version).to_s) : "")
@@ -102,7 +120,6 @@ class Exercise < ActiveRecord::Base
   def to_s
     read_attribute(:name) + ((read_attribute(:version).to_i>1) ? (" (v"+read_attribute(:version).to_s+")") : "")
   end
-
 
   # Return exercises/exercise_code(/version/) string
   def url

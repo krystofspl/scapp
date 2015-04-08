@@ -118,6 +118,8 @@ class TrainingLessonRealization < ActiveRecord::Base
         seconds / 1.hour
       when :minute
         seconds / 1.minute
+      when :second
+        seconds
       else
         raise StandardError, 'time unit not supported'
     end

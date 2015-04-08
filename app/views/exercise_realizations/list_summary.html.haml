@@ -1,0 +1,24 @@
+- @training_lesson_realization.plans.each do |plan|
+  .player-plan-wrapper
+    .box
+      %h4.box-title
+        -# avatar?
+        = plan.user_partook
+      .box-body
+        - plan.realizations_ordered.each do |realization|
+          .box.box-body.col-sm-3
+            - unless realization.exercise.exercise_image.blank?
+              = image_tag realization.exercise.exercise_image.image.small, class: 'img-rounded no-padding'
+            %span= link_to realization.exercise, realization.exercise
+            %p.no-margin
+              %span{:style=>'white-space: nowrap;'}
+                - time_formatted(realization.from,realization.until)
+            %p.no-margin
+              = distance_of_time_in_words(realization.duration)
+
+          - unless realization.rest_after.blank? || realization.rest_after==0
+            .box.box-body.realization-rest{style: 'min-height:'+rest_after_height.to_s+'px;'}
+              = t('exercise_realizations.dictionary.rest_after')+' ('+distance_of_time_in_words(realization.rest_after)+')'
+              %br
+              - time_formatted(realization.until,realization.until_with_rest_time)
+          %br{:style=>'clear:both;'}

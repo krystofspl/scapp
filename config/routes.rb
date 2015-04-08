@@ -57,6 +57,8 @@ Scapp::Application.routes.draw do
 
   resources :exercise_realization_setups
 
+  resources :exercise_set_realization_setups
+
   resources :payments
 
   resources :training_lesson_realizations, except: [:index], path: 'scheduled_lessons' do
@@ -86,10 +88,23 @@ Scapp::Application.routes.draw do
       collection do
         post 'update_row_order' => 'exercise_realizations#update_row_order'
         get 'show_short' => 'exercise_realizations#show_short'
+        get 'list_summary' => 'exercise_realizations#list_summary'
         get 'list_exercises' => 'exercise_realizations#list_exercises'
+        get 'list_exercise_realizations' => 'exercise_realizations#list_exercise_realizations'
         get 'list_exercise_setups' => 'exercise_realizations#list_exercise_setups'
         get 'list_exercise_realization_setups' => 'exercise_realizations#list_exercise_realization_setups'
         get 'edit_setups' => 'exercise_realizations#edit_setups'
+        get 'edit_sets' => 'exercise_realizations#edit_sets'
+        get 'list_exercise_set_realizations' => 'exercise_realizations#list_exercise_set_realizations'
+      end
+    end
+
+    resources :exercise_set_realizations do
+      collection do
+        post 'update_row_order' => 'exercise_set_realizations#update_row_order'
+        get 'edit_set_setups' => 'exercise_set_realizations#edit_set_setups'
+        get 'list_exercise_set_setups' => 'exercise_set_realizations#list_exercise_set_setups'
+        get 'list_exercise_set_realization_setups' => 'exercise_set_realizations#list_exercise_set_realization_setups'
       end
     end
 

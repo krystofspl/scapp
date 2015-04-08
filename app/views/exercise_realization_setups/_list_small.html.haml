@@ -1,4 +1,4 @@
-.col-sm-12.nopadding
+.col-sm-12.no-padding-sides
   %ul#exercise-realization-setups-accordion
     - exercise_realization_setups.sort{|a,b| a.exercise_setup.name.downcase<=>b.exercise_setup.name.downcase}.each do |rs|
       %li{:data => {'exercise-realization-setup-id' => rs.id}}

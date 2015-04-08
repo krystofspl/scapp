@@ -22,15 +22,15 @@ Feature: Remove exercise step from an exercise
     Given I am logged in as User test1
     When I am at the "/exercises/exc1/steps" page
     Then I should see "stepA" in table "sortable"
-      And Exercise step "stepA" should have number "1"
-      And I should see "stepB" in table "sortable"
-      And Exercise step "stepB" should have number "2"
-      And I should see "stepC" in table "sortable"
-      And Exercise step "stepC" should have number "3"
-      And I shouldn't see "stepX" in the table "sortable"
+    And Exercise step "stepA" should have number "1"
+    And I should see "stepB" in table "sortable"
+    And Exercise step "stepB" should have number "2"
+    And I should see "stepC" in table "sortable"
+    And Exercise step "stepC" should have number "3"
+    And I shouldn't see "stepX" in the table "sortable"
     When I click "Delete" for "stepB" in table row
     When I confirm popup
     Then I should see "Exercise step was successfully deleted." message
-      And I shouldn't see "stepB" in the table "sortable"
-      And Exercise step "stepA" should have number "1"
-      And Exercise step "stepC" should have number "2"
+    And I shouldn't see "stepB" in the table "sortable"
+    And Exercise step "stepA" should have number "1"
+    And Exercise step "stepC" should have number "2"

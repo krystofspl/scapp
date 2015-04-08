@@ -48,4 +48,5 @@
               = link_to '#', class: 'btn btn-danger btn-xs disabled' do
                 %i.fa.fa-times
                 = t('dictionary.delete')
-= paginate @exercise_measurements, :param_name => :page_m
+.text-center
+  = paginate @exercise_measurements, :param_name => :page_m

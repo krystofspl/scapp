@@ -4,13 +4,13 @@ When(/^I drag and drop exercise "(.*)" to plan for user "(.*)"$/) do |exercise_n
   user_id = User.friendly.find(user_slug).id
   plan = page.find_by_id('player-'+user_id.to_s)
   target = plan.first('.realization')
-  sleep(2)
   dragged_item = page.first('li[data-exercise-code="'+exercise_name.to_s+'"]')
   dragged_item.drag_to(target)
 end
+
 Then(/^I should see realization "(.*)" in the plan for user "(.*)"$/) do |what, user_slug|
   user_id = User.friendly.find(user_slug).id
-  page.first('#player-'+user_id.to_s+' li').should have_content(what)
+  expect(page).to have_css('#player-'+user_id.to_s+' li', :text=> what)
 end
 
 And(/^Following exercise realizations exist in the system$/) do |table|
@@ -37,15 +37,17 @@ end
 When(/^I click Edit for exercise realization "(.*)" in plan for user "(.*)"$/) do |exercise, user|
   plan = Plan.where("user_partook_id=?",User.friendly.find(user).id).first
   realization_id = plan.exercise_realizations.where("exercise_code=?",exercise).first.id
-  find("li[data-realization-id='"+realization_id.to_s+"']").hover
-  find("li[data-realization-id='"+realization_id.to_s+"'] .btn-edit", :visible => false).click
+  li = find("li[data-realization-id='"+realization_id.to_s+"']")
+  li.hover
+  li.find(".btn-edit", :visible => false).click
 end
 
 When(/^I click Delete for exercise realization "(.*)" in plan for user "(.*)"$/) do |exercise, user|
   plan = Plan.where("user_partook_id=?",User.friendly.find(user).id).first
   realization_id = plan.exercise_realizations.where("exercise_code=?",exercise).first.id
-  find("li[data-realization-id='"+realization_id.to_s+"']").hover
-  find("li[data-realization-id='"+realization_id.to_s+"'] .btn-destroy", :visible => false).click
+  li = find("li[data-realization-id='"+realization_id.to_s+"']")
+  li.hover
+  li.find(".btn-destroy", :visible => false).click
 end
 
 
@@ -72,7 +74,7 @@ Then(/^I should see an error message in the form containing "([^"]*)"$/) do |arg
 end
 
 Then(/^I should see "([^"]*)" realization at position n\. "([^"]*)"$/) do |exc, pos|
-  page.all(".realization")[pos.to_i-1].should have_content(exc)
+  expect(page.all(".realization")[pos.to_i-1]).to have_content(exc)
 end
 
 When(/^I move "([^"]*)" realization one step down$/) do |arg|
@@ -83,5 +85,5 @@ end
 
 Then(/^I should not see realization "([^"]*)" in plan for user "([^"]*)"$/) do |realization, user|
   user_id = User.friendly.find(user).id
-  page.find_by_id('player-'+user_id.to_s).should_not have_content(realization)
+  expect(page.find_by_id('player-'+user_id.to_s)).to_not have_content(realization)
 end

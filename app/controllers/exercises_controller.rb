@@ -86,7 +86,7 @@ class ExercisesController < ApplicationController
   end
 
   def clone
-    #TODO presunout do modelu?
+    #TODO presunout do modelu!
     existing_exercise_version = (params[:exercise_version].blank?) ? 1 : params[:exercise_version]
     new_exercise_version = Exercise.all.order('version').last.version+1
     # Exercise
@@ -117,7 +117,9 @@ class ExercisesController < ApplicationController
       new.exercise_version = new_exercise_version
       new.save
       @exercise.exercise_steps << new
+      #TODO Images
     end
+    #TODO Image
     @exercise.save
     render action: 'edit'
   end
@@ -132,12 +134,13 @@ class ExercisesController < ApplicationController
 
   # Filterrific sub-filters
   def filterrific_setups
+    fs_select_options = Hash.new
+    fs_select_options[:sorted_by] = ExerciseSetup.options_for_sorted_by
+    fs_select_options[:type] = ExerciseSetup.options_for_type if @exercise.has_sets?
     @filterrific_setups = initialize_filterrific(
         ExerciseSetup,
         params[:filterrific_setups],
-        :select_options => {
-            sorted_by: ExerciseSetup.options_for_sorted_by
-        }
+        :select_options => fs_select_options
     ) or return
     @exercise_setups = @filterrific_setups.find.where('exercise_code=? AND exercise_version=?', @exercise.code, @exercise.version).page(params[:page_s]).per(3)
   end

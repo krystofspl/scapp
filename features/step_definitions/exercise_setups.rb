@@ -7,9 +7,10 @@ When(/^I fill in all required exercise setup fields$/) do |table|
 end
 
 And(/^Following exercise setups exist in the system$/) do |table|
-  # table is a table.hashes.keys # => [:name, :description, :required, :unit, :exercise]
+  # table is a table.hashes.keys # => [:name, :description, :required, :unit, :exercise, :type]
   table.hashes.each do |t|
-    ExerciseSetup.create(:name=>t[:name],:description=>t[:description],:required=>t[:required],:unit_code=>Unit.friendly.find(t[:unit]).code,:exercise_code=>t[:exercise],:exercise_version=>1)
+    type = t[:type].blank? ? 'ExerciseSetup' : t[:type]
+    ExerciseSetup.create(:name=>t[:name],:description=>t[:description],:required=>t[:required],:unit_code=>Unit.friendly.find(t[:unit]).code,:exercise_code=>t[:exercise],:exercise_version=>1, :type=>type)
   end
 end
 
@@ -35,7 +36,7 @@ Then(/^I shouldn't see "([^"]*)" checkbox$/) do |arg|
 end
 
 When(/^I click "([^"]*)" for "([^"]*)" exercise setup$/) do |arg1, arg2|
-  within('#exercise_setups', :text => arg2) do
+  within('#exercise-setups-tab', :text => arg2) do
     click_link(arg1)
   end
 end

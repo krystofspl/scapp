@@ -1,24 +1,25 @@
-= simple_form_for(:exercise_realization, :url => {controller: 'exercise_realizations', action: 'update'}, remote: true, format: :json, method: :put) do |f|
+= simple_form_for(exercise_realization, :url => {controller: 'exercise_realizations', action: 'update'}, remote: true, format: :json, method: :put, html: {id: exercise_realization.id}) do |f|
   .form-errors
   = f.error_notification
   .form-inputs
+    - unless exercise_realization.exercise.type=='ExerciseWithSets'
+      .form-group
+        .col-sm-12.no-padding-sides
+          %strong=t('exercise_realizations.form.time_duration')
+        .col-sm-4.no-padding-sides
+          = f.input :duration_partial_hours, :as => :integer, label: t('exercise_realizations.form.hours'), input_html: {min: '0', max: '59'}
+        .col-sm-4.no-padding-sides
+          = f.input :duration_partial_minutes, :as => :integer, label: t('exercise_realizations.form.minutes'), input_html: {min: '0', max: '59'}
+        .col-sm-4.no-padding-sides
+          = f.input :duration_partial_seconds, :as => :integer, label: t('exercise_realizations.form.seconds'), input_html: {min: '0', max: '59'}
     .form-group
-      .col-sm-12.nopadding
-        %strong=t('exercise_realizations.form.time_duration')
-      .col-sm-4.nopadding
-        = f.input :duration_partial_hours, :as => :integer, label: t('exercise_realizations.form.hours'), input_html: {min: '0', max: '59'}
-      .col-sm-4.nopadding
-        = f.input :duration_partial_minutes, :as => :integer, label: t('exercise_realizations.form.minutes'), input_html: {min: '0', max: '59'}
-      .col-sm-4.nopadding
-        = f.input :duration_partial_seconds, :as => :integer, label: t('exercise_realizations.form.seconds'), input_html: {min: '0', max: '59'}
-    .form-group
-      .col-sm-12.nopadding
+      .col-sm-12.no-padding-sides
         %strong=t('exercise_realizations.form.rest_after')
-      .col-sm-4.nopadding
+      .col-sm-4.no-padding-sides
         = f.input :rest_partial_minutes, :as => :integer, label: t('exercise_realizations.form.minutes'), input_html: {min: '0', max: '59'}
-      .col-sm-4.nopadding
+      .col-sm-4.no-padding-sides
         = f.input :rest_partial_seconds, :as => :integer, label: t('exercise_realizations.form.seconds'), input_html: {min: '0', max: '59'}
-    .col-sm-12.nopadding
+    .col-sm-12.no-padding-sides
       = f.input :note, as: :text, input_html: { class: 'textarea', rows: 5 }
   .form-actions.col-sm-12.margin.text-right
     = link_to t('dictionary.cancel'), '#', class: 'btn btn-default btn-cancel'

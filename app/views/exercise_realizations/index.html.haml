@@ -1,9 +1,12 @@
-%p#notice= notice
 - content_for :heading do
   = "#{t('exercise_realizations.index.heading')}"
 - breadcrumb :regular_training_lesson_realizations_plans, @training_lesson_realization
+#action-box
+  = link_to @training_lesson_realization, class: 'btn btn-primary' do
+    %i.fa.fa-chevron-left
+    = t('exercise_realizations.index.back_to_lesson_realization')
 
-#left-pane-container.col-xs-6.col-sm-6.col-lg-4
+#left-pane-container.col-xs-6.col-sm-6.col-lg-4.no-padding
   #left-pane
     .box.box-primary
       .box-body
@@ -30,38 +33,23 @@
             #realization-settings.tab-pane.fade.in.active
             #realization-setups.tab-pane.fade
             #realization-sets.tab-pane.fade
-      %br{:style=>'clear:both;'}
+        %br{:style=>'clear:both;'}
 
-.col-xs-6.col-sm-6.col-lg-8
-  #right-pane.box.box-primary
+.col-xs-6.col-sm-6.col-lg-8.no-padding
+  #right-pane.box.box-success
     .box-body
-      .owl-carousel-before
+      .owl-carousel-before.no-padding
         .owl-carousel-prev.fa.fa-arrow-left.fa-2x
-      -#
-          - tlr_time = @training_lesson_realization.from
-          - tlr_until = @training_lesson_realization.until
-          - while tlr_time <= tlr_until
-            .dynamic-size-time
-              = tlr_time.strftime("%H:%M")
-            - tlr_time+=300
-      .owl-carousel#owl-carousel
-        - plans = @training_lesson_realization.plans.sort do |a,b|
-          - comp = (a.user_partook.last_name <=> b.user_partook.last_name)
-          - comp.zero? ? (a.user_partook.first_name <=> b.user_partook.first_name) : comp
-          - #TODO utf8 chars se radi na konec, pridat gem
-        - plans.each do |plan|
-          - player = plan.user_partook
-          %div.player-plan-wrapper.box
-            %h4.box-title
-              .title
+      .owl-carousel#owl-carousel.no-padding
+        - @training_lesson_realization.plans.each do |plan|
+          .player-plan-wrapper
+            .box
+              %h4.box-title.text-center.no-padding
                 -# avatar?
-                = player
-            .box-body
-              %ul.player-plan{:id => "player-#{player.id}", :data => {'plan-id' => plan.id}}
-                - plan.ordered_realizations.each do |realization|
-                  %li.realization{:data => {'realization-id' => realization.id}}
-                    = render partial: 'exercise_realizations/detail_short', locals: {:realization => realization}
-      .owl-carousel-after
+                = plan.user_partook
+              .box-body.no-padding
+                = render partial: 'list_small', locals: {:plan => plan}
+      .owl-carousel-after.no-padding
         .owl-carousel-next.fa.fa-arrow-right.fa-2x
       %br{:style=>'clear:both;'}
 %br{:style=>'clear:both;'}

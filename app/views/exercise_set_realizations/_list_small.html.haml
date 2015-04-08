@@ -1,0 +1,29 @@
+.col-sm-12.no-padding-sides
+  %ul.no-padding#exercise-set-realizations-sortable
+    - exercise_set_realizations.each_with_index do |exercise_set_realization, i|
+      %li.box.box-body{:data=>{'exercise-set-realization-id' => exercise_set_realization.id}}
+        = render partial: 'exercise_set_realizations/detail', locals: {exercise_set_realization: exercise_set_realization, position: i+1}
+%br{:style=>'clear: both;'}
+
+:javascript
+  $('#exercise-set-realizations-sortable').sortable({
+    axis: 'y',
+    opacity: 0.8,
+    start: function(event,ui){
+      ui.item.addClass('set-realizations-sortable-active');
+    },
+    stop: function(event, ui) {
+      ui.item.removeClass('set-realizations-sortable-active');
+      var setRealizationId = ui.item.data('exercise-set-realization-id'), position = ui.item.index();
+      // Send update row order AJAX call
+      $.ajax({
+          type: 'POST',
+          url: '#{url_for :controller => "exercise_set_realizations", :action => "update_row_order"}',
+          dataType: 'json',
+          data: { id: setRealizationId, exercise_set_realization: { order_position: position } }
+      });
+      // Refresh set realizations list
+      getExerciseSetRealizations();
+    }
+  });
+

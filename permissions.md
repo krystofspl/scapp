@@ -194,3 +194,35 @@
 | 14.1  | List help themes in spec. locale  | Y             | Y         | Y         | Y         |
 | 14.2  | Show help                         | Y             | Y         | Y         | Y         |
 | 14.3  | Show modal help                   | Y             | Y         | Y         | Y         |
+
+# Exercises
+
+| ID    | Action                            | implemented?  | owner | :player   | :coach    | :admin    | note                                                          |
+| ----- | --------------------------------- | ------------- | ----- | --------- | --------- | --------- | ------------------------------------------------------------- |
+| 16.1  | List exercises                    | Y             | -     | Y *1      | Y *2      | Y         | *1 - only exercises where partook  *2 - only owned and global
+| 16.2  | Show exercise detail              | Y             | Y     | Y *1      | Y *2      | Y         | *1 - only exercises where partook  *2 - only owned and global
+| 16.3  | Create exercise                   | Y             | -     | -         | Y         | Y         |
+| 16.4  | Edit exercise                     | Y             | Y     | -         | Y         | Y         |
+| 16.5  | Remove exercise                   | Y             | Y     | -         | Y         | Y         |
+
+# Exercise bundles
+
+| ID    | Action                            | implemented?  | owner | :player   | :coach    | :admin    | note                                                          |
+| ----- | --------------------------------- | ------------- | ----- | --------- | --------- | --------- | ------------------------------------------------------------- |
+| 17.1  | List exercise bundles             | Y             | -     | -         | Y *1      | Y         | *1 - only owned and global
+| 17.2  | Show exercise bundle detail       | Y             | Y     | -         | Y *1      | Y         | *1 - only owned and global
+| 17.3  | Create exercise bundle            | Y             | -     | -         | Y         | Y         |
+| 17.4  | Edit exercise bundle              | Y             | Y     | -         | Y *1      | Y         | *1 - only owned
+| 17.5  | Remove exercise bundle            | Y             | Y     | -         | Y *1      | Y         | *1 - only owned
+
+# Exercise realizations
+
+* **owner** - user owning regular training
+
+| ID    | Action                            | implemented?  | owner | :player   | :coach    | :admin    | note                                                          |
+| ----- | --------------------------------- | ------------- | ----- | --------- | --------- | --------- | ------------------------------------------------------------- |
+| 18.1  | Show exercise realizations        | -             | Y     | Y *1      | Y         | Y         | *1 - only where partook
+| 18.2  | Create exercise realization       | Y             | -     | -         | Y         | Y         |
+| 18.3  | Edit exercise realization         | Y             | Y     | -         | Y         | Y         |
+| 18.4  | Remove exercise bundle            | Y             | Y     | -         | Y         | Y         |
+| 18.5  | Edit plan                         | Y             | Y     | -         | Y         | Y         |

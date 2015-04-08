@@ -4,7 +4,7 @@ class ExerciseStepsController < ApplicationController
   before_action :set_exercise, only: [:index, :edit, :create, :update]
 
   def index
-    authorize! :index, ExerciseStep
+    authorize! :index, @exercise
     @exercise_step = ExerciseStep.new
   end
 

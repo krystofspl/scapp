@@ -24,9 +24,17 @@
               %tr
                 %th= t('exercise.show.exercise_setups_unit_name')
                 %td= exercise_setup.unit.name+" ["+exercise_setup.unit.abbreviation+"]"
-              %tr
-                %th= t('exercise.show.exercise_setup_type')
-                %td= dash_or_object(exercise_setup.exercise_setup_type)
+              - if exercise_setup.exercise.has_sets?
+                %tr
+                  %th=t('dictionary.type')
+                  - if exercise_setup.type=='ExerciseSetup'
+                    %td= t('exercise_setup.simple_setup')
+                  - elsif exercise_setup.type=='ExerciseSetSetup'
+                    %td= t('exercise_setup.set_setup')
+              - unless exercise_setup.exercise_setup_type.blank?
+                %tr
+                  %th= t('exercise_setup.dictionary.exercise_setup_type')
+                  %td= dash_or_object(exercise_setup.exercise_setup_type)
               %tr
                 %td{:colspan=>2}= sanitize exercise_setup.description
         .box-footer
@@ -51,4 +59,5 @@
               = link_to '#', class: 'btn btn-danger btn-xs disabled' do
                 %i.fa.fa-times
                 = t('dictionary.delete')
-= paginate @exercise_setups, :param_name => :page_s
+.text-center
+  = paginate @exercise_setups, :param_name => :page_s

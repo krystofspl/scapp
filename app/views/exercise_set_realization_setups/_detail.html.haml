@@ -1,0 +1,30 @@
+.accordion-header-wrapper
+  %h5= exercise_set_realization_setup.exercise_set_setup.name
+  %i.fa.fa-bar-chart-o
+  = t('dictionary.value') + ": " + exercise_set_realization_setup.value.to_s + " " + exercise_set_realization_setup.exercise_set_setup.unit.abbreviation
+%div
+  - unless exercise_set_realization_setup.note.blank?
+    %p.no-margin
+      %i.fa.fa-pencil-square-o
+      %i= t('dictionary.note')+": "+sanitize(exercise_set_realization_setup.note)
+  - unless exercise_set_realization_setup.exercise_set_setup.description.blank?
+    %p.no-margin
+      %i.fa.fa-info-circle
+      = t('dictionary.description')+": "
+      = sanitize exercise_set_realization_setup.exercise_set_setup.description
+.btns-block
+  = link_to t('dictionary.edit'), '#', class: 'btn btn-xs btn-warning btn-edit'
+  - unless exercise_set_realization_setup.exercise_set_setup.is_required?
+    = link_to t('dictionary.delete'), exercise_set_realization_setup, :method => :delete, :remote => true, data: { confirm: t('dictionary.are_you_sure') }, class: 'btn btn-xs btn-danger btn-destroy'
+
+:javascript
+  $(".btn-edit").click(function(){
+    renderSetRealizationSetupFormEdit($(this).closest('li').data('exercise-set-realization-setup-id'));
+    showEditSetupPane();
+  });
+  $(".btn-destroy").bind('ajax:success', function() {
+    $(this).closest('li').fadeOut(1000, function(){
+        // Remove element
+        $(this).remove();
+    });
+  });

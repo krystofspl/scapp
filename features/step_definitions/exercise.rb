@@ -1,8 +1,9 @@
 And(/^Following exercises exist in the system$/) do |table|
-  # table is a table.hashes.keys # => [:name, :description, :accessibility, :owner]
+  # table is a table.hashes.keys # => [:name, :description, :accessibility, :owner, :type]
   table.hashes.each do |r|
     user = User.friendly.find(r[:owner])
-    Exercise.create({name: r[:name], description: r[:description], accessibility: r[:accessibility], user: user})
+    exercise_type = r[:type].blank? ? 'Exercise' : r[:type]
+    Exercise.create({name: r[:name], description: r[:description], accessibility: r[:accessibility], user: user, type: exercise_type})
   end
 end
 
@@ -58,7 +59,11 @@ When(/^I fill all required fields for exercise step$/) do |table|
 end
 
 Then(/^I should see an exercise fork dialog$/) do
-  page.find('#btn-continue')
+  expect(page).to have_css('#btn-continue')
+end
+
+Then(/^I shouldn't see "([^"]*)" tab$/) do |tab|
+  expect(page).to_not have_content(tab)
 end
 
 When(/^I choose to edit the current version$/) do
@@ -68,3 +73,8 @@ end
 When(/^I choose to make a new version$/) do
   page.find('#btn-clone').click
 end
+
+When(/^I click "([^"]*)" tab$/) do |link_text|
+  click_link_or_button link_text
+end
+

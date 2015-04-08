@@ -1,28 +1,17 @@
-.col-sm-12.nopadding
+.col-sm-12.no-padding-sides
   %ul
     - exercises.each do |exercise|
       %li.box.box-body.col-sm-12.draggable{:data => {'exercise-code' => exercise.code, 'exercise-version' => exercise.version}}
         - unless exercise.exercise_image.blank?
-          = image_tag exercise.exercise_image.image.small, class: 'img-rounded margin no-padding', style: 'float:left; width: 50px;'
+          = image_tag exercise.exercise_image.image.small, class: 'img-rounded margin no-padding', style: 'float:right; width: 50px;'
         %strong= link_to exercise.to_s, exercise
         %br
-        =sanitize truncate(exercise.description, :length => 85)
+        = sanitize truncate(exercise.description, :length => 85)
 .col-sm-12.text-center#paginator
 
 :javascript
   $(function() {
     $('#exercises #paginator').html('#{escape_javascript(paginate(exercises, :remote => true, :params => {:controller => 'exercise_realizations', :action => 'list_exercises'}))}');
     // DRAGGABLE
-    $(".draggable").draggable({
-        appendTo: '#owl-carousel',
-        forceHelperSize: true,
-        connectToSortable: $('.player-plan'),
-        opacity: 0.8,
-        cursorAt: { left: 5 , top: 5},
-        helper: 'clone',
-        start: function(e, ui){
-          $(ui.helper).removeClass('col-sm-12');
-          $(ui.helper).addClass('draggable-helper');
-        }
-    });
+    refreshExercisesDraggable();
   });

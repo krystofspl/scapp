@@ -34,6 +34,7 @@ en:
       exercise_steps_empty: "This exercise has no exercise steps."
       show_detailed_description: "Show detailed description"
       detailed_description: "Detailed description"
+      exercise_setups_and_measurements: "Setups and Measurements"
     index:
       exercises_list: "Exercises list"
       exercises: "Exercises"
@@ -62,6 +63,11 @@ en:
       realizations_desc: "Number of realizations ▼"
       filters: "Filters"
       submit: "Filter"
+    dictionary:
+      simple_exercise: "Simple exercise"
+      exercise_with_sets: "Exercise with sets"
+      accessibility_private: "Private"
+      accessibility_global: "Global"
   breadcrumbs:
     exercise_detail: "Exercise detail"
     exercises: "Exercises"
@@ -131,6 +137,11 @@ en:
     clone:
       button: "Clone"
       add_setup: "Clone exercise setup"
+    simple_setup: "Setup for the whole exercise"
+    set_setup: "Setup for an exercise set"
+    dictionary:
+      exercise_setup_type: "Special type"
+      setups: "Setups"
   dictionary:
     back: "Back"
     cancel: "Cancel"
@@ -146,6 +157,8 @@ en:
     submitting: "Submitting..."
     following_errors_occured_text_only: "Following errors occured:"
     filter: "Filter"
+    all: "All"
+    remaining_time: "Remaining time"
   exercise_bundle:
     edit:
       edit_bundle: "Edit exercise bundle"
@@ -207,6 +220,8 @@ en:
     index:
       exercise_realizations: "Exercise realizations"
       heading: "Plans specification"
+      back_to_lesson_realization: "Back to lesson realization"
+      no_realizations_yet: "No realizations yet"
     form:
       please_reload_try_again: "Please reload the page and try again."
       save_realization: "Save realization"
@@ -218,15 +233,21 @@ en:
       heading: "Edit realization"
     error:
       doesnt_fit_into_lesson: "Realization duration is too long for the lesson."
+      could_not_add: "An error has occured, could not add the realization."
     dictionary:
       rest_after: "Rest"
       setups: "setups"
       setup: "setup"
+      set: "set"
+      sets: "sets"
     edit:
       available_unused_setups: "Available unused setups"
       used_setups: "Used setups"
       edit_realization: "Edit realization"
       edit_setup: "Edit setup"
+      edit_sets: "Edit sets"
+      add_new_set: "Add a new set"
+      edit_set: "Edit set"
   favorite_plan:
     index:
       favorite_plans: "My favorite plans"
@@ -236,6 +257,13 @@ en:
       save: "Save"
     errors:
       cannot_delete_required: "Cannot delete setup - it is required."
+      value_must_be_filled_in: "Either numeric or string value must be filled in"
   exercise_set_realization:
     form:
       heading: "Edit sets"
+      save_set: "Save set"
+    error:
+      needs_to_have_one_set: "This exercise realization needs to have at least one set."
+  exercise_realization:
+    dictionary:
+      plans_specification: "Plans specification"

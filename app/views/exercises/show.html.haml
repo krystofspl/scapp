@@ -32,6 +32,13 @@
                         %th= t('exercise.show.version')
                         %td= @exercise.version
                     %tr
+                      %th= t('dictionary.type')
+                      %td
+                        - if !@exercise.has_sets?
+                          = t('exercise.dictionary.simple_exercise')
+                        - elsif @exercise.has_sets?
+                          = t('exercise.dictionary.exercise_with_sets')
+                    %tr
                       %th= t('exercise.show.owner')
                       %td= dash_or_object(@exercise.user).to_s
                     %tr
@@ -93,66 +100,71 @@
                               .modal-body-content
                                 = sanitize @exercise.description_long
                             .modal-footer
-    .row
+    #exercise-setups-measurements.row
       .col-sm-12
-        .box.box-primary#exercise_setups
+        .box.box-primary
           .box-header
-            %h2.box-title= t('exercise.show.exercise_setups')
-          .box-body
-            - if can? :add_setup, @exercise
-              = link_to new_exercise_setup_path(:exercise_code=>@exercise.code, :exercise_version=>@exercise.version), class: 'btn btn-success' do
-                %i.fa.fa-plus
-                = t('exercise.show.add_setup')
-              .row.margin
-            .row
-              .col-sm-12
-                .well.well-sm
-                  .row
-                    .col-sm-12
-                      %h4=t('exercise.filter.filters')
-                  .row
-                    = form_for_filterrific @filterrific_setups, url: {action: 'filterrific_setups'}, :as => :filterrific_setups do |f|
-                      .col-sm-3
-                        = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
-                      .col-sm-3
-                        = f.select(:sorted_by, @filterrific_setups.select_options[:sorted_by],{},{ :class => 'form-control'})
-                      .col-sm-6
-                        = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
-            .row
-              .col-sm-12
-                #exercise_setups_data
-                  = render partial: 'exercise_setups/list_table', locals: {:exercise_setups => @exercise_setups}
-
-    .row
-      .col-sm-12
-        .box.box-primary#exercise_measurements
-          .box-header
-            %h2.box-title= t('exercise.show.exercise_measurements')
-          .box-body
-            .row
-            - if can? :add_measurement, @exercise
-              = link_to new_exercise_measurement_path(:exercise_code=>@exercise.code, :exercise_version=>@exercise.version), class: 'btn btn-success' do
-                %i.fa.fa-plus
-                = t('exercise.show.add_measurement')
-              .row.margin
-            .row
-              .col-sm-12
-                .well.well-sm
-                  .row
-                    .col-sm-12
-                      %h4=t('exercise.filter.filters')
-                  .row
-                    = form_for_filterrific @filterrific_measurements, url: {action: 'filterrific_measurements'}, :as => :filterrific_measurements do |f|
-                      .col-sm-3
-                        = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
-                      .col-sm-3
-                        = f.select(:sorted_by, @filterrific_measurements.select_options[:sorted_by],{},{ :class => 'form-control'})
-                      .col-sm-6
-                        = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
-            .row
-              .col-sm-12
-                #exercise_measurements_data
-                  = render partial: 'exercise_measurements/list_table', locals: {:exercise_measurements => @exercise_measurements}
+            .col-sm-12.no-padding
+              %h2.box-title=t('exercise.show.exercise_setups_and_measurements')
+            .col-sm-12
+              %ul.nav.nav-tabs
+                %li.active
+                  = link_to t('exercise.show.exercise_setups'), '#exercise-setups-tab', {:data => {'toggle' => 'tab'}}
+                %li
+                  = link_to t('exercise.show.exercise_measurements'), '#exercise-measurements-tab', {:data => {'toggle' => 'tab'}}
+          .box-body.tab-content
+            #exercise-setups-tab.tab-pane.fade.in.active
+              - if can? :add_setup, @exercise
+                = link_to new_exercise_setup_path(:exercise_code=>@exercise.code, :exercise_version=>@exercise.version), class: 'btn btn-success' do
+                  %i.fa.fa-plus
+                  = t('exercise.show.add_setup')
+                .row.margin
+              .row
+                .col-sm-12
+                  .well.well-sm
+                    .row
+                      .col-sm-12
+                        %h4=t('exercise.filter.filters')
+                    .row
+                      = form_for_filterrific @filterrific_setups, url: {action: 'filterrific_setups'}, :as => :filterrific_setups do |f|
+                        .col-sm-3
+                          = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
+                        .col-sm-3.no-padding
+                          = f.select(:sorted_by, @filterrific_setups.select_options[:sorted_by],{},{:class => 'form-control'})
+                        - if @exercise.has_sets?
+                          .col-sm-3.no-padding
+                            = f.select(:type, @filterrific_setups.select_options[:type],{},{:class => 'form-control'})
+                        .col-sm-3.no-padding
+                          = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
+              .row
+                .col-sm-12
+                  #exercise_setups_data
+                    = render partial: 'exercise_setups/list_table', locals: {:exercise_setups => @exercise_setups}
+            #exercise-measurements-tab.tab-pane.fade.in
+              .row
+              - if can? :add_measurement, @exercise
+                = link_to new_exercise_measurement_path(:exercise_code=>@exercise.code, :exercise_version=>@exercise.version), class: 'btn btn-success' do
+                  %i.fa.fa-plus
+                  = t('exercise.show.add_measurement')
+                .row.margin
+              .row
+                .col-sm-12
+                  .well.well-sm
+                    .row
+                      .col-sm-12
+                        %h4=t('exercise.filter.filters')
+                    .row
+                      = form_for_filterrific @filterrific_measurements, url: {action: 'filterrific_measurements'}, :as => :filterrific_measurements do |f|
+                        .col-sm-3
+                          = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
+                        .col-sm-3
+                          = f.select(:sorted_by, @filterrific_measurements.select_options[:sorted_by],{},{ :class => 'form-control'})
+                        .col-sm-6
+                          = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
+              .row
+                .col-sm-12
+                  #exercise-measurements-data
+                    = render partial: 'exercise_measurements/list_table', locals: {:exercise_measurements => @exercise_measurements}
 
   .col-sm-4
     .col-sm-12

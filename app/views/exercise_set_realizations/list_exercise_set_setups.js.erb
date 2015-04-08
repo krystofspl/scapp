@@ -1,0 +1,21 @@
+$("#exercise-set-setups-available-wrapper").html("<%= escape_javascript(render partial: 'exercise_setups/list_small', locals: {:exercise_setups => @exercise_set_setups}) %>");
+makeElementsSameHeight("#exercise-set-setups-available-wrapper .box-body");
+$('#paginator-set-setups').html('<%=escape_javascript(paginate(@exercise_set_setups, :remote => true, :param_name => :page_s, :params => {:controller => 'exercise_set_realizations', :action => 'list_exercise_set_setups'}).to_s)%>');
+$('#exercise-set-setups-available-wrapper li').disableSelection();
+
+$(function() {
+    // ADD EXERCISE SET REALIZATION SETUP
+    $('.btn-add').unbind().click(function(){
+        // Append cloned div to realization setups
+        var clone = $(this).parent().clone();
+        clone.find('.btn').remove();
+        clone.find('div').removeClass().removeAttr('style');
+        clone.removeAttr('style').removeClass().addClass('active-highlight');
+        $('#exercise-set-realization-setups-accordion').prepend(clone).accordion('destroy').accordion();
+        addedSetRealizationSetup = clone;
+
+        // Show edit pane instead of available setups
+        renderSetRealizationSetupFormNew(editedSetRealizationId,$(this).parent('li').data('exercise-setup-code'));
+        switchAvailableSetupsEditPanesVisibility();
+    });
+});

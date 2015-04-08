@@ -12,7 +12,6 @@ class ExerciseRealizationSetupsController < ApplicationController
 
   def create
     @exercise_realization_setup = ExerciseRealizationSetup.new(exercise_realization_setup_params)
-    puts @exercise_realization_setup.inspect
     respond_to do |format|
       if @exercise_realization_setup.save
         format.json { render json: @exercise_realization_setup }
@@ -34,6 +33,14 @@ class ExerciseRealizationSetupsController < ApplicationController
 
   def destroy
     @exercise_realization_setup = ExerciseRealizationSetup.find(params[:id])
+    # If setup is required, forbid deletion
+    @exercise_realization_setup.is_required?
+    if @exercise_realization_setup.errors.any?
+      @exercise_realization_setup.errors.full_messages.each do |err|
+        flash[:notice]=err
+      end
+      return
+    end
     respond_to do |format|
       if @exercise_realization_setup.destroy
         format.json { head :no_content }

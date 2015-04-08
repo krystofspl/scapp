@@ -1,0 +1,36 @@
+.col-sm-12.col-md-1.no-padding
+  %span{:style=>'padding: 5px;'}
+    = position.to_s+"."
+.col-sm-12.col-md-11.no-padding
+  .exercise-set-realization-duration
+    %span{:style=>'white-space: nowrap;'}
+      - time_formatted(exercise_set_realization.from, exercise_set_realization.until)
+      =' ('+distance_of_time_in_words(exercise_set_realization.duration)+')'
+    - setups_count = exercise_set_realization.exercise_set_realization_setups.count
+    - if setups_count>0
+      .label.label-primary
+        = setups_count.to_s
+        - if setups_count==1
+          = " " + t('exercise_realizations.dictionary.setup')
+        - else
+          = " " + t('exercise_realizations.dictionary.setups')
+    - unless exercise_set_realization.note.blank?
+      %p.no-margin
+        %i.fa.fa-pencil-square-o
+        %i= t('dictionary.note')+": "+exercise_set_realization.note
+  - unless exercise_set_realization.rest_after.blank? || exercise_set_realization.rest_after == 0
+    .exercise-set-realization-rest
+      %p.no-margin
+        = t('exercise_realizations.dictionary.rest_after')+' ('+distance_of_time_in_words(exercise_set_realization.rest_after)+')'
+      %p.no-margin
+        - time_formatted(exercise_set_realization.until,exercise_set_realization.until_with_rest_time)
+.btns-block
+  = link_to t('exercise_setup.dictionary.setups'), edit_set_setups_training_lesson_realization_exercise_set_realizations_path(:id => exercise_set_realization.id), :remote => true, class: 'btn btn-xs btn-warning btn-setups'
+  = link_to t('dictionary.edit'), edit_training_lesson_realization_exercise_set_realization_path(:id => exercise_set_realization.id), :remote => true, class: 'btn btn-xs btn-warning btn-edit'
+  = link_to t('dictionary.delete'), training_lesson_realization_exercise_set_realization_path(:id => exercise_set_realization.id), :remote => true, :method => :delete, :data => {:confirm => t('dictionary.are_you_sure')}, class: 'btn btn-xs btn-danger btn-destroy'
+%br{:style=>'clear:both;'}
+
+:javascript
+  $('.btn-edit, .btn-setups').unbind().click(function(){
+    editedSetRealizationId = $(this).closest('li').data('exercise-set-realization-id');
+  });

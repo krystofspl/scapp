@@ -12,11 +12,11 @@ Feature: Add new exercise bundle
     Then I should see "link" containing "New exercise bundle"
     When I click "New exercise bundle"
     Then I shouldn't see "radio_button" containing "Private"
-      And I shouldn't see "radio_button" containing "Global"
+    And I shouldn't see "radio_button" containing "Global"
       # Pro coache bude "private" implicitni
     When I fill in all required fields for exercise_bundle
-      | name | description |
-      | bundle1 | bundle 1 desc  |
+      | name    | description   |
+      | bundle1 | bundle 1 desc |
     When I click "Create exercise bundle"
     Then I should see "Exercise bundle was successfully created." message
 
@@ -26,10 +26,10 @@ Feature: Add new exercise bundle
     Then I should see "link" containing "New exercise bundle"
     When I click "New exercise bundle"
     Then I should see "radio_button" containing "Private"
-      And I should see "radio_button" containing "Global"
-      And Radio button "exercise_bundle_accessibility_global" should be selected
+    And I should see "radio_button" containing "Global"
+    And Radio button "exercise_bundle_accessibility_global" should be selected
     When I fill in all required fields for exercise_bundle
-      | name | description |
-      | bundle2 | bundle 2 desc  |
+      | name    | description   |
+      | bundle2 | bundle 2 desc |
     When I click "Create exercise bundle"
     Then I should see "Exercise bundle was successfully created." message

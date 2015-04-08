@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306201736) do
+ActiveRecord::Schema.define(version: 20150329100831) do
 
   create_table "attendances", force: true do |t|
     t.string   "participation",                  limit: 9
@@ -131,7 +131,7 @@ ActiveRecord::Schema.define(version: 20150306201736) do
     t.string   "exercise_code"
     t.integer  "exercise_version"
     t.integer  "order",                           null: false
-    t.integer  "time_duration",    default: 300,  null: false
+    t.integer  "time_duration",    default: 300
     t.integer  "rest_after",       default: 0
     t.text     "note"
     t.boolean  "completed",        default: true, null: false
@@ -143,6 +143,29 @@ ActiveRecord::Schema.define(version: 20150306201736) do
   end
 
   add_index "exercise_realizations", ["plan_id"], name: "index_exercise_realizations_on_plan_id", using: :btree
+
+  create_table "exercise_set_realization_setups", force: true do |t|
+    t.integer  "exercise_set_realization_id"
+    t.string   "exercise_setup_code"
+    t.float    "numeric_value",               limit: 24
+    t.string   "string_value"
+    t.text     "note"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "exercise_set_realizations", force: true do |t|
+    t.integer  "order",                                  null: false
+    t.integer  "time_duration",           default: 60,   null: false
+    t.integer  "rest_after",              default: 0
+    t.text     "note"
+    t.boolean  "completed",               default: true, null: false
+    t.integer  "exercise_realization_id",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exercise_set_realizations", ["exercise_realization_id"], name: "index_exercise_set_realizations_on_exercise_realization_id", using: :btree
 
   create_table "exercise_setup_types", primary_key: "code", force: true do |t|
     t.string   "name",        null: false

@@ -76,6 +76,6 @@ class ExerciseSetupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def exercise_setup_params
-      params.require(:exercise_setup).permit(:code, :name, :description, :required, :exercise_setup_type_code, :unit_code, :exercise_code, :exercise_version)
+      params.require(:exercise_setup).permit(:code, :name, :description, :required, :exercise_setup_type_code, :unit_code, :exercise_code, :exercise_version, :type)
     end
 end

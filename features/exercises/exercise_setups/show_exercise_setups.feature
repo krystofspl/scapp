@@ -21,23 +21,23 @@ Feature: Show exercise setups
       | kilogramy | decimal   | váha v kg     | kg           |
       | stupne-C  | decimal   | stupne celsia | °C           |
     And Following exercise setups exist in the system
-      | name    | description | required | unit | exercise |
-      | vaha    | asd         | true     | kilogramy   | exc1     |
-      | teplota | teplota     | true     | stupne-C    | exc2     |
-      | neco    | neco        | false    | kilogramy   | exc3     |
+      | name    | description | required | unit      | exercise |
+      | vaha    | asd         | true     | kilogramy | exc1     |
+      | teplota | teplota     | true     | stupne-C  | exc2     |
+      | neco    | neco        | false    | kilogramy | exc3     |
 
   # List = detail (detail bude rovnou na detailu exercise, jinde ne)
   Scenario: As a coach I can view exercise setups connected to my exercise
     Given I have "coach" role
     When I visit page "/exercises/exc1"
-    Then I should see "vaha" in table "exercise_setups"
+    Then I should see "vaha" in table "exercise-setups-tab"
 
   Scenario: As a coach I can view exercise setups connected to a global exercise
     Given I have "coach" role
     When I visit page "/exercises/exc3"
-    Then I should see "neco" in table "exercise_setups"
+    Then I should see "neco" in table "exercise-setups-tab"
 
   Scenario: As admin I can view other's private setups
     Given I have "admin" role
     When I visit page "/exercises/exc2"
-    Then I should see "teplota" in table "exercise_setups"
+    Then I should see "teplota" in table "exercise-setups-tab"

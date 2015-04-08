@@ -29,8 +29,8 @@ Feature: Add exercise setup to an existing exercise
       | povrch | jaky je povrch | false    |
     And I select option "jednotka2" from the "unit" menu
     And I click "Add exercise setup"
-    Then I should see "povrch" in table "exercise_setups"
-    And I should see "jednotka2" in table "exercise_setups"
+    Then I should see "povrch" in table "exercise-setups-tab"
+    And I should see "jednotka2" in table "exercise-setups-tab"
 
   Scenario: As a coach I can't add exercise setups to other than mine exercises
     Given I am logged in as User test1
@@ -46,8 +46,8 @@ Feature: Add exercise setup to an existing exercise
       | vaha | kolik mam nalozeno | true     |
     And I select option "kilogramy" from the "unit" menu
     And I click "Add exercise setup"
-    Then I should see "vaha" in table "exercise_setups"
-    And I should see "kilogramy" in table "exercise_setups"
+    Then I should see "vaha" in table "exercise-setups-tab"
+    And I should see "kilogramy" in table "exercise-setups-tab"
 
   Scenario: "Required" setup cannot be added to an exercise with realization
     Given I am logged in as User test1

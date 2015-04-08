@@ -1,0 +1,4 @@
+// Set content for realization settings
+$("#exercise-set-realization-edit-wrapper")
+        .html("<%= escape_javascript(render(:partial => "exercise_set_realizations/form", :locals => {:exercise_set_realization => @exercise_set_realization, :action => 'edit'})) %>");
+showEditExerciseSetRealizationPane();

@@ -24,10 +24,10 @@ Feature: Show exercise measurements
       | kilogramy | decimal   | váha v kg     | kg           |
       | stupne C  | decimal   | stupne celsia | °C           |
     And Following exercise measurements exist in the system
-      | name    | description | optimal_value | unit | exercise |
-      | tepovka | asd         | higher        | kilogramy   | exc1     |
+      | name    | description | optimal_value | unit      | exercise |
+      | tepovka | asd         | higher        | kilogramy | exc1     |
       | teplota | teplota     | higher        | stupne-C  | exc2     |
-      | neco    | neco        | higher        | kilogramy   | exc3     |
+      | neco    | neco        | higher        | kilogramy | exc3     |
 
   # TODO complete
   Scenario: As player who has exercise assigned in his training realization can see exercise detail
@@ -36,14 +36,14 @@ Feature: Show exercise measurements
   Scenario: As a coach I can view exercise measurements connected to my exercise
     Given I have "coach" role
     When I visit page "/exercises/exc1"
-    Then I should see "tepovka" in table "exercise_measurements"
+    Then I should see "tepovka" in table "exercise-measurements-tab"
 
   Scenario: As a coach I can view exercise measurements connected to a global exercise
     Given I have "coach" role
     When I visit page "/exercises/exc3"
-    Then I should see "neco" in table "exercise_measurements"
+    Then I should see "neco" in table "exercise-measurements-tab"
 
   Scenario: As admin I can view other's private measurements
     Given I have "admin" role
     When I visit page "/exercises/exc2"
-    Then I should see "teplota" in table "exercise_measurements"
+    Then I should see "teplota" in table "exercise-measurements-tab"

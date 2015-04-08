@@ -1,5 +1,4 @@
 class ExerciseRealizationSetup < ActiveRecord::Base
-  before_destroy :check_if_required
   # =================== ASSOCIATIONS =================================
   belongs_to :exercise_setup, :foreign_key => :exercise_setup_code, counter_cache: true
   belongs_to :exercise_realization
@@ -25,16 +24,18 @@ class ExerciseRealizationSetup < ActiveRecord::Base
     end
   end
 
+  # Checks if setup for current realization is required
+  def is_required?
+    if self.exercise_setup.is_required?
+      errors.add(:base, I18n.t('exercise_realization_setups.errors.cannot_delete_required'))
+      false
+    end
+  end
+
   private
     def string_xor_numeric
       unless self.string_value.blank? ^ self.numeric_value.blank?
-        errors.add(:base, 'Either numeric or string value must be filled in')
-      end
-    end
-    def check_if_required
-      if self.exercise_setup.is_required?
-        errors[:base] << t('exercise_realization_setups.errors.cannot_delete_required')
-        false
+        errors.add(:base, I18n.t('exercise_realization_setups.errors.value_must_be_filled_in'))
       end
     end
 end

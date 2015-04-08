@@ -1,0 +1,60 @@
+-# This form is also used by ExerciseSetRealizationSetup
+- form_action = (params[:action]=='new') ? 'create' : 'update'
+- form_method = (params[:action]=='new') ? :post : :put
+
+= simple_form_for(exercise_set_realization_setup, :url => {controller: 'exercise_set_realization_setups', action: form_action}, remote: true, format: :json, method: form_method) do |f|
+  .form-errors
+    = f.error_notification
+  .form-inputs
+    -# INFO
+    - unit = exercise_set_realization_setup.exercise_set_setup.unit
+    -# FORM
+    - unit_type = unit.unit_type
+    - if unit_type == :integer
+      = f.input :numeric_value, as: :integer, placeholder: unit.to_s_complete
+    - elsif unit_type == :decimal
+      = f.input :numeric_value, as: :decimal, placeholder: unit.to_s_complete
+    - else
+      = f.input :string_value, as: :string, placeholder: unit.to_s_complete
+    = f.input :note, as: :text, input_html: {class: 'textarea', rows: 4}
+    -#- if form_action == 'update'
+    -#  = f.input :id, as: :hidden, value: params[:id]
+    - if form_action == 'create'
+      = f.input :exercise_set_realization_id, as: :hidden, value: params[:exercise_set_realization_setup][:exercise_setup_code]
+      = f.input :exercise_setup_code, as: :hidden, value: params[:exercise_set_realization_setup][:exercise_setup_code]
+
+  .form-actions
+    = link_to t('dictionary.cancel'), '#', class: 'btn btn-default btn-cancel'
+    = f.button :submit, t('exercise_realization_setups.form.save'), class: 'btn btn-primary'
+
+:javascript
+  $('abbr[title=required]').hide(); // temporary fix - required is shown everywhere by error
+  $(".btn-cancel").click(function(){
+    getExerciseRealizationSetups();
+    switchAvailableSetupsEditPanesVisibility();
+  });
+  $('form')
+    .bind('ajax:success', function (evt,xhr,status){
+      // Refresh exercise realization setups list
+      getExerciseRealizationSetups();
+      // Hide form, show list
+      switchAvailableSetupsEditPanesVisibility();
+    })
+    .bind("ajax:error", function (evt, xhr, status, error) {
+      var $form = $(this), errors, errorText;
+      try {
+        errors = $.parseJSON(xhr.responseText);
+      } catch (err) {
+      alert(err);
+        // If the responseText is not valid JSON (like if a 500 exception was thrown), populate errors with a generic error message.
+        errors = {message: "#{t('exercise_realizations.form.please_reload_try_again')}"};
+      }
+      // Build an unordered list from the list of errors
+      errorText = "#{t('dictionary.following_errors_occured_text_only')}<ul>";
+      for (error in errors) {
+        errorText += "<li>" + errors[error] + "</li> ";
+      }
+      errorText += "</ul>";
+      // Insert error list into form
+      $form.find('div.form-errors').html(errorText);
+    });

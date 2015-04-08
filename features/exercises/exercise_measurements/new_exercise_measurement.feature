@@ -28,15 +28,17 @@ Feature: Add exercise measurement to an existing exercise
   Scenario: As a coach I want to add exercise measurement to my private exercise
     Given I am logged in as User test1
     And I am at the "/exercises/exc1" page
-    When I click "Add exercise measurement"
-    When I fill in all required exercise measurement fields
+    When I click "Exercise measurements" tab
+    And I click "Add exercise measurement"
+    And I fill in all required exercise measurement fields
       | name           | description |
       | uroven laktatu | desc        |
-      And I select option "Higher is better" from the "exercise_measurement_optimal_value" menu
-      And I select option "mililitr" from the "unit" menu
-      And I click "Add measurement"
-    Then I should see "uroven laktatu" in table "exercise_measurements"
-      And I should see "mililitr" in table "exercise_measurements"
+    And I select option "Higher is better" from the "exercise_measurement_optimal_value" menu
+    And I select option "mililitr" from the "unit" menu
+    And I click "Add measurement"
+    When I click "Exercise measurements" tab
+    Then I should see "uroven laktatu" in table "exercise-measurements-tab"
+    And I should see "mililitr" in table "exercise-measurements-tab"
 
   Scenario: As a coach I can't add exercise measurements to other than mine exercises
     Given I am logged in as User test1
@@ -47,12 +49,14 @@ Feature: Add exercise measurement to an existing exercise
   Scenario: As admin I want to add exercise measurement to (my) global exercise
     Given I am logged in as User test2
     And I am at the "/exercises/exc2" page
-    When I click "Add exercise measurement"
-    When I fill in all required exercise measurement fields
+    When I click "Exercise measurements" tab
+    And I click "Add exercise measurement"
+    And I fill in all required exercise measurement fields
       | name             | description  |
       | tepova frekvence | jaky mam tep |
-      And I select option "Lower is better" from the "exercise_measurement_optimal_value" menu
-      And I select option "beats per minute" from the "unit" menu
-      And I click "Add measurement"
-    Then I should see "tepova frekvence" in table "exercise_measurements"
-      And I should see "beats per minute" in table "exercise_measurements"
+    And I select option "Lower is better" from the "exercise_measurement_optimal_value" menu
+    And I select option "beats per minute" from the "unit" menu
+    And I click "Add measurement"
+    When I click "Exercise measurements" tab
+    Then I should see "tepova frekvence" in table "exercise-measurements-tab"
+    And I should see "beats per minute" in table "exercise-measurements-tab"

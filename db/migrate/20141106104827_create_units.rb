@@ -5,7 +5,7 @@ class CreateUnits < ActiveRecord::Migration
       t.string :name, null: false
       t.string :description
       t.string :abbreviation, null: false, unique: true
-      t.column :unit_type, "ENUM('integer','decimal','time')", default: 'integer', null: false
+      t.column :unit_type, "ENUM('integer','decimal','time','string')", default: 'integer', null: false
 
       t.timestamps
     end

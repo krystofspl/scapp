@@ -7,13 +7,14 @@ preventFormEnterKeypress('form');
 var addedRealizationSetup;
 
 // AJAX CALLS
+var exerciseRealizationId = $("#realization-settings").data("exercise-realization-id");
 // Get contents for exercise realization setups
 function getExerciseRealizationSetups(){
-    $.get('<%=url_for :controller => "exercise_realizations", :action => "list_exercise_realization_setups"%>',{id:$("#realization-settings").data("exercise-realization-id")});
+    $.get('<%=url_for :controller => "exercise_realizations", :action => "list_exercise_realization_setups"%>',{id:exerciseRealizationId});
 }
 // Get contents for available exercise setups
 function getAvailableExerciseSetups(){
-    $.get('<%=url_for :controller => "exercise_realizations", :action => "list_exercise_setups"%>',{id:$("#realization-settings").data("exercise-realization-id")});
+    $.get('<%=url_for :controller => "exercise_realizations", :action => "list_exercise_setups"%>',{id:exerciseRealizationId});
 }
 // Get form for realization
 function renderRealizationSetupFormNew(er_id, es_code){

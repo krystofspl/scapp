@@ -5,23 +5,29 @@
   - unless realization.exercise.exercise_image.blank?
     = image_tag realization.exercise.exercise_image.image.small, class: 'img-rounded no-padding'
   %span= link_to realization.exercise, realization.exercise
-  %br
-  %span{:style=>'white-space: nowrap;'}
-    %span.fa.fa-clock-o
-    %strong
-      = " "+Time.at(realization.from).utc.strftime((realization.from.to_i%60==0)?"%H:%M":"%H:%M:%S")
-      = "-"
-      = Time.at(realization.until).utc.strftime((realization.until.to_i%60==0)?"%H:%M":"%H:%M:%S")
-  %br
-  = distance_of_time_in_words(realization.time_duration)
+  %p.no-margin
+    %span{:style=>'white-space: nowrap;'}
+      - time_formatted(realization.from,realization.until)
+  %p.no-margin
+    = distance_of_time_in_words(realization.duration)
+  -####### SETS COUNT
+  - sets_count = realization.exercise_set_realizations.count
+  - if sets_count > 0
+    .label.label-success
+      = sets_count.to_s
+      - if sets_count==1
+        = " " + t('exercise_realizations.dictionary.set')
+      - else
+        = " " + t('exercise_realizations.dictionary.sets')
+  -####### SETUPS COUNT
   - setups_count = realization.exercise_realization_setups.count
-  - if setups_count>0
-    %br
-    = setups_count.to_s
-    - if setups_count==1
-      = " " + t('exercise_realizations.dictionary.setup')
-    - else
-      = " " + t('exercise_realizations.dictionary.setups')
+  - if setups_count > 0
+    .label.label-primary
+      = setups_count.to_s
+      - if setups_count==1
+        = " " + t('exercise_realizations.dictionary.setup')
+      - else
+        = " " + t('exercise_realizations.dictionary.setups')
   .btns-block
     = link_to t('dictionary.edit'), edit_training_lesson_realization_exercise_realization_path(:id => realization.id), :remote => true, class: 'btn btn-xs btn-warning btn-edit'
     = link_to t('dictionary.delete'), training_lesson_realization_exercise_realization_path(:id => realization.id), class: 'btn btn-xs btn-danger btn-destroy', :method => :delete, :remote => true, :data => { :confirm => 'Are you sure?' }
@@ -30,13 +36,14 @@
   .box.box-body.realization-rest{style: 'min-height:'+rest_after_height.to_s+'px;'}
     = t('exercise_realizations.dictionary.rest_after')+' ('+distance_of_time_in_words(realization.rest_after)+')'
     %br
-    %span.fa.fa-clock-o
-    %strong
-      = " "+Time.at(realization.until).utc.strftime((realization.until.to_i%60==0)?"%H:%M":"%H:%M:%S")
-      = "-"
-      = Time.at(realization.until_with_rest_time).utc.strftime((realization.until_with_rest_time.to_i%60==0)?"%H:%M":"%H:%M:%S")
+    - time_formatted(realization.until,realization.until_with_rest_time)
 
 :javascript
-  $(".realization-duration .btn-edit").unbind().click(function(){
+  var wrapper = $('.realization-duration');
+  wrapper.find('.btn-edit').unbind().click(function(){
     showSettingsPane();
   });
+  wrapper.find('.btn-destroy')
+    .bind('ajax:success',function(){
+      $(this).closest('.realization').fadeOut('slow', function(){$(this).remove();});
+    });

@@ -29,6 +29,8 @@
           = t('training_realization.show.cancel_lesson')
       = link_to new_measurement_vf_select_training_lesson_realization_variable_field_index_path(@training_lesson_realization), class: 'btn btn-success' do
         = t('training_realization.show.new_lesson_measurement')
+      = link_to training_lesson_realization_exercise_realizations_path(@training_lesson_realization), class: 'btn btn-warning' do
+        = t('exercise_realization.dictionary.plans_specification')
 
     - elsif @training_lesson_realization.closed?
       - # ordinary coach is not allowed to do it

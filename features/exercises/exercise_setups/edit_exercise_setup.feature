@@ -15,8 +15,8 @@ Feature: Edit exercise setup
       | kilogramy | decimal   | váha v kg   | kg           |
       | stupne C  | decimal   | stupně C    | °C           |
     And Following exercise setups exist in the system
-      | name  | description | required | unit | exercise |
-      | setup1 | setup desc  | false    | kilogramy   | exc1     |
+      | name   | description | required | unit      | exercise |
+      | setup1 | setup desc  | false    | kilogramy | exc1     |
 
   Scenario: As a coach I can edit my exercise setup, I should be warned
     Given I have "coach" role
@@ -29,8 +29,8 @@ Feature: Edit exercise setup
     And I select option "stupne C" from the "unit" menu
     And I click "Update setup"
     Then I should see "Exercise setup was successfully updated." message
-    And I should see "setupMod" in "exercise_setups"
-    And I should see "°C" in "exercise_setups"
+    And I should see "setupMod" in "exercise-setups-tab"
+    And I should see "°C" in "exercise-setups-tab"
 
   Scenario: Setup cannot be changed to "required" if exercise realization exists
     Given I have "coach" role

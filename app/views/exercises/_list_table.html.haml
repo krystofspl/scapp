@@ -16,8 +16,8 @@
               %th= t('exercise.show.used')
               %th= t('dictionary.description')
               %th= t('dictionary.image')
-              %th= t('dictionary.accessibility')
               %th= t('exercise.show.exercise_type')
+              %th= t('dictionary.accessibility')
               %th
               %th
             - exercises.each do |exercise|
@@ -31,8 +31,17 @@
                   - unless exercise.exercise_image.blank?
                     = image_tag exercise.exercise_image.image.small
                 %td
-                  %span.label.label-info= t(exercise.accessibility)
-                %td= exercise.type
+                  - if !exercise.has_sets?
+                    = t('exercise.dictionary.simple_exercise')
+                  - elsif exercise.has_sets?
+                    = t('exercise.dictionary.exercise_with_sets')
+                %td
+                  - if exercise.is_private?
+                    %span.label.label-info
+                      = t('exercise.dictionary.accessibility_private')
+                  - else
+                    %span.label.label-primary
+                      = t('exercise.dictionary.accessibility_global')
                 - if can? :edit, exercise
                   %td
                     = edit_button_exercise(exercise, t('dictionary.edit'))

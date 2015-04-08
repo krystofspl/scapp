@@ -1,13 +1,15 @@
 .accordion-header-wrapper
   %h5= exercise_realization_setup.exercise_setup.name
+  %i.fa.fa-bar-chart-o
   = t('dictionary.value') + ": " + exercise_realization_setup.value.to_s + " " + exercise_realization_setup.exercise_setup.unit.abbreviation
 %div
   - unless exercise_realization_setup.note.blank?
     %p.no-margin
-      = t('dictionary.note')+": "
-      = sanitize exercise_realization_setup.note
+      %i.fa.fa-pencil-square-o
+      %i= t('dictionary.note')+": "+sanitize(exercise_realization_setup.note)
   - unless exercise_realization_setup.exercise_setup.description.blank?
     %p.no-margin
+      %i.fa.fa-info-circle
       = t('dictionary.description')+": "
       = sanitize exercise_realization_setup.exercise_setup.description
 .btns-block

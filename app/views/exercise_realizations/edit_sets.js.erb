@@ -1,0 +1,77 @@
+$('#realization-sets').html('<%=escape_javascript(render partial: 'exercise_realizations/edit_sets')%>');
+
+var editedSetRealizationId;
+
+// AJAX CALLS
+var exerciseRealizationId = $("#realization-settings").data("exercise-realization-id");
+// Get contents for exercise set realizations
+function getExerciseSetRealizations(){
+    $.get('<%=url_for :controller => "exercise_realizations", :action => "list_exercise_set_realizations"%>',{id:exerciseRealizationId});
+}
+// Get form for realization
+function renderSetRealizationFormNew(er_id){
+    var url = '<%=url_for :controller => "exercise_set_realizations", :action => "new"%>';
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'html',
+        data: {action: 'new', exercise_set_realization: {exercise_realization_id: er_id, order_position: 0}},
+        success: function(data) {
+            $('#exercise-set-realization-edit-wrapper').html(data);
+        }
+    });
+}
+function renderSetRealizationFormEdit(ers_id){
+    var url = Routes.edit_exercise_set_realization_path(ers_id);
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'html',
+        data: {action: 'edit', exercise_realization_setup: {id: ers_id}},
+        success: function(data) {
+            $('#exercise-set-realization-edit-wrapper').html(data);
+        }
+    });
+}
+
+// SHOW/HIDE panes
+var exerciseSetRealization = $("#exercise-set-realizations");
+var editSetRealization = $("#exercise-set-realization-edit");
+var exerciseSetRealizationSetups = $("#exercise-set-realization-setups");
+function showExerciseSetRealizationsPane(){
+    editSetRealization.hide();
+    exerciseSetRealization.fadeIn(1000);
+    exerciseSetRealizationSetups.hide();
+}
+function showEditExerciseSetRealizationPane(){
+    editSetRealization.fadeIn(1000);
+    exerciseSetRealization.hide();
+    exerciseSetRealizationSetups.hide();
+}
+function showExerciseSetRealizationSetupsPane(){
+    editSetRealization.hide();
+    exerciseSetRealization.hide();
+    exerciseSetRealizationSetups.fadeIn(1000);
+}
+function switchSetsEditPanesVisibility(){
+    if(exerciseSetRealization.css("display")!='none'){
+        showEditExerciseSetRealizationPane();
+    } else if(editSetRealization.css("display")!='none'){
+        showExerciseSetRealizationsPane();
+    }
+}
+function showAjaxError(html){
+    $('#exercise-set-errors').html(html).show().click(function(){$(this).hide();});
+}
+
+// BUTTONS
+// Add new set realization
+$('.btn-add').unbind().click(function(){
+    showEditExerciseSetRealizationPane();
+    renderSetRealizationFormNew($("#realization-settings").data("exercise-realization-id"));
+});
+
+// DOCUMENT READY
+$(function(){
+    getExerciseSetRealizations();
+});

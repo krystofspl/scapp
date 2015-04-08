@@ -2,18 +2,7 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :name, input_html: {maxlength:255}
-    = f.input :description, as: :text, input_html: { class: 'textarea', rows: 10 }, :label => t('dictionary.description')
-    - if @exercise.exercise_realizations.empty?
-      = f.input :required
-    - unit_label = raw "#{t('unit.label')} (#{link_to t('unit.edit.manage'), units_path})"
-    - if params[:action]=='edit'
-      = f.association :exercise_setup_type
-      = f.association :unit, :selected=>@exercise_setup.unit.name.to_s, label: unit_label
-    - else
-      = f.association :exercise_setup_type, :label_method => :name, :value_method => :code
-      = f.association :unit, :label_method => :name, :value_method => :code, include_blank:false, label: unit_label
-
+    -# Exercise
     - if ['new'].include? params[:action]
       - exercise_code = params[:exercise_code]
       - exercise_version = params[:exercise_version]
@@ -22,6 +11,22 @@
       - exercise_version = @exercise_setup.exercise.version
     = f.hidden_field :exercise_code, :value => exercise_code
     = f.hidden_field :exercise_version, :value => exercise_version
+
+    -# Inputs
+    = f.input :name, input_html: {maxlength:255}
+    - if Exercise.friendly.find([exercise_code,exercise_version]).has_sets? # Exercise might not be assigned yet
+      = f.input :type, :collection => [[ExerciseSetup.name, t('exercise_setup.simple_setup')],[ExerciseSetSetup.name, t('exercise_setup.set_setup')]], :selected=>@exercise_setup.type.to_s, :value_method => :first, :label_method => :last
+
+    = f.input :description, as: :text, input_html: { class: 'textarea', rows: 10 }, :label => t('dictionary.description')
+    - if @exercise.exercise_realizations.empty?
+      = f.input :required
+    - unit_label = raw "#{t('unit.label')} (#{link_to t('unit.edit.manage'), units_path})"
+    - if params[:action]=='edit'
+      = f.association :exercise_setup_type
+      = f.association :unit, :selected=>@exercise_setup.unit.name.to_s, label: unit_label
+    - else
+      = f.association :exercise_setup_type, :value_method => :code, :label => t('exercise_setup.dictionary.exercise_setup_type')
+      = f.association :unit, :label_method => :name, :value_method => :code, include_blank:false, label: unit_label
 
   .form-actions
     - if ['new','create','clone'].include? params[:action]

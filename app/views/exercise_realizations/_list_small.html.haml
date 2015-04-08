@@ -1,0 +1,62 @@
+- player = plan.user_partook
+%i#no-realizations.col-sm-12.text-center.text-muted{:style=>'display:none;'}
+  = t('exercise_realizations.index.no_realizations_yet')
+%ul.player-plan{:id => "player-#{player.id}", :data => {'plan-id' => plan.id}}
+  - plan.realizations_ordered.each do |realization|
+    %li.realization{:data => {'realization-id' => realization.id}}
+      = render partial: 'exercise_realizations/detail_short', locals: {:realization => realization}
+.remaining-time
+  %i.fa.fa-clock-o
+  = t('dictionary.remaining_time')+': '+distance_of_time_in_words(plan.remaining_time)
+
+:javascript
+  $(function(){
+    if($('ul#player-#{player.id}').children().length==0){
+      $('ul#player-#{player.id}').parent().find('#no-realizations').show();
+    }
+    // SORTABLE
+    $('.player-plan').sortable({
+        axis: 'y',
+        opacity: 0.9,
+        cursorAt: {top: 20},
+        start: function(event, ui) {
+          ui.item.addClass('sortable-active');
+        },
+        // SORT: An item has been sorted within the plan
+        stop: function(event, ui) {
+          if(ui.item.data('realization-id')!==undefined){ // Due to sortable firing stop before receive, realization-id is not available when added from draggable
+            ui.item.removeClass('sortable-active draggable-helper');
+            var realization_id = ui.item.data('realization-id'), position = ui.item.index();
+            $.ajax({
+                type: 'POST',
+                url: '#{url_for :controller => "exercise_realizations", :action => "update_row_order"}',
+                dataType: 'json',
+                data: { id: realization_id, exercise_realization: {order_position: position } }
+            });
+            var plan = $(this).data('plan-id');
+            refreshRealizationsInPlan(plan);
+          }
+        },
+
+        // CREATE: A draggable item has been received from exercises list (exc has been added)
+        receive: function(event, ui){
+          var code = ui.item.data('exercise-code'), version = ui.item.data('exercise-version');
+          var droppedItem = $(this).data().uiSortable.currentItem;
+          var position = droppedItem.index();
+          var plan = $(this).data('plan-id');
+          $.ajax({
+              type: 'POST',
+              url: '#{url_for :controller => "exercise_realizations", :action => "create"}',
+              dataType: 'json',
+              data: { exercise_realization: {exercise_code: code, exercise_version: version, order_position: position, plan_id: plan } },
+              success: function(e) {
+                refreshRealizationsInPlan(plan);
+              },
+              error: function(xhr,err) {
+                alert('#{t('exercise_realizations.error.could_not_add')}'+' '+xhr.responseText);
+                droppedItem.fadeOut(1000, function(){$(this).remove();});
+              }
+          })
+        }
+    });
+  });

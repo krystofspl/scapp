@@ -1,0 +1,16 @@
+.col-sm-12.no-padding
+  #exercise-set-errors.alert.alert-danger
+  #exercise-set-realizations
+    %strong= t('exercise_realizations.edit.edit_sets')
+    = link_to '#', class: 'btn btn-success btn-xs btn-add' do
+      %i.fa.fa-plus
+      = t('exercise_realizations.edit.add_new_set')
+    .box.box-body
+      #exercise-set-realizations-wrapper
+        - render_spinner
+  #exercise-set-realization-setups
+  #exercise-set-realization-edit
+    %strong= t('exercise_realizations.edit.edit_set')
+    .box.box-body
+      #exercise-set-realization-edit-wrapper
+        - render_spinner

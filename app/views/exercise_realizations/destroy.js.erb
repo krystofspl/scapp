@@ -1,7 +1,2 @@
-$('.realization .btn-destroy').bind('ajax:success', function() {
-    $(this).closest('.realization').fadeOut('slow', function(){
-        $(this).remove();
-        refreshRealizationsInPlan(getPlanIdForRealization(<%=@exercise_realization.id%>));
-        showExercisesPane();
-    });
-});
+refreshRealizationsInPlan(getPlanIdForRealization(<%=@exercise_realization.id%>));
+showExercisesPane();

@@ -4,16 +4,33 @@ $("#realization-settings")
         .html("<%= escape_javascript(render(:partial => "exercise_realizations/form.html.haml", :locals => {:exercise_realization => @exercise_realization})) %>")
         .data("exercise-realization-id","<%=@exercise_realization.id%>")
         .attr('data-realization-id', "<%=@exercise_realization.id%>");
-// Make settings tab active
-var settingsPane = $("#settings ul");
-settingsPane.find("li:first a").tab("show");
-if ('<%=exercise_type%>'=='ExerciseWithSets') {
-    settingsPane.find("li#realization-sets-tab-button")
+
+var exerciseRealizationId = $("#realization-settings").data("exercise-realization-id");
+
+// EDIT SETUPS button trigger - load tab contents
+$('#realization-setups-tab-button').find('a').unbind().click(function(){
+    $('#realization-setups').html('');
+    $.get('<%=url_for :controller => "exercise_realizations", :action => "edit_setups"%>',{id:exerciseRealizationId});
+});
+
+// EDIT SETS button trigger - load tab contents
+$('#realization-sets-tab-button').find('a').unbind().click(function(){
+    $('#realization-sets').html('');
+    $.get('<%=url_for :controller => "exercise_realizations", :action => "edit_sets"%>',{id:exerciseRealizationId});
+});
+
+// DOCUMENT READY
+$(function(){
+    // Make settings tab active
+    $("#settings ul li:first a").tab("show");
+    // Show/hide sets tab
+    if ('<%=exercise_type%>'=='ExerciseWithSets') {
+        $("li#realization-sets-tab-button")
             .show()
             .find('a').attr('data-toggle','tab');
-} else {
-    settingsPane.find("li#realization-sets-tab-button")
+    } else {
+        $("li#realization-sets-tab-button")
             .hide()
             .find('a').attr('data-toggle','');
-}
-settingsPane
+    }
+});

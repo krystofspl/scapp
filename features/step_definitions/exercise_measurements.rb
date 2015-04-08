@@ -39,7 +39,7 @@ Then(/^Link "([^"]*)" for "([^"]*)" exercise measurement should be disabled$/) d
 end
 
 When(/^I click "([^"]*)" for "([^"]*)" exercise measurement$/) do |arg1, arg2|
-  within('#exercise_measurements', :text => arg2) do
+  within('#exercise-measurements-tab', :text => arg2) do
     click_link(arg1)
   end
 end

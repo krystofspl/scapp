@@ -331,13 +331,26 @@ class Ability
       vfc.user == @user
     end
 
-    #TODO doplnit permission do tabulky
     # =============
-    # x) Exercises
+    # 16) Exercises
     # =============
 
-    # Exercise detail
-    #TODO can view if he is a part of the lesson realization
+    # @16.1
+    can [:index], Exercise
+
+    # @16.2
+    can [:show], Exercise do |exc|
+      # Can view if partook in a realization
+      Plan.where(:user_partook=>@user).each do |plan|
+        plan.exercise_realizations.where(:exercise=>exc).any?
+      end
+      false
+    end
+
+    # =============
+    # x) ExerciseRealizations
+    # =============
+
 
   end
 
@@ -569,17 +582,16 @@ class Ability
       end
     end
 
-    #TODO doplnit permission do tabulky
     # =============
-    # x) Exercises
+    # 16) Exercises
     # =============
 
-    # Exercises list
+    # @16.1 Exercises list
     can [:index], Exercise
 
-    # Exercise detail
+    # @16.2 Exercise detail
     can [:show], Exercise do |exercise|
-      exercise.accessibility == :global || exercise.user == @user
+      exercise.is_global? || exercise.user == @user
     end
 
     # Create exercise
@@ -593,39 +605,23 @@ class Ability
     # UserExercise
     can [:user_exercises], Exercise if @request.params[:user_id] == @user.slug
 
-    # =============
-    # x) ExerciseSteps
-    # =============
-
-    # Exercise steps list
-    can [:index], ExerciseStep
-
-    # Add, edit steps to exercise
-    can [:add_steps, :edit_steps], Exercise do |exercise|
-      exercise.user == @user
-    end
-
-    # Destroy exercise step
-    can [:destroy], ExerciseStep do |step|
-      step.exercise.user == @user
-    end
 
     # =============
-    # x) ExerciseBundles
+    # 17) ExerciseBundles
     # =============
 
-    # ExerciseBundles list
+    # @17.1 ExerciseBundles list
     can [:index], ExerciseBundle
 
-    # ExerciseBundles create
-    can [:create], ExerciseBundle
-
-    # ExerciseBundle detail
+    # @17.2 ExerciseBundle detail
     can [:show], ExerciseBundle do |bundle|
       bundle.user == @user || bundle.accessibility == :global
     end
 
-    # Edit, Destroy bundle
+    # @17.3 ExerciseBundles create
+    can [:create], ExerciseBundle
+
+    # @17.4, @17.5 Edit, Destroy bundle
     can [:edit, :destroy], ExerciseBundle do |bundle|
       bundle.user == @user
     end
@@ -634,17 +630,53 @@ class Ability
     can [:user_exercise_bundles], ExerciseBundlesController if @request.params[:user_id] == @user.slug
 
     # =============
+    # 18) ExerciseRealizations
+    # =============
+    # @18.1 list_summary
+    can [:list_summary], ExerciseRealization do |training_lesson_realization|
+      can? :show, training_lesson_realization
+    end
+
+    # @18.2 Create exercise realization
+    can [:create], ExerciseRealization do |training_lesson_realization|
+      can? :edit, training_lesson_realization
+    end
+
+    # @18.3, @18.4 Edit, Destroy exercise realization
+    can [:edit, :destroy], ExerciseRealization do |exercise_realization|
+      exercise_realization.user_created == @user
+    end
+
+    # @18.5 Edit plan (index)
+    can [:index], ExerciseRealization do |training_lesson_realization|
+      can? :edit, training_lesson_realization
+    end
+
+    # =============
+    # 19) Units
+    # =============
+
+    # Show unit
+    can [:index, :show], Unit
+
+    # Create unit
+    can :create, Unit
+
+    # Edit, Destroy unit
+    can [:edit, :destroy], Unit
+
+    # =============
     # x) ExerciseSetups
     # =============
 
     # Add setup to exercise
     can [:add_setup], Exercise do |exercise|
-      exercise.user == @user
+      can? :edit, exercise
     end
 
     # Edit, Destroy, Clone setup
     can [:edit, :destroy, :clone], ExerciseSetup do |exercise_setup|
-      exercise_setup.exercise.user == @user
+      can? :edit, exercise_setup.exercise
     end
 
     # =============
@@ -658,21 +690,27 @@ class Ability
 
     # Edit, Destroy, Clone measurement
     can [:edit, :destroy, :clone], ExerciseMeasurement do |exercise_measurement|
-      exercise_measurement.exercise.user == @user
+      can? :edit, exercise_measurement.exercise
     end
 
     # =============
-    # x) Units
+    # x) ExerciseSteps
     # =============
 
-    # Show unit
-    can [:index, :show], Unit
+    # Exercise steps list
+    can [:index], ExerciseStep do |exercise|
+      can? :show, exercise
+    end
 
-    # Create unit
-    can :create, Unit
+    # Add, edit steps to exercise
+    can [:add_steps, :edit_steps], Exercise do |exercise|
+      can? :edit, exercise
+    end
 
-    # Edit, Destroy unit
-    can [:edit, :destroy], Unit
+    # Destroy exercise step
+    can [:destroy], ExerciseStep do |step|
+      can? :destroy, step.exercise
+    end
   end
 
   # ===========================================
