@@ -1,12 +1,12 @@
 (function($) {
     /*
-     * Simulate drag of a JQuery UI sortable list
+     * Simulate drag of a JQuery UI sortable index
      * Repository: https://github.com/mattheworiordan/jquery.simulate.drag-sortable.js
      * Author: http://mattheworiordan.com
      *
      * options are:
      * - move: move item up (positive) or down (negative) by Integer amount
-     * - dropOn: move item to a new linked list, move option now represents position in the new list (zero indexed)
+     * - dropOn: move item to a new linked index, move option now represents position in the new index (zero indexed)
      * - handle: selector for the draggable handle element (optional)
      * - listItem: selector to limit which sibling items can be used for reordering
      * - placeHolder: if a placeholder is used during dragging, we need to consider it's height
@@ -43,12 +43,12 @@
                     return;
                 }
                 sibling = dropOn.find('>*:last');
-                moveCounter = -(dropOn.find('>*').length + 1) + (moveCounter + 1); // calculate length of list after this move, use moveCounter as a positive index position in list to reverse back up
+                moveCounter = -(dropOn.find('>*').length + 1) + (moveCounter + 1); // calculate length of index after this move, use moveCounter as a positive index position in index to reverse back up
                 if (dropOn.offset().top - $(this).offset().top < 0) {
-                    // moving to a list above this list, so move to just above top of last item (tried moving to top but JQuery UI wouldn't bite)
+                    // moving to a index above this index, so move to just above top of last item (tried moving to top but JQuery UI wouldn't bite)
                     initialVerticalPosition = sibling.offset().top - $(this).offset().top - extraDrag(this);
                 } else {
-                    // moving to a list below this list, so move to bottom and work up (JQuery UI does not trigger new list below unless you move past top item first)
+                    // moving to a index below this index, so move to bottom and work up (JQuery UI does not trigger new index below unless you move past top item first)
                     initialVerticalPosition = sibling.offset().top - $(this).offset().top - $(this).height();
                 }
             } else if (moveCounter === 0) {
@@ -77,13 +77,13 @@
             dispatchEvent(document, 'mousemove', createEvent('mousemove', document, { clientX: x+1, clientY: y+1 }));
 
             if (dropOn) {
-                // jump to top or bottom of new list but do it in increments so that JQuery UI registers the drag events
+                // jump to top or bottom of new index but do it in increments so that JQuery UI registers the drag events
                 slideUpTo(x, y, initialVerticalPosition);
 
-                // reset y position to top or bottom of list and move from there
+                // reset y position to top or bottom of index and move from there
                 y += initialVerticalPosition;
 
-                // now call regular shift/down in a list
+                // now call regular shift/down in a index
                 options = jQuery.extend(options, { move: moveCounter });
                 delete options.dropOn;
 

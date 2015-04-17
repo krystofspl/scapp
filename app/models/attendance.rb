@@ -23,7 +23,7 @@ class Attendance < ActiveRecord::Base
 
   def participation=(participation_status)
     unless PARTICIPATION_STATES.include? participation_status.to_sym
-      raise ArgumentError, 'Not in list.'
+      raise ArgumentError, 'Not in index.'
     end
 
     write_attribute(:participation, participation_status.to_s)

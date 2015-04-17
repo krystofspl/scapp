@@ -104,7 +104,7 @@ class TrainingLessonsController < ApplicationController
       end
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def training_lesson_params
       params.require(:training_lesson).permit(:description, :day, :from, :until, :odd_week, :even_week, :calculation,
                                               :from_date, :until_date, :player_price_without_tax, :group_price_without_tax,

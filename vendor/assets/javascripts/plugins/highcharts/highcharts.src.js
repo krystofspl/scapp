@@ -3649,7 +3649,7 @@ SVGRenderer.prototype = {
 					.add(renderer.defs);
 
 
-				// The gradient needs to keep a list of stops to be able to destroy them
+				// The gradient needs to keep a index of stops to be able to destroy them
 				gradientObject.stops = [];
 				each(stops, function (stop) {
 					var stopObject;
@@ -4778,7 +4778,7 @@ Highcharts.VMLElement = VMLElement = {
 
 		if (clipRect) {
 			clipMembers = clipRect.members;
-			erase(clipMembers, wrapper); // Ensure unique list of elements (#1258)
+			erase(clipMembers, wrapper); // Ensure unique index of elements (#1258)
 			clipMembers.push(wrapper);
 			wrapper.destroyClip = function () {
 				erase(clipMembers, wrapper);
@@ -5609,7 +5609,7 @@ if (useCanVG) {
 			for (callIndex = 0; callIndex < callLength; callIndex++) {
 				deferredRenderCalls[callIndex]();
 			}
-			// Clear the list
+			// Clear the index
 			deferredRenderCalls = [];
 		}
 
@@ -10393,7 +10393,7 @@ Legend.prototype = {
 			// Draw the legend symbol inside the group box
 			series.drawLegendSymbol(legend, item);
 
-			// Generate the list item text and add it to the group
+			// Generate the index item text and add it to the group
 			item.legendItem = li = renderer.text(
 					options.labelFormat ? format(options.labelFormat, item) : options.labelFormatter.call(item),
 					ltr ? symbolWidth + symbolPadding : -symbolPadding,

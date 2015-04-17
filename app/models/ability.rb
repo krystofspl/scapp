@@ -350,6 +350,9 @@ class Ability
     # =============
     # x) ExerciseRealizations
     # =============
+    can [:list_plans], TrainingLessonRealization do |training_lesson_realization|
+      can? :show, training_lesson_realization
+    end
 
 
   end
@@ -586,7 +589,7 @@ class Ability
     # 16) Exercises
     # =============
 
-    # @16.1 Exercises list
+    # @16.1 Exercises index
     can [:index], Exercise
 
     # @16.2 Exercise detail
@@ -610,7 +613,7 @@ class Ability
     # 17) ExerciseBundles
     # =============
 
-    # @17.1 ExerciseBundles list
+    # @17.1 ExerciseBundles index
     can [:index], ExerciseBundle
 
     # @17.2 ExerciseBundle detail
@@ -632,8 +635,8 @@ class Ability
     # =============
     # 18) ExerciseRealizations
     # =============
-    # @18.1 list_summary
-    can [:list_summary], ExerciseRealization do |training_lesson_realization|
+    # @18.1
+    can [:list_plans], TrainingLessonRealization do |training_lesson_realization|
       can? :show, training_lesson_realization
     end
 
@@ -697,7 +700,7 @@ class Ability
     # x) ExerciseSteps
     # =============
 
-    # Exercise steps list
+    # Exercise steps index
     can [:index], ExerciseStep do |exercise|
       can? :show, exercise
     end

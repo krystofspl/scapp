@@ -19,14 +19,15 @@ class ExerciseMeasurementsController < ApplicationController
   def create
     @exercise = Exercise.friendly.find([exercise_measurement_params[:exercise_code],exercise_measurement_params[:exercise_version]])
     @exercise_measurement = ExerciseMeasurement.new(exercise_measurement_params)
-
     authorize! :add_measurement, @exercise
 
     respond_to do |format|
       if @exercise_measurement.save
-        format.html { redirect_to @exercise, notice: 'Exercise measurement was successfully created.' }
+        format.html { redirect_to @exercise, notice: t('exercise_measurement.dictionary.was_successfully_created')}
+        format.json { render action: 'exercises/show', status: :created, location: @exercise}
       else
         format.html { render action: 'new', :exercise_code => exercise_measurement_params[:exercise_code], :exercise_version=> exercise_measurement_params[:exercise_version] }
+        format.json { render json: @exercise_measurement.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -37,7 +38,7 @@ class ExerciseMeasurementsController < ApplicationController
     authorize! :edit, @exercise_measurement
     respond_to do |format|
       if @exercise_measurement.update(exercise_measurement_params)
-        format.html { redirect_to @exercise, notice: 'Exercise measurement was successfully updated.' }
+        format.html { redirect_to @exercise, notice: t('exercise_measurement.dictionary.was_successfully_updated')}
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -72,7 +73,7 @@ class ExerciseMeasurementsController < ApplicationController
       @exercise = @exercise_measurement.exercise
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def exercise_measurement_params
       params.require(:exercise_measurement).permit(:code, :name, :description, :optimal_value, :unit_code, :exercise_code, :exercise_version)
     end

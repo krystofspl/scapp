@@ -67,7 +67,7 @@ class VariableFieldUserLevelsController < ApplicationController
       @variable_field_user_level = VariableFieldUserLevel.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def variable_field_user_level_params
       params.require(:variable_field_user_level).permit(:name)
     end

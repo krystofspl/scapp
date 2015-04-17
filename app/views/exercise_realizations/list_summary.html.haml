@@ -1,24 +1,149 @@
-- @training_lesson_realization.plans.each do |plan|
-  .player-plan-wrapper
-    .box
-      %h4.box-title
-        -# avatar?
-        = plan.user_partook
-      .box-body
+- content_for :heading do
+  = "#{t('plan.index.list_summary')}"
+- breadcrumb :regular_training_lesson_realizations_plans_summary, @training_lesson_realization
+#action-box
+  = link_to @training_lesson_realization, class: 'btn btn-primary' do
+    %i.fa.fa-chevron-left
+    = t('exercise_realizations.index.back_to_lesson_realization')
+.player-plan-wrapper.col-sm-12.no-padding
+  %ul.nav.nav-tabs
+    - @plans.sort_by_username.each do |plan|
+      %li
+        = link_to plan.user_partook, '#plan-'+plan.id.to_s+'-tab', {:data => {'toggle' => 'tab'}}
+  .tab-content
+    - @plans.sort_by_username.each do |plan|
+      .tab-pane.fade.in{:id=>'plan-'+plan.id.to_s+'-tab'}
+        %i.col-sm-12.text-center.margin.text-muted= t('plan.dictionary.plan_is_empty') if plan.exercise_realizations.count == 0
         - plan.realizations_ordered.each do |realization|
-          .box.box-body.col-sm-3
-            - unless realization.exercise.exercise_image.blank?
-              = image_tag realization.exercise.exercise_image.image.small, class: 'img-rounded no-padding'
-            %span= link_to realization.exercise, realization.exercise
-            %p.no-margin
-              %span{:style=>'white-space: nowrap;'}
-                - time_formatted(realization.from,realization.until)
-            %p.no-margin
-              = distance_of_time_in_words(realization.duration)
+          .box.box-primary.col-sm-12.no-padding.no-margin
+            %h4.box-title.margin
+              - time_formatted(realization.from,realization.until)
+              =' ('+distance_of_time_in_words(realization.duration)+')'
+              =' - '
+              %strong= link_to realization.exercise, realization.exercise
+            .box-body
+              -# EXERCISE (REALIZATION) DETAIL
+              .col-sm-4.no-padding.no-margin
+                .box.box-success
+                  %h4.box-title.margin
+                    =t('exercise.show.detail')
+                  .box-body
+                    - unless realization.exercise.exercise_image.blank?
+                      = image_tag realization.exercise.exercise_image.image.small, class: 'img-rounded no-padding'
+                    = link_to realization.exercise, realization.exercise
+                    -####### SETS COUNT
+                    - sets_count = realization.exercise_set_realizations.count
+                    - if sets_count > 0
+                      .label.label-success
+                        = sets_count.to_s
+                        - if sets_count==1
+                          = " " + t('exercise_realizations.dictionary.set')
+                        - else
+                          = " " + t('exercise_realizations.dictionary.sets')
+                    -####### SETUPS COUNT
+                    - setups_count = realization.exercise_realization_setups.count
+                    - if setups_count > 0
+                      .label.label-primary
+                        = setups_count.to_s
+                        - if setups_count==1
+                          = " " + t('exercise_realizations.dictionary.setup')
+                        - else
+                          = " " + t('exercise_realizations.dictionary.setups')
+                    -# EXERCISE STEPS
+                    - realization.exercise.exercise_steps.rank(:row_order).each_with_index do |exercise_step, index|
+                      %br
+                      %tbody
+                        %tr
+                          %th
+                            %strong
+                              = (index+1).to_s+'.'
+                              = exercise_step.name
+                          %td
+                            = sanitize exercise_step.description
+              .col-sm-8.no-padding.no-margin
+                -# EXERCISE SET REALIZATIONS
+                .col-sm-7.no-padding.no-margin
+                  .box.box-info
+                    %h4.box-title.margin
+                      =t('exercise.dictionary.exercise_sets')
+                    .box-body
+                      %i.text-muted= t('exercise_set_realization.dictionary.contains_no_sets') if realization.exercise_set_realizations.empty?
+                      - realization.exercise_set_realizations.each_with_index do |set_realization, index|
+                        .col-sm-12.no-padding.no-margin.box.bg-gray
+                          .box-body
+                            -# EXERCISE SET REALIZATION DETAIL
+                            .col-sm-2.no-padding
+                              .badge= (index+1).to_s+'. '+t('exercise.dictionary.set')
+                            .col-sm-10.no-padding
+                              - time_formatted(set_realization.from,set_realization.until)
+                              = ' ('+distance_of_time_in_words(set_realization.duration)+')'
+                              %br
+                              - unless set_realization.note.blank?
+                                %i.fa.fa-pencil-square-o
+                                %i= sanitize set_realization.note
+                              %br
+                            -# EXERCISE SET REALIZATION SETUPS
+                            .col-sm-12.no-padding
+                              - set_realization.exercise_set_realization_setups.each do |set_realization_setup|
+                                .box.col-sm-12.no-margin
+                                  .box-body
+                                    %strong= set_realization_setup.exercise_set_setup.name
+                                    %br
+                                    %i.fa.fa-bar-chart-o
+                                    = t('dictionary.value') + ": " + set_realization_setup.value.to_s + " " + set_realization_setup.exercise_set_setup.unit.abbreviation
+                                    - unless set_realization_setup.note.blank?
+                                      %p.no-margin
+                                        %i.fa.fa-pencil-square-o
+                                        %i= t('dictionary.note')+": "+sanitize(set_realization_setup.note)
+                                    - unless set_realization_setup.exercise_set_setup.description.blank?
+                                      %p.no-margin
+                                        %i.fa.fa-info-circle
+                                        = t('dictionary.description')+": "
+                                        = sanitize set_realization_setup.exercise_set_setup.description
+                        - unless set_realization.rest_after.blank? || set_realization.rest_after==0
+                          .col-sm-12.no-padding.no-margin.box
+                            .box-body
+                              - time_formatted(set_realization.until,set_realization.until_with_rest_time)
+                              = t('exercise_realizations.dictionary.rest_after')+' ('+distance_of_time_in_words(set_realization.rest_after)+')'
+                    %br{:style=>'clear:both;'}
+                -# EXERCISE REALIZATION SETUPS
+                .col-sm-5.no-padding.no-margin
+                  .box
+                    %h4.box-title.margin
+                      =t('exercise_setup.dictionary.setups')
+                    .box-body
+                      %i.text-muted= t('exercise_realization_setups.dictionary.has_no_setups') if realization.exercise_realization_setups.empty?
+                      - realization.exercise_realization_setups.each do |realization_setup|
+                        -# EXERCISE REALIZATION SETUP DETAIL
+                        .box.col-sm-12.no-margin
+                          .box-body
+                            %p.no-margin
+                              %strong= realization_setup.exercise_setup.name
+                              %i.fa.fa-bar-chart-o
+                              = realization_setup.value.to_s+' '+realization_setup.exercise_setup.unit.abbreviation
+                              - unless realization_setup.note.empty?
+                                %p
+                                  %i.fa.fa-pencil-square-o
+                                  %i= t('dictionary.note')+": "+ sanitize(realization_setup.note)
+                              - unless realization_setup.exercise_setup.description.empty?
+                                %p.no-margin
+                                  %i.fa.fa-info-circle
+                                  = t('dictionary.description')+": "
+                                  = sanitize realization_setup.exercise_setup.description
+
+                    %br{:style=>'clear:both;'}
 
           - unless realization.rest_after.blank? || realization.rest_after==0
-            .box.box-body.realization-rest{style: 'min-height:'+rest_after_height.to_s+'px;'}
-              = t('exercise_realizations.dictionary.rest_after')+' ('+distance_of_time_in_words(realization.rest_after)+')'
-              %br
-              - time_formatted(realization.until,realization.until_with_rest_time)
+            .col-sm-12.box.box-default.no-margin{:style=>'margin-bottom: 30px;'}
+              %h4.box-title
+                - time_formatted(realization.until,realization.until_with_rest_time)
+                = t('exercise_realizations.dictionary.rest_after')+' ('+distance_of_time_in_words(realization.rest_after)+')'
+              .box-body
           %br{:style=>'clear:both;'}
+%br{:style=>'clear:both;'}
+
+:javascript
+  $(function(){
+    // Show first tab when page loads
+    $('ul.nav').find('a:first').tab('show');
+  });

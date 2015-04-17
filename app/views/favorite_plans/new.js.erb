@@ -1,0 +1,2 @@
+$('#favorite-plans-tab').tab('show');
+$('#favorite-plans').html("<%= escape_javascript(render partial: 'favorite_plans/form', locals: {favorite_plan: @favorite_plan})%>");

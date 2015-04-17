@@ -20,7 +20,7 @@
           type: 'POST',
           url: '#{url_for :controller => "exercise_set_realizations", :action => "update_row_order"}',
           dataType: 'json',
-          data: { id: setRealizationId, exercise_set_realization: { order_position: position } }
+          data: { id: setRealizationId, exercise_set_realization: { row_order_position: position } }
       });
       // Refresh set realizations list
       getExerciseSetRealizations();

@@ -59,5 +59,7 @@
               = link_to '#', class: 'btn btn-danger btn-xs disabled' do
                 %i.fa.fa-times
                 = t('dictionary.delete')
-.text-center
-  = paginate @exercise_setups, :param_name => :page_s
+#paginator-setups.text-center
+
+:javascript
+  $('#paginator-setups').html('#{escape_javascript(paginate(@exercise_setups, :remote => true, :param_name=>:page_s, :params => {:controller => 'exercises', :action => 'filterrific_setups'}))}');

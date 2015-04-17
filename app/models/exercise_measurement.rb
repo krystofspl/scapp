@@ -45,6 +45,27 @@ class ExerciseMeasurement < ActiveRecord::Base
         raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
     end
   }
+  scope :type, lambda { |type|
+    case type.to_s
+     when /^all/
+       where('exercise_measurements.type = ? OR exercise_measurements.type = ?','ExerciseMeasurement','ExerciseSetMeasurement')
+     when /^simple_measurements/
+       where('exercise_measurements.type = ?','ExerciseMeasurement')
+     when /^set_measurements/
+       where('exercise_measurements.type = ?','ExerciseSetMeasurement')
+     else
+       raise(ArgumentError, "Invalid type option: #{ type.inspect }")
+    end
+  }
+
+  # Scope for filtering by given exercise, it's used by Filterrific
+  scope :for_exercise, lambda { |exercise|
+                       where('exercise_code=? AND exercise_version=?', exercise.code, exercise.version)
+                     }
+
+  scope :required, -> {where(required: true)}
+
+  scope :except_required, -> {where(required: false)}
 
   # =================== ASSOCIATIONS =================================
   belongs_to :unit, :foreign_key => :unit_code
@@ -87,6 +108,15 @@ class ExerciseMeasurement < ActiveRecord::Base
       [I18n.t('exercise.filter.created_at_desc'), 'created_at_desc'],
       [I18n.t('exercise.filter.realizations_asc'), 'realizations_asc'],
       [I18n.t('exercise.filter.realizations_desc'), 'realizations_desc'],
+    ]
+  end
+  # This method provides select options for the `type` filter select input.
+  # It is called in the controller as part of `initialize_filterrific`.
+  def self.options_for_type
+    [
+        [I18n.t('dictionary.all'), 'all'],
+        [I18n.t('exercise_measurement.dictionary.simple_measurement'), 'simple_measurements'],
+        [I18n.t('exercise_measurement.dictionary.set_measurement'), 'set_measurements']
     ]
   end
 end

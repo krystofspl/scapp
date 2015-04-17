@@ -25,11 +25,12 @@
       forceHelperSize: true,
       connectToSortable: $('.player-plan'),
       opacity: 0.8,
-      cursorAt: { left: 5 , top: 5},
+      cursorAt: { left: 5 , top: 20},
       helper: 'clone',
       start: function(e, ui){
-        $(ui.helper).removeClass('col-sm-12');
-        $(ui.helper).addClass('draggable-helper');
+        var helper = ui.helper;
+        helper.removeClass('col-sm-12');
+        helper.addClass('draggable-helper');
       }
     });
   }
@@ -40,14 +41,17 @@
   // Refreshes whole plan with all realizations with current data
   function refreshRealizationsInPlan(plan){
     var plan = $('ul[data-plan-id='+plan+']');
-    var planParent = plan.parent()
+    var planParent = plan.parent();
+    planParent.fadeTo('fast',0.5);
+    planParent.find('.loading-spinner').show();
     $.ajax({
       url : '#{url_for :controller => "exercise_realizations", :action => "list_exercise_realizations"}',
       data: { plan_id : plan.data('plan-id') },
       type: 'GET',
       success: function(data){
         // Replace ExerciseRealization html with updated plan
-        planParent.html(data);
+        planParent.html(data).fadeTo('fast',1.0);
+        planParent.find('.loading-spinner').hide();
         // Exercises .draggable needs to get refreshed,
         // otherwise it doesn't recognize changed .player-plan sortables
         refreshExercisesDraggable();
@@ -57,14 +61,6 @@
 
 
   // TWEAKS
-  // Make elements with string selector the same height
-  function makeElementsSameHeight(selector){
-    // Get title box with max height
-    var maxHeight = Math.max.apply(null, $(selector).map(function ()
-      {return $(this).innerHeight();}).get());
-    // Set all heights accordingly
-    $(selector).css('min-height', maxHeight);
-  }
   // Prevent enter keypress in forms (it triggers html request by default)
   function preventFormEnterKeypress(selector){
     $(selector).on("keypress", function (e) {
@@ -73,6 +69,52 @@
       }
     });
   }
+
+  function formErrorHandler(){
+    return function(evt,xhr,status,error){
+      var $form = $(this), errors, errorText;
+      try {
+        errors = $.parseJSON(xhr.responseText);
+      } catch (err) {
+        // If the responseText is not valid JSON (like if a 500 exception was thrown), populate errors with a generic error message.
+        errors = {message: "#{t('exercise_realizations.form.please_reload_try_again')}"};
+      }
+      // Build an unordered list from the list of errors
+      errorText = "#{t('dictionary.following_errors_occured_text_only')}<ul>";
+      for (error in errors) {
+        errorText += "<li>" + errors[error] + "</li> ";
+      }
+      errorText += "</ul>";
+      // Insert error list into form
+      $form.find('div.form-errors').html(errorText);
+    }
+  }
+
+  function alertErrorHandler(msg, droppedItem){
+    return function(xhr,status,error){
+      var $form = $(this), errors, errorText;
+      try {
+        errors = $.parseJSON(xhr.responseText);
+      } catch (err) {
+        // If the responseText is not valid JSON (like if a 500 exception was thrown), populate errors with a generic error message.
+        errors = {message: "#{t('exercise_realizations.form.please_reload_try_again')}"};
+      }
+      // Build an unordered list from the list of errors
+      errorText = "\n#{t('dictionary.following_errors_occured_text_only')}";
+      for (error in errors) {
+        errorText += "\n" + errors[error] + "";
+      }
+      // Insert error list into form
+      alert(msg+' '+errorText);
+      droppedItem.fadeOut(1000, function(){$(this).remove();});
+    }
+  }
+
+  // FAVORITE PLANS button trigger - load tab contents
+  $('#favorite-plans-tab').unbind().click(function(){
+    $('#favorite-plans').html('');
+    $.get('#{url_for :controller => "favorite_plans", :action => "index"}');
+  });
 
   // DOCUMENT READY
   $(function() {
@@ -109,6 +151,7 @@
         nextText.html('');
       }
     }
+
     // CAROUSEL PREV, NEXT BUTTONS
     $('.owl-carousel-prev').click(function() {owl.trigger('prev.owl.carousel');});
     $('.owl-carousel-next').click(function() {owl.trigger('next.owl.carousel');});

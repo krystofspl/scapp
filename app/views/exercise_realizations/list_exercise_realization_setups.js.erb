@@ -1,22 +1,5 @@
-$(function() {
-    $("#exercise-setups-used-wrapper")
-            .html("<%= escape_javascript(render partial: 'exercise_realization_setups/list_small', locals: {:exercise_realization_setups => @exercise_realization_setups}) %>")
-            .find('li').disableSelection();
-    $("#exercise-realization-setups-accordion").accordion({
-        collapsible: true,
-        autoHeight: false,
-        header: '.accordion-header-wrapper'
-    });
-    $("#exercise-setups-used-wrapper li .btn-edit").unbind().click(function(){
-        renderRealizationSetupFormEdit($(this).closest('li').data('exercise-realization-setup-id'));
-        showEditSetupPane();
-    });
-    $(".btn-destroy").bind('ajax:success', function() {
-        $(this).closest('li').fadeOut(1000, function(){
-            // Remove element
-            $(this).remove();
-            // Refresh realizations list (number of setups)
-            refreshRealizationsInPlan(getPlanIdForRealization($('#realization-settings').data('exercise-realization-id')));
-        });
-    });
-});
+var exerciseSetupsUsedWrapper = $("#exercise-setups-used-wrapper");
+// Set content for used setups
+exerciseSetupsUsedWrapper
+    .html("<%= escape_javascript(render partial: 'exercise_realization_setups/list_small', locals: {:exercise_realization_setups => @exercise_realization_setups}) %>")
+    .find('li').disableSelection();

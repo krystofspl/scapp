@@ -67,7 +67,7 @@ class OrganizationsController < ApplicationController
       @organization = Organization.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def organization_params
       params.require(:organization).permit(:name, :location, :description)
     end

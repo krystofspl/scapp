@@ -1,6 +1,6 @@
 class ExerciseSetRealization < ActiveRecord::Base
   include RankedModel
-  ranks :order, :with_same => :exercise_realization_id
+  ranks :row_order, :with_same => :exercise_realization_id
   before_validation do
     set_time_duration
     set_rest_after
@@ -17,13 +17,13 @@ class ExerciseSetRealization < ActiveRecord::Base
   # =================== VALIDATIONS ==================================
   validates :time_duration, numericality: {greater_than_or_equal_to: 1}
   validates :rest_after, numericality: {greater_than_or_equal_to: 0}
-  #validate :fits_into_lesson #TODO FIX, see exercise_realization.rb
+  validate :fits_into_lesson
 
   # =================== METHODS ======================================
 
   # Return position based on row order (RankedModel)
   def position
-    self.exercise.exercise_realizations.rank(:order).index(self)
+    self.exercise_realization.exercise_set_realizations.rank(:row_order).index(self)
   end
 
   # Get total duration of the exercise, counts with exercise sets
@@ -33,7 +33,7 @@ class ExerciseSetRealization < ActiveRecord::Base
 
   # Returns realization start time in seconds
   def from
-    realization_sets_preceding = self.exercise_realization.exercise_set_realizations.rank(:order).take_while { |e| e.order < self.order }
+    realization_sets_preceding = self.exercise_realization.exercise_set_realizations.rank(:row_order).take_while { |e| e.row_order < self.row_order }
     time = 0
     realization_sets_preceding.each do |rp|
       time+=rp.duration+rp.rest_after
@@ -53,7 +53,7 @@ class ExerciseSetRealization < ActiveRecord::Base
 
   # Validate if the sum of used time by realizations is <= the maximal available time (defined in TrainingLessonRealization)
   def fits_into_lesson
-    unless self.exercise_realization.fits_into_lesson
+    unless self.exercise_realization.fits_into_lesson(self) # pass (modified) self to the validation, see why at ExerciseRealization#fits_into_lesson
       errors.add(:time_duration, I18n.t('exercise_realizations.error.doesnt_fit_into_lesson'))
     end
   end
@@ -88,8 +88,10 @@ class ExerciseSetRealization < ActiveRecord::Base
 
   private
     def set_required_set_realization_setups
-      self.exercise_realization.exercise.exercise_setups.type('set_setups').required.each do |es|
-        ExerciseSetRealizationSetup.create(:exercise_set_realization_id => self.id, :exercise_setup_code => es.code, :numeric_value => 0)
+      ActiveRecord::Base.transaction do
+        self.exercise_realization.exercise.exercise_setups.type('set_setups').required.each do |es|
+          ExerciseSetRealizationSetup.create(:exercise_set_realization_id => self.id, :exercise_setup_code => es.code, :numeric_value => 0)
+        end
       end
     end
 end

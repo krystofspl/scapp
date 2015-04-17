@@ -11,16 +11,14 @@ class ExerciseSetRealizationSetup < ActiveRecord::Base
 
   # =================== METHODS ==================================
   def value
-    if !self.numeric_value.blank?
-      if self.exercise_set_setup.unit.unit_type == :integer
+    case self.exercise_set_setup.unit.unit_type
+      when :integer
         self.numeric_value.to_i
-      elsif self.exercise_set_setup.unit.unit_type == :decimal
+      when :decimal
         self.numeric_value
-      end
-    elsif !self.string_value.blank?
-      self.string_value
-    else
-      ""
+      when :string
+        self.string_value
+      else ""
     end
   end
 

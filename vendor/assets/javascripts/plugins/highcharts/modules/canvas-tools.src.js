@@ -3103,7 +3103,7 @@ if (CanvasRenderingContext2D) {
 		},
 
 		/**
-		 * Draws the SVG on the canvas or adds a draw invokation to the deferred list.
+		 * Draws the SVG on the canvas or adds a draw invokation to the deferred index.
 		 */
 		draw: function () {
 			var renderer = this;

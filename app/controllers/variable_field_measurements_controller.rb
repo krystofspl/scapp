@@ -150,7 +150,7 @@ class VariableFieldMeasurementsController < ApplicationController
       @variable_field_measurement = VariableFieldMeasurement.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def variable_field_measurement_params
       params.require(:variable_field_measurement).permit(:measured_at, :locality, :string_value, :int_value)
     end

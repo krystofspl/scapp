@@ -33,7 +33,7 @@ class ExerciseImagesController < ApplicationController
       @exercise_image = ExerciseImage.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def exercise_image_params
       params.require(:exercise_image).permit(:description, :correctness, :exercise_step_id, :exercise_code, :exercise_version)
     end

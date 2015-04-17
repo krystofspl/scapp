@@ -266,17 +266,17 @@ class TrainingLessonRealizationsController < ApplicationController
       @training_lesson_realization = TrainingLessonRealization.friendly.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def training_lesson_realization_params
       params.require(:training_lesson_realization).permit(:date, :from, :until, :player_price_without_tax, :group_price_without_tax, :rental_price_without_tax, :calculation, :status, :note, :training_vat_id, :rental_vat_id, :currency_id, :training_lesson_id, :user_id, :sign_in_time, :excuse_time)
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def individual_training_lesson_realization_params
       params.require(:individual_training_lesson_realization).permit(:date, :from, :until, :player_price_without_tax, :group_price_without_tax, :rental_price_without_tax, :calculation, :status, :note, :training_vat_id, :rental_vat_id, :currency_id, :is_open, :player_count_limit, :sign_in_time, :excuse_time)
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def regular_training_lesson_realization_params
       params.require(:regular_training_lesson_realization).permit(:player_price_without_tax, :group_price_without_tax, :rental_price_without_tax, :calculation, :note, :training_vat_id, :rental_vat_id, :training_lesson_id, :sign_in_time, :excuse_time)
     end

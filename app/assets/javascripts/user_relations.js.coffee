@@ -28,7 +28,7 @@ jQuery(document).ready( ->
 
 
         jQuery("span.email-guess").on("click", ->
-          jQuery("##{input_field_id}").val(this.innerText)
+          jQuery("##{input_field_id}").val(jQuery(this).text())
         )
       )
   )

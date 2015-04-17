@@ -1,4 +1,3 @@
--# This form is also used by ExerciseSetRealizationSetup
 - form_action = (params[:action]=='new') ? 'create' : 'update'
 - form_method = (params[:action]=='new') ? :post : :put
 
@@ -40,21 +39,4 @@
       // Hide form, show list
       switchAvailableSetupsEditPanesVisibility();
     })
-    .bind("ajax:error", function (evt, xhr, status, error) {
-      var $form = $(this), errors, errorText;
-      try {
-        errors = $.parseJSON(xhr.responseText);
-      } catch (err) {
-      alert(err);
-        // If the responseText is not valid JSON (like if a 500 exception was thrown), populate errors with a generic error message.
-        errors = {message: "#{t('exercise_realizations.form.please_reload_try_again')}"};
-      }
-      // Build an unordered list from the list of errors
-      errorText = "#{t('dictionary.following_errors_occured_text_only')}<ul>";
-      for (error in errors) {
-        errorText += "<li>" + errors[error] + "</li> ";
-      }
-      errorText += "</ul>";
-      // Insert error list into form
-      $form.find('div.form-errors').html(errorText);
-    });
+    .bind("ajax:error", formErrorHandler());

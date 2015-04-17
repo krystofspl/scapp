@@ -28,7 +28,7 @@ And(/^Following exercise set realizations exist in the system$/) do |table|
   table.hashes.each do |t|
     er = ExerciseRealization.where(:exercise_code=>t[:exercise]).first.id
     esr = ExerciseSetRealization.new(:exercise_realization_id=>er, :time_duration=> t[:duration].to_i*60)
-    esr.update_attribute :order_position, 10000
+    esr.update_attribute :row_order_position, 10000
     esr.save!
   end
 end

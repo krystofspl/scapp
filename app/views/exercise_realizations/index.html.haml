@@ -5,6 +5,9 @@
   = link_to @training_lesson_realization, class: 'btn btn-primary' do
     %i.fa.fa-chevron-left
     = t('exercise_realizations.index.back_to_lesson_realization')
+  = link_to list_summary_training_lesson_realization_exercise_realizations_path(@training_lesson_realization), class: 'btn btn-primary' do
+    %i.fa.fa-search
+    = t('plan.index.list_summary')
 
 #left-pane-container.col-xs-6.col-sm-6.col-lg-4.no-padding
   #left-pane
@@ -15,7 +18,7 @@
             %li.active
               = link_to t('exercise.index.exercises'), '#exercises-list', {:data => {'toggle' => 'tab'}}
             %li
-              = link_to t('favorite_plan.index.favorite_plans'), '#favorite-plans', {:data => {'toggle' => 'tab'}}
+              = link_to t('favorite_plan.index.favorite_plans'), '#favorite-plans', {:data => {'toggle' => 'tab'}, :id=>'favorite-plans-tab'}
           .tab-content
             #exercises-list.tab-pane.fade.in.active
               = render partial: 'list_exercises', locals: {:exercises => @exercises, :filterrific => @filterrific}
@@ -41,12 +44,15 @@
       .owl-carousel-before.no-padding
         .owl-carousel-prev.fa.fa-arrow-left.fa-2x
       .owl-carousel#owl-carousel.no-padding
-        - @training_lesson_realization.plans.each do |plan|
+        - @training_lesson_realization.plans.sort_by_username.each do |plan|
           .player-plan-wrapper
             .box
               %h4.box-title.text-center.no-padding
                 -# avatar?
                 = plan.user_partook
+
+                = link_to new_training_lesson_realization_favorite_plan_path(:favorite_plan=>{:plan_id=>plan.id}), :class=>'favorite-plan-link', :remote=>true, :title=>t('plan.dictionary.make_favorite') do
+                  %i.fa.fa-star
               .box-body.no-padding
                 = render partial: 'list_small', locals: {:plan => plan}
       .owl-carousel-after.no-padding

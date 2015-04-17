@@ -67,7 +67,7 @@ class UnitsController < ApplicationController
       @units = Unit.all
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def unit_params
       params.require(:unit).permit(:code,:name,:abbreviation,:unit_type)
     end

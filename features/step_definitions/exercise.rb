@@ -13,7 +13,7 @@ And(/^Exercise "([^"]*)" is in use$/) do |arg|
   er.exercise = exercise
   er.plan = Plan.create()
   er.user_created = User.first
-  er.order = 0
+  er.row_order = 0
   er.save!
 end
 

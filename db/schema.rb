@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150329100831) do
+ActiveRecord::Schema.define(version: 20150417075037) do
 
   create_table "attendances", force: true do |t|
     t.string   "participation",                  limit: 9
@@ -130,7 +130,7 @@ ActiveRecord::Schema.define(version: 20150329100831) do
   create_table "exercise_realizations", force: true do |t|
     t.string   "exercise_code"
     t.integer  "exercise_version"
-    t.integer  "order",                           null: false
+    t.integer  "row_order",                       null: false
     t.integer  "time_duration",    default: 300
     t.integer  "rest_after",       default: 0
     t.text     "note"
@@ -155,7 +155,7 @@ ActiveRecord::Schema.define(version: 20150329100831) do
   end
 
   create_table "exercise_set_realizations", force: true do |t|
-    t.integer  "order",                                  null: false
+    t.integer  "row_order",                              null: false
     t.integer  "time_duration",           default: 60,   null: false
     t.integer  "rest_after",              default: 0
     t.text     "note"

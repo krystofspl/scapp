@@ -42,7 +42,7 @@ class ExerciseImageUploader < CarrierWave::Uploader::Base
     process :resize_to_fill => [180, 180]
   end
 
-  # Add a white list of extensions which are allowed to be uploaded.
+  # Add a white index of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   def extension_white_list
     %w(jpg jpeg gif png)

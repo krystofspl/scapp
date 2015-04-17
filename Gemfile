@@ -7,8 +7,7 @@ gem 'uglifier', '>= 1.3.0'
 # JS preprocessor
 gem 'coffee-rails', '~> 4.0.0'
 # JS jQuery library
-gem 'jquery-rails'
-gem 'jquery-ui-rails'
+gem 'jquery-rails', '~> 3.1.2'
 gem 'jquery-scrollto-rails'
 # page speedup loader - replacing only document body and changed assets
 gem 'turbolinks'
@@ -45,7 +44,6 @@ gem 'momentjs-rails', '>=2.8.1', :github => 'derekprior/momentjs-rails'
 gem 'datetimepicker-rails', :require => 'datetimepicker-rails', :git => 'git://github.com/zpaulovics/datetimepicker-rails.git', branch: 'master', submodules: true
 # image upload + manipulation
 gem 'carrierwave'
-#gem 'rmagick', :git => 'https://github.com/rmagick/rmagick.git', :ref => '79e1708c7f6792a3a90cb8cb3ffaeb74c58e092e', :require => 'RMagick'
 gem 'rmagick'
 # handling foreign keys
 gem 'foreigner', '~>1.4.2'

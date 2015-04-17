@@ -1,15 +1,56 @@
 - player = plan.user_partook
 %i#no-realizations.col-sm-12.text-center.text-muted{:style=>'display:none;'}
   = t('exercise_realizations.index.no_realizations_yet')
-%ul.player-plan{:id => "player-#{player.id}", :data => {'plan-id' => plan.id}}
+.loading-spinner{:style=>'display:none; margin-bottom: 10px;'}
+  - render_spinner
+%ul.player-plan{:id => "player-#{player.id}", :data => {:plan=>{:id=>plan.id}}}
   - plan.realizations_ordered.each do |realization|
-    %li.realization{:data => {'realization-id' => realization.id}}
+    %li.realization{:data => {:realization=>{:id=>realization.id}}}
       = render partial: 'exercise_realizations/detail_short', locals: {:realization => realization}
-.remaining-time
-  %i.fa.fa-clock-o
-  = t('dictionary.remaining_time')+': '+distance_of_time_in_words(plan.remaining_time)
+.progress.remaining-time
+  - progress = plan.progress_in_percent
+  - progress_bar_classes = ['progress-bar', 'progress-bar-striped', ('progress-bar-info' if progress!=100), ('progress-bar-success' if progress==100)]
+  %div{:class=> progress_bar_classes, :style=>'width: '+progress.to_s+'%;'}
+    %span.col-sm-12.no-padding
+      %i.fa.fa-clock-o
+      = t('dictionary.remaining_time')+': '+distance_of_time_in_words(plan.remaining_time) if progress!=100
+      = t('exercise_realizations.dictionary.plan_is_full') if progress==100
+
 
 :javascript
+  function handleReceivedExercise(receivedItem, receivedThis){
+    var code = receivedItem.data('exercise-code'), version = receivedItem.data('exercise-version');
+    var droppedItem = receivedThis.data().uiSortable.currentItem;
+    var position = droppedItem.index();
+    var plan = receivedThis.data('plan-id');
+    $.ajax({
+        type: 'POST',
+        url: '#{url_for :controller => "exercise_realizations", :action => "create"}',
+        dataType: 'json',
+        data: { exercise_realization: {exercise_code: code, exercise_version: version, row_order_position: position, plan_id: plan } },
+        success: function(e) {
+          refreshRealizationsInPlan(plan);
+        },
+        error: alertErrorHandler('#{t('exercise_realizations.error.could_not_add')}', droppedItem)
+    });
+  }
+  function handleReceivedPlan(receivedItem, receivedThis){
+    var favoritePlan = receivedItem.data('favorite-plan-id');
+    var plan = receivedThis.data('plan-id');
+    var droppedItem = receivedThis.data().uiSortable.currentItem;
+    var position = droppedItem.index();
+    $.ajax({
+      type: 'POST',
+      url: '#{url_for :controller => "favorite_plans", :action=>"copy_favorite_to_plan"}',
+      dataType: 'json',
+      data: {id: favoritePlan, favorite_plan: {plan_id: plan, new_position: position}},
+      success: function(e) {
+        refreshRealizationsInPlan(plan);
+        $('#favorite-plans-tab').click(); // Refresh view with favorite plans so that draggable connects to updated .player-plan
+      },
+      error: alertErrorHandler('#{t('favorite_plan.error.could_not_add')}', droppedItem)
+    });
+  }
   $(function(){
     if($('ul#player-#{player.id}').children().length==0){
       $('ul#player-#{player.id}').parent().find('#no-realizations').show();
@@ -31,32 +72,20 @@
                 type: 'POST',
                 url: '#{url_for :controller => "exercise_realizations", :action => "update_row_order"}',
                 dataType: 'json',
-                data: { id: realization_id, exercise_realization: {order_position: position } }
+                data: { id: realization_id, exercise_realization: {row_order_position: position } }
             });
             var plan = $(this).data('plan-id');
             refreshRealizationsInPlan(plan);
           }
         },
-
         // CREATE: A draggable item has been received from exercises list (exc has been added)
         receive: function(event, ui){
-          var code = ui.item.data('exercise-code'), version = ui.item.data('exercise-version');
-          var droppedItem = $(this).data().uiSortable.currentItem;
-          var position = droppedItem.index();
-          var plan = $(this).data('plan-id');
-          $.ajax({
-              type: 'POST',
-              url: '#{url_for :controller => "exercise_realizations", :action => "create"}',
-              dataType: 'json',
-              data: { exercise_realization: {exercise_code: code, exercise_version: version, order_position: position, plan_id: plan } },
-              success: function(e) {
-                refreshRealizationsInPlan(plan);
-              },
-              error: function(xhr,err) {
-                alert('#{t('exercise_realizations.error.could_not_add')}'+' '+xhr.responseText);
-                droppedItem.fadeOut(1000, function(){$(this).remove();});
-              }
-          })
+          var receivedItem = ui.item;
+          if(receivedItem.hasClass('exercise')){
+            handleReceivedExercise(receivedItem, $(this));
+          } else {
+            handleReceivedPlan(receivedItem, $(this));
+          }
         }
     });
   });

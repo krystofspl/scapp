@@ -94,7 +94,7 @@ class CoachObligationsController < ApplicationController
       end
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def coach_obligation_params
       params.require(:coach_obligation).permit(:hourly_wage_without_vat, :role, :vat_id, :user_id, :regular_training_id, :currency_id)
     end

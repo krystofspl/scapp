@@ -86,41 +86,13 @@ class ExercisesController < ApplicationController
   end
 
   def clone
-    #TODO presunout do modelu!
     existing_exercise_version = (params[:exercise_version].blank?) ? 1 : params[:exercise_version]
-    new_exercise_version = Exercise.all.order('version').last.version+1
     # Exercise
     existing_exercise = Exercise.friendly.find([params[:exercise_code],existing_exercise_version])
 
     authorize! :clone, existing_exercise
-
-    @exercise = existing_exercise.deep_dup
-    @exercise.code = existing_exercise.code
-    @exercise.version = new_exercise_version
-    # Measurements
-    existing_exercise.exercise_measurements.each do |measurement|
-      new = measurement.deep_dup
-      new.exercise_version = new_exercise_version
-      new.save
-      @exercise.exercise_measurements << new
-    end
-    # Setups
-    existing_exercise.exercise_setups.each do |setup|
-      new = setup.deep_dup
-      new.exercise_version = new_exercise_version
-      new.save
-      @exercise.exercise_setups << new
-    end
-    # Steps
-    existing_exercise.exercise_steps.each do |step|
-      new = step.deep_dup
-      new.exercise_version = new_exercise_version
-      new.save
-      @exercise.exercise_steps << new
-      #TODO Images
-    end
-    #TODO Image
-    @exercise.save
+    @exercise = existing_exercise.clone
+    @exercise.save!
     render action: 'edit'
   end
 
@@ -142,18 +114,31 @@ class ExercisesController < ApplicationController
         params[:filterrific_setups],
         :select_options => fs_select_options
     ) or return
-    @exercise_setups = @filterrific_setups.find.where('exercise_code=? AND exercise_version=?', @exercise.code, @exercise.version).page(params[:page_s]).per(3)
+    @exercise_setups = @filterrific_setups.find.for_exercise(@exercise).page(params[:page_s]).per(3)
+    # Recover from invalid param sets, e.g., when a filter refers to the
+    # database id of a record that doesn’t exist any more.
+    # In this case we reset filterrific and discard all filter params.
+    rescue ActiveRecord::RecordNotFound => e
+      # There is an issue with the persisted param_set. Reset it.
+      redirect_to(reset_filterrific_url(format: :html)) and return
   end
 
   def filterrific_measurements
+    fm_select_options = Hash.new
+    fm_select_options[:sorted_by] = ExerciseMeasurement.options_for_sorted_by
+    fm_select_options[:type] = ExerciseMeasurement.options_for_type if @exercise.has_sets?
     @filterrific_measurements = initialize_filterrific(
         ExerciseMeasurement,
         params[:filterrific_measurements],
-        :select_options => {
-            sorted_by: ExerciseMeasurement.options_for_sorted_by
-        }
+        :select_options => fm_select_options
     ) or return
-    @exercise_measurements = @filterrific_measurements.find.where('exercise_code=? AND exercise_version=?', @exercise.code, @exercise.version).page(params[:page_m]).per(3)
+    @exercise_measurements = @filterrific_measurements.find.for_exercise(@exercise).page(params[:page_m]).per(3)
+    # Recover from invalid param sets, e.g., when a filter refers to the
+    # database id of a record that doesn’t exist any more.
+    # In this case we reset filterrific and discard all filter params.
+    rescue ActiveRecord::RecordNotFound => e
+      # There is an issue with the persisted param_set. Reset it.
+      redirect_to(reset_filterrific_url(format: :html)) and return
   end
 
   private
@@ -167,7 +152,7 @@ class ExercisesController < ApplicationController
       end
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def exercise_params
       params.require(:exercise).permit(:code, :version, :name, :author_name, :description, :description_long, :sources, :youtube_url, :accessibility, :type, :user_id, :exercise_image_id)
     end

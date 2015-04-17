@@ -30,10 +30,10 @@
         .row
           .col-sm-6
             = f.input :sign_in_time, as: :datetime_picker,
-              label: "#{t('simple_form.labels.training_lesson_realization.sign_in_time')} #{ApplicationHelper.link_modal_help('trainings', 'sign_in_time', locale)}"
+              label: "#{t('simple_form.labels.training_lesson_realization.sign_in_time')} #{ApplicationHelper.link_modal_help('trainings', 'sign_in_time', locale)}".html_safe
           .col-sm-6
             = f.input :excuse_time, as: :datetime_picker,
-              label: "#{t('simple_form.labels.training_lesson_realization.excuse_time')} #{ApplicationHelper.link_modal_help('trainings', 'excuse_time', locale)}"
+              label: "#{t('simple_form.labels.training_lesson_realization.excuse_time')} #{ApplicationHelper.link_modal_help('trainings', 'excuse_time', locale)}".html_safe
     .box.box-info
       .box-header
         %i.fa.fa-money
@@ -45,7 +45,7 @@
         .row
           .col-sm-6
             = f.input :calculation, collection: TrainingLessonRealization::PRICE_CALCULATIONS,
-              label: "#{t('simple_form.labels.training_lesson_realization.calculation')} #{ApplicationHelper.link_modal_help('trainings', 'calculation', locale)}"
+              label: "#{t('simple_form.labels.training_lesson_realization.calculation')} #{ApplicationHelper.link_modal_help('trainings', 'calculation', locale)}".html_safe
           .col-sm-6
             = f.input :status, disabled: true
         .row
@@ -70,18 +70,18 @@
         .row
           .col-sm-6
             = f.input :is_open,
-              label: "#{t('simple_form.labels.training_lesson_realization.is_open')} #{ApplicationHelper.link_modal_help('trainings', 'is_open', locale)}"
+              label: "#{t('simple_form.labels.training_lesson_realization.is_open')} #{ApplicationHelper.link_modal_help('trainings', 'is_open', locale)}".html_safe
 
           .col-sm-6
             = f.input :player_count_limit,
-              label: "#{t('simple_form.labels.training_lesson_realization.player_count_limit')} #{ApplicationHelper.link_modal_help('trainings', 'player_count_limit', locale)}"
+              label: "#{t('simple_form.labels.training_lesson_realization.player_count_limit')} #{ApplicationHelper.link_modal_help('trainings', 'player_count_limit', locale)}".html_safe
 
         = f.input :note, input_html: { class: 'textarea' }
         - if is_admin?
           .alert.alert-danger
             %i.fa.fa-warning
             = f.association :user,
-              label: "#{t('training_realization.form.user')} #{ApplicationHelper.link_modal_help('trainings', 'scheduled_lesson_user', locale)}"
+              label: "#{t('training_realization.form.user')} #{ApplicationHelper.link_modal_help('trainings', 'scheduled_lesson_user', locale)}".html_safe
 
 
   .form-actions

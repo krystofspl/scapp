@@ -4334,7 +4334,7 @@ function AgendaEventRenderer() {
 
 
 // Sets the seg.backwardCoord and seg.forwardCoord on each segment and returns a new
-// list in the order they should be placed into the DOM (an implicit z-index).
+// index in the order they should be placed into the DOM (an implicit z-index).
 function placeSlotSegs(segs) {
 	var levels = buildSlotSegLevels(segs);
 	var level0 = levels[0];
@@ -5313,7 +5313,7 @@ function DayEventRenderer() {
 		var event = segment.event;
 		var url = event.url;
 
-		// generate the list of CSS classNames
+		// generate the index of CSS classNames
 		var classNames = [ 'fc-event', 'fc-event-hori' ];
 		if (isEventDraggable(event)) {
 			classNames.push('fc-event-draggable');

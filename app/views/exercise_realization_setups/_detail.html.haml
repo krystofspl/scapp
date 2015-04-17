@@ -1,12 +1,16 @@
-.accordion-header-wrapper
-  %h5= exercise_realization_setup.exercise_setup.name
+.exercise-realization-setup-header
+  %h5
+    %i.fa.fa-plus-circle
+    = exercise_realization_setup.exercise_setup.name
   %i.fa.fa-bar-chart-o
   = t('dictionary.value') + ": " + exercise_realization_setup.value.to_s + " " + exercise_realization_setup.exercise_setup.unit.abbreviation
-%div
-  - unless exercise_realization_setup.note.blank?
-    %p.no-margin
-      %i.fa.fa-pencil-square-o
+%div.exercise-realization-setup-body{:style=>'display:none;'}
+  %p.no-margin
+    %i.fa.fa-pencil-square-o
+    - unless exercise_realization_setup.note.blank?
       %i= t('dictionary.note')+": "+sanitize(exercise_realization_setup.note)
+    - else
+      %i= t('dictionary.note')+": -"
   - unless exercise_realization_setup.exercise_setup.description.blank?
     %p.no-margin
       %i.fa.fa-info-circle
@@ -16,3 +20,29 @@
   = link_to t('dictionary.edit'), '#', class: 'btn btn-xs btn-warning btn-edit'
   - unless exercise_realization_setup.exercise_setup.is_required?
     = link_to t('dictionary.delete'), exercise_realization_setup, :method => :delete, :remote => true, data: { confirm: t('dictionary.are_you_sure') }, class: 'btn btn-xs btn-danger btn-destroy'
+:javascript
+  var exerciseSetupsUsedWrapper = $('#exercise-setups-used-wrapper');
+  exerciseSetupsUsedWrapper.find(".btn-edit").unbind().click(function(){
+      renderRealizationSetupFormEdit($(this).closest('li').data('exercise-realization-setup-id'));
+      showEditSetupPane();
+  });
+  exerciseSetupsUsedWrapper.find(".btn-destroy").bind('ajax:success', function() {
+    $(this).closest('li').fadeOut(1000, function(){
+      index
+      getExerciseRealizationSetups();
+      index
+      refreshRealizationsInPlan(getPlanIdForRealization($('#realization-settings').data('exercise-realization-id')));
+    });
+  });
+  $(".exercise-realization-setup-header").unbind().click(function() {
+    var header = $(this);
+    var content = header.next();
+    content.slideToggle(500, function () {
+      var elementI = header.find('i').first();
+      if(content.is(":visible")){
+        elementI.removeClass('fa-plus-circle').addClass('fa-minus-circle');
+      } else {
+        elementI.addClass('fa-plus-circle').removeClass('fa-minus-circle');
+      }
+    });
+  });

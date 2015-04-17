@@ -1,3 +1,4 @@
+.col-sm-12.text-center.text-muted= t('exercise_realization_setups.dictionary.no_setups_yet') if exercise_realization_setups.empty?
 .col-sm-12.no-padding-sides
   %ul#exercise-realization-setups-accordion
     - exercise_realization_setups.sort{|a,b| a.exercise_setup.name.downcase<=>b.exercise_setup.name.downcase}.each do |rs|

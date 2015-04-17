@@ -1,12 +1,27 @@
 .col-sm-12.no-padding-sides
   %ul
     - exercises.each do |exercise|
-      %li.box.box-body.col-sm-12.draggable{:data => {'exercise-code' => exercise.code, 'exercise-version' => exercise.version}}
+      %li.exercise.box.box-body.col-sm-12.draggable{:data => {:exercise=>{:code=>exercise.code, :version=>exercise.version}}}
         - unless exercise.exercise_image.blank?
           = image_tag exercise.exercise_image.image.small, class: 'img-rounded margin no-padding', style: 'float:right; width: 50px;'
         %strong= link_to exercise.to_s, exercise
         %br
         = sanitize truncate(exercise.description, :length => 85)
+        %br
+        -# Type
+        - if !exercise.has_sets?
+          .label.label-light-grey= t('exercise.dictionary.simple_exercise')
+        - elsif exercise.has_sets?
+          .label.label-success= t('exercise.dictionary.exercise_with_sets')
+        = ' '
+        -# Accessibility
+        - if exercise.is_private?
+          %span.label.label-info
+            = t('exercise.dictionary.accessibility_private')
+        - else
+          %span.label.label-primary
+            = t('exercise.dictionary.accessibility_global')
+
 .col-sm-12.text-center#paginator
 
 :javascript

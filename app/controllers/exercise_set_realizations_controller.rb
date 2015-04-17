@@ -9,10 +9,10 @@ class ExerciseSetRealizationsController < ApplicationController
 
   def create
     @exercise_set_realization = ExerciseSetRealization.new(exercise_set_realization_params)
-    # Add at the end of the list
-    @exercise_set_realization.update_attribute :order_position, 1000 # set to last position
     respond_to do |format|
-      if @exercise_set_realization.save!
+      if @exercise_set_realization.save
+        # Add at the end of the index
+        @exercise_set_realization.update_attribute :row_order_position, 1000 # set to last position
         format.json { render json: @exercise_set_realization }
       else
         format.json { render json: @exercise_set_realization.errors, status: :unprocessable_entity }
@@ -21,9 +21,6 @@ class ExerciseSetRealizationsController < ApplicationController
   end
 
   def edit
-    respond_to do |format|
-      format.js
-    end
   end
 
   def update
@@ -62,7 +59,7 @@ class ExerciseSetRealizationsController < ApplicationController
   def update_row_order
     #authorize! :edit_realizations(plans?), @exercise_step.exercise
     puts exercise_set_realization_params
-    @exercise_set_realization.update_attribute :order_position, exercise_set_realization_params[:order_position]
+    @exercise_set_realization.update_attribute :row_order_position, exercise_set_realization_params[:row_order_position]
     render nothing: true
   end
 
@@ -96,9 +93,9 @@ class ExerciseSetRealizationsController < ApplicationController
   def set_exercise_set_realization
     @exercise_set_realization = ExerciseSetRealization.find(params[:id])
   end
-  # Never trust parameters from the scary internet, only allow the white list through.
+  # Never trust parameters from the scary internet, only allow the white index through.
   def exercise_set_realization_params
-    params.require(:exercise_set_realization).permit(:exercise_realization_id, :order_position,
+    params.require(:exercise_set_realization).permit(:exercise_realization_id, :row_order_position,
                                                  :note, :completed,
                                                  :duration_partial_minutes, :duration_partial_seconds,
                                                  :rest_partial_minutes, :rest_partial_seconds)

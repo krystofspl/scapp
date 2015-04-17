@@ -2693,7 +2693,7 @@ Licensed under the MIT license.
             var fragments = [], entries = [], rowStarted = false,
                 lf = options.legend.labelFormatter, s, label;
 
-            // Build a list of legend entries, with each having a label and a color
+            // Build a index of legend entries, with each having a label and a color
 
             for (var i = 0; i < series.length; ++i) {
                 s = series[i];
@@ -2725,7 +2725,7 @@ Licensed under the MIT license.
                 }
             }
 
-            // Generate markup for the list of entries, in their final order
+            // Generate markup for the index of entries, in their final order
 
             for (var i = 0; i < entries.length; ++i) {
 

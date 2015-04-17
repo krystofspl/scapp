@@ -15,7 +15,7 @@ function renderSetRealizationFormNew(er_id){
         url: url,
         type: 'GET',
         dataType: 'html',
-        data: {action: 'new', exercise_set_realization: {exercise_realization_id: er_id, order_position: 0}},
+        data: {action: 'new', exercise_set_realization: {exercise_realization_id: er_id, row_order_position: 0}},
         success: function(data) {
             $('#exercise-set-realization-edit-wrapper').html(data);
         }
@@ -27,7 +27,7 @@ function renderSetRealizationFormEdit(ers_id){
         url: url,
         type: 'GET',
         dataType: 'html',
-        data: {action: 'edit', exercise_realization_setup: {id: ers_id}},
+        data: {action: 'edit', id: ers_id},
         success: function(data) {
             $('#exercise-set-realization-edit-wrapper').html(data);
         }

@@ -1,20 +1,20 @@
 class ExerciseRealizationsController < ApplicationController
   helper ExerciseRealizationsHelper
   before_action :set_exercise_realization, only: [:edit, :update, :destroy, :update_row_order, :list_exercise_realization_setups, :edit_sets, :list_exercise_set_realizations]
+  before_action :set_training_lesson_realization, only: [:index, :list_summary, :create]
+  before_filter :check_lesson_closed, except: [:list_summary]
 
   # Index action here is a page where realizations can be edited,
   # normal index is ExerciseRealizations#list_summary
   def index
-    @training_lesson_realization = TrainingLessonRealization.friendly.find(params[:training_lesson_realization_id])
     authorize! :edit, @training_lesson_realization
-    #TODO Move this somewhere else, so that it's not called so often, if possible
-    create_plans_for_users
+    create_plans_for_users #TODO Move this to where attendance is created
     list_exercises
   end
 
   def list_summary
-    @training_lesson_realization = TrainingLessonRealization.friendly.find(params[:training_lesson_realization_id])
-    authorize! :list_summary, @training_lesson_realization
+    authorize! :list_plans, @training_lesson_realization
+    @plans = @training_lesson_realization.plans.accessible(@training_lesson_realization,current_user)
   end
 
   def show_short
@@ -23,7 +23,7 @@ class ExerciseRealizationsController < ApplicationController
   end
 
   def create
-    authorize! :edit, TrainingLessonRealization.friendly.find(params[:training_lesson_realization_id])
+    authorize! :edit, @training_lesson_realization
     @exercise_realization = ExerciseRealization.new(exercise_realization_params)
     @exercise_realization.user_created = current_user
     @exercise_realization.plan = Plan.find(exercise_realization_params[:plan_id])
@@ -31,7 +31,7 @@ class ExerciseRealizationsController < ApplicationController
     respond_to do |format|
       if @exercise_realization.save
         # Set order position for the realization
-        @exercise_realization.update_attribute :order_position, exercise_realization_params[:order]
+        @exercise_realization.update_attribute :row_order_position, exercise_realization_params[:order]
         format.json { render :json => @exercise_realization }
       else
         puts @exercise_realization.errors
@@ -63,7 +63,7 @@ class ExerciseRealizationsController < ApplicationController
     respond_to do |format|
       if @exercise_realization.destroy
         format.json { head :no_content }
-        format.js
+        format.js # JS template
       else
         format.json { render json: @exercise_realization.errors.full_messages, status: :unprocessable_entity }
       end
@@ -73,7 +73,7 @@ class ExerciseRealizationsController < ApplicationController
   # Update row order int for given exercise step, called via Ajax
   def update_row_order
     authorize! :edit, @exercise_realization
-    @exercise_realization.update_attribute :order_position, exercise_realization_params[:order_position]
+    @exercise_realization.update_attribute :row_order_position, exercise_realization_params[:row_order_position]
     render nothing: true
   end
 
@@ -116,7 +116,7 @@ class ExerciseRealizationsController < ApplicationController
   end
 
   def list_exercise_set_realizations
-    @exercise_set_realizations = @exercise_realization.exercise_set_realizations.rank(:order)
+    @exercise_set_realizations = @exercise_realization.exercise_set_realizations.rank(:row_order)
   end
 
   def edit_setups
@@ -131,9 +131,13 @@ class ExerciseRealizationsController < ApplicationController
     def set_exercise_realization
       @exercise_realization = ExerciseRealization.find(params[:id])
     end
-    # Never trust parameters from the scary internet, only allow the white list through.
+
+    def set_training_lesson_realization
+      @training_lesson_realization = TrainingLessonRealization.friendly.find(params[:training_lesson_realization_id])
+    end
+    # Never trust parameters from the scary internet, only allow the white index through.
     def exercise_realization_params
-      params.require(:exercise_realization).permit(:exercise_code, :exercise_version, :order_position, :plan_id,
+      params.require(:exercise_realization).permit(:exercise_code, :exercise_version, :row_order_position, :plan_id,
                                                    :note, :completed, :user_created_id,
                                                    :user_measured_id,
                                                    :duration_partial_hours, :duration_partial_minutes, :duration_partial_seconds,
@@ -146,6 +150,14 @@ class ExerciseRealizationsController < ApplicationController
           plan = Plan.new(:user_created=>current_user, :user_partook=>attendance.user,:training_lesson_realization=>@training_lesson_realization)
           plan.save
         end
+      end
+    end
+
+    def check_lesson_closed
+      @training_lesson_realization = TrainingLessonRealization.friendly.find(params[:training_lesson_realization_id])
+      if @training_lesson_realization.closed?
+        flash[:error] = t('exercise_realizations.error.lesson_has_been_closed')
+        redirect_to @training_lesson_realization
       end
     end
 end

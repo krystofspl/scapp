@@ -11,7 +11,7 @@ $(function() {
         clone.find('.btn').remove();
         clone.find('div').removeClass().removeAttr('style');
         clone.removeAttr('style').removeClass().addClass('active-highlight');
-        $('#exercise-set-realization-setups-accordion').prepend(clone).accordion('destroy').accordion();
+        $('#exercise-set-realization-setups-accordion').prepend(clone);
         addedSetRealizationSetup = clone;
 
         // Show edit pane instead of available setups

@@ -67,7 +67,7 @@ class PaymentsController < ApplicationController
       @payment = Payment.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def payment_params
       params.require(:payment).permit(:amount, :status, :currency_id, :received_by_id)
     end

@@ -71,6 +71,7 @@ class User < ActiveRecord::Base
   # Read full name
   def to_s
     return (read_attribute(:first_name).to_s + " " + read_attribute(:last_name).to_s) unless (read_attribute(:first_name).blank? && read_attribute(:last_name).blank?)
+    return read_attribute(:name) unless read_attribute(:name).blank?
     "-"
   end
 

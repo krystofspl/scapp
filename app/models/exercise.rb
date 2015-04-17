@@ -2,8 +2,11 @@ class Exercise < ActiveRecord::Base
   ACCESSIBILITY = [:private, :global]
 
   self.primary_keys = [:code, :version]
+
   extend FriendlyId
   friendly_id :name, :use => :slugged, :slug_column => :code
+
+  # Filtering
   filterrific :default_filter_params => {sorted_by: 'created_at_desc' },
       :available_filters => [:sorted_by,:search_query]
 
@@ -39,10 +42,10 @@ class Exercise < ActiveRecord::Base
         # Simple sort on the name colums
         order("LOWER(exercises.name) #{ direction }")
       when /^realizations_/
+        #TODO this currently doesn't work, can't get the query to include exercises with 0 realizations
         # Number of realizations of the exercise
         select("exercises.*, count(exercise_realizations.id) as realizations_count")
             .joins("LEFT OUTER JOIN exercise_realizations ON exercises.code=exercise_realizations.exercise_code AND exercises.version=exercise_realizations.exercise_version")
-            .where("exercise_realizations.id IS NULL OR exercise_realizations.id IS NOT NULL")
             .order("realizations_count #{direction}")
       else
         raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
@@ -50,11 +53,11 @@ class Exercise < ActiveRecord::Base
   }
   scope :accessible, lambda { |user|
     if user.is_admin?
-      Exercise.all
+      where(true)
     elsif user.is_coach?
       where('accessibility=? OR user_id=?',:global,user)
     elsif user.is_player?
-      Exercise.joins({:exercise_realizations=>{:plan=>:user_partook}}).where('plans.user_partook_id=?',user.id)
+      joins({:exercise_realizations=>{:plan=>:user_partook}}).where('plans.user_partook_id=?',user.id)
     end
   }
 
@@ -94,6 +97,38 @@ class Exercise < ActiveRecord::Base
   end
 
   # =================== METHODS ======================================
+  # Return deep clone of self
+  # Can't use deep_cloneable because of composite primary key
+  def clone
+    exercise = self.deep_dup
+    exercise.code = self.code
+    exercise.version = Exercise.where(:code=>self.code).last.version+1
+    # Measurements
+    self.exercise_measurements.each do |measurement|
+      new = measurement.deep_dup
+      new.exercise_version = exercise.version
+      new.save
+      exercise.exercise_measurements << new
+    end
+    # Setups
+    self.exercise_setups.each do |setup|
+      new = setup.deep_dup
+      new.exercise_version = exercise.version
+      new.save
+      exercise.exercise_setups << new
+    end
+    # Steps
+    self.exercise_steps.each do |step|
+      new = step.deep_dup
+      new.exercise_version = exercise.version
+      new.save
+      exercise.exercise_steps << new
+      #TODO Images
+    end
+    #TODO Image
+    exercise
+  end
+
   # Does the exercise have any realizations?
   def is_in_use?
     !self.exercise_realizations.empty?
@@ -134,8 +169,8 @@ class Exercise < ActiveRecord::Base
         [I18n.t('exercise.filter.name_desc'), 'name_desc'],
         [I18n.t('exercise.filter.created_at_asc'), 'created_at_asc'],
         [I18n.t('exercise.filter.created_at_desc'), 'created_at_desc'],
-        [I18n.t('exercise.filter.realizations_asc'), 'realizations_asc'],
-        [I18n.t('exercise.filter.realizations_desc'), 'realizations_desc'],
+        #[I18n.t('exercise.filter.realizations_asc'), 'realizations_asc'],
+        #[I18n.t('exercise.filter.realizations_desc'), 'realizations_desc'],
 
     ]
   end

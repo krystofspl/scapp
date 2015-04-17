@@ -73,10 +73,22 @@ Feature: Edit a set from an existing exercise realization
     And I should see an exercise set realization at position n. "2" with text "10 minutes"
     And I should see an exercise set realization at position n. "3" with text "15 minutes"
     When I move first set realization one step down
-    # Needed because of ajax and cache
-    And I visit page "/scheduled_lessons/training-5-5-2050-13-00-14-00/exercise_realizations"
-    When I click Edit for exercise realization "excprivate" in plan for user "test2"
+    # Needed because of ajax and cache + webdriver,
+    # normally it is reloaded instantly
     And I click "Edit sets" tab
     Then I should see an exercise set realization at position n. "2" with text "1 minute"
     And I should see an exercise set realization at position n. "1" with text "10 minutes"
     And I should see an exercise set realization at position n. "3" with text "15 minutes"
+
+  @javascript
+  Scenario: Total time of the plan is lower or equal than the total TLR time
+    Given I have "coach" role
+    And I am at the "/scheduled_lessons/training-5-5-2050-13-00-14-00/exercise_realizations" page
+    When I click Edit for exercise realization "excprivate" in plan for user "test2"
+    And I click "Edit sets" tab
+    When I click "Edit" for exercise set realization with index "1"
+    And I fill in all required fields for exercise set realization
+      | duration_minutes | duration_seconds | rest_minutes | rest_seconds | note |
+      | 1000             | 5                | 0            | 0            | asd  |
+    And I click "Save set"
+    Then I should see an error message in the form containing "duration is too long"

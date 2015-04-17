@@ -88,7 +88,7 @@ class PresentCoachesController < ApplicationController
       end
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def present_coach_params
       params.require(:present_coach).permit(:salary_without_tax, :vat_id, :currency_id, :supplementation, :user_email)
     end

@@ -23,10 +23,10 @@
         .row
           .col-sm-5
             = f.input :sign_in_time, as: :datetime_picker,
-              label: "#{t('simple_form.labels.regular_training_lesson_realization.sign_in_time')} #{ApplicationHelper.link_modal_help('trainings', 'sign_in_time', locale)}"
+              label: "#{t('simple_form.labels.regular_training_lesson_realization.sign_in_time')} #{ApplicationHelper.link_modal_help('trainings', 'sign_in_time', locale)}".html_safe
           .col-sm-6
             = f.input :excuse_time, as: :datetime_picker,
-              label: "#{t('simple_form.labels.regular_training_lesson_realization.excuse_time')} #{ApplicationHelper.link_modal_help('trainings', 'excuse_time', locale)}"
+              label: "#{t('simple_form.labels.regular_training_lesson_realization.excuse_time')} #{ApplicationHelper.link_modal_help('trainings', 'excuse_time', locale)}".html_safe
 
     .box.box-info
       .box-header
@@ -39,7 +39,7 @@
         .row
           .col-sm-6
             = f.input :calculation, collection: TrainingLessonRealization::PRICE_CALCULATIONS,
-              label: "#{t('simple_form.labels.regular_training_lesson_realization.calculation')} #{ApplicationHelper.link_modal_help('trainings', 'calculation', locale)}"
+              label: "#{t('simple_form.labels.regular_training_lesson_realization.calculation')} #{ApplicationHelper.link_modal_help('trainings', 'calculation', locale)}".html_safe
           .col-sm-6
             = f.input :status, disabled: true
         .row

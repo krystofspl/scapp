@@ -1,0 +1,49 @@
+.box.box-body
+  #favorite-plans-content.col-sm-12.no-padding
+    - if favorite_plans.empty?
+      %i.col-sm-12.text-center.text-muted= t('favorite_plan.index.no_plans')
+    %ul#favorite-plans-accordion.favorite-plans-draggable
+      - favorite_plans.sort_by {|e| e.name.downcase}.each do |favorite_plan|
+        %li.favorite-plan{:data=>{'favorite-plan-id'=>favorite_plan.id}}
+          %p.favorite-plan-header
+            %i.fa.fa-plus-circle
+            %strong= favorite_plan.name
+            ='('+distance_of_time_in_words(0,favorite_plan.plan.duration, :include_seconds=>true)+')'
+          .favorite-plan-body{:style=>'display: none;'}
+            %p.no-margin
+              - unless favorite_plan.note.blank?
+                %i.fa.fa-pencil-square-o
+                %i= favorite_plan.note
+            %ul
+              - favorite_plan.plan.exercise_realizations.each do |er|
+                %li
+                  = er.exercise.to_s
+                  = '('+distance_of_time_in_words(0,er.duration, :include_seconds=>true)+')'
+            = link_to t('dictionary.delete'), training_lesson_realization_favorite_plan_path(:id=>favorite_plan.id), class: 'btn btn-xs btn-danger btn-destroy', :method => :delete, :remote => true, :data => { :confirm => t('dictionary.are_you_sure') }
+    .col-sm-12.text-center#paginator
+  %br{:style=>'clear:both;'}
+
+:javascript
+  $('#favorite-plans-content .btn-destroy').bind('ajax:success',function(){
+    $(this).closest('li').fadeOut(1000, function(){$('#favorite-plans-tab').click();});
+  });
+  $('.favorite-plan').draggable({
+    appendTo: $('#owl-carousel'),
+    connectToSortable: $('.player-plan'),
+    forceHelperSize: true,
+    helper: 'clone',
+    cursor: 'move'
+  }).disableSelection('li');
+  $(".favorite-plan-header").unbind().click(function () {
+    var header = $(this);
+    var content = header.next();
+    content.slideToggle(500, function () {
+      if(content.is(":visible")){
+        header.find('i').removeClass('fa-plus-circle').addClass('fa-minus-circle');
+      } else {
+        header.find('i').addClass('fa-plus-circle').removeClass('fa-minus-circle');
+      }
+    });
+  });
+  $('#favorite-plans-content #paginator').html('#{escape_javascript(paginate(favorite_plans, :remote => true, :params => {:controller => 'favorite_plans', :action => 'index'}))}');
+

@@ -108,6 +108,12 @@ Scapp::Application.routes.draw do
       end
     end
 
+    resources :favorite_plans do
+      collection do
+        post 'copy_favorite_to_plan' => 'favorite_plans#copy_favorite_to_plan'
+      end
+    end
+
     member do
       get 'close'
       get 'cancel'

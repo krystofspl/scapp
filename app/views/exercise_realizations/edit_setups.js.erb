@@ -35,7 +35,7 @@ function renderRealizationSetupFormEdit(ers_id){
         url: url,
         type: 'GET',
         dataType: 'html',
-        data: {action: 'edit', exercise_realization_setup: {id: ers_id}},
+        data: {action: 'edit', id: ers_id},
         success: function(data) {
             $('#exercise-setups-edit-wrapper').html(data);
         }

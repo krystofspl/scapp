@@ -1,9 +1,9 @@
-# Order can only be updated with update_attribute :order_position,
+# Order can only be updated with update_attribute :row_order_position,
 # this call saves the record to DB, beware of that when creating instances, etc.
 
 class ExerciseRealization < ActiveRecord::Base
   include RankedModel
-  ranks :order, :with_same => :plan_id
+  ranks :row_order, :with_same => :plan_id
   before_validation do
     unless self.new_record?
       set_time_duration
@@ -34,19 +34,62 @@ class ExerciseRealization < ActiveRecord::Base
   validate :fits_into_lesson
 
   # =================== METHODS ======================================
+  # Returns cloned version of self
+  def deep_clone(new_plan, new_position)
+    # Do a deep clone
+    er = self.dup
+    er.plan = new_plan
+    er.update_attribute :row_order_position, new_position # This also saves the er
+    # Default values are created in callback, so destroy them
+    er.exercise_realization_setups.destroy_all
+    er.exercise_set_realizations.destroy_all
+    # Add setups & sets & set setups
+    self.exercise_realization_setups.each do |ers|
+      cloned_ers = ers.dup
+      cloned_ers.exercise_realization = er
+      cloned_ers.save
+    end
+    self.exercise_set_realizations.rank(:row_order).each_with_index do |esr, esr_index|
+      cloned_esr = esr.dup
+      cloned_esr.exercise_realization = er
+      cloned_esr.update_attribute :row_order_position, esr_index
+      esr.exercise_set_realization_setups.each do |esrs|
+        esrs_cloned = esrs.dup
+        esrs_cloned.exercise_set_realization = cloned_esr
+        esrs_cloned.save
+        puts esrs_cloned.inspect
+      end
+      cloned_esr.save
+    end
+    er.rest_after = self.rest_after
+    er.save
+    # Return cloned realization
+    er
+  end
+
   # Return position based on row order (RankedModel)
   def position
-    self.exercise.exercise_realizations.rank(:order).index(self)
+    self.plan.exercise_realizations.rank(:row_order).index(self)
   end
 
   # Get total duration of the exercise, counts with exercise sets
-  def duration
+  # @param p
+  #   Optional parameter p is used to get a modified set
+  # @return [integer] Total current time of the realization in seconds without rest_after
+  def duration(*p)
     if !self.exercise.has_sets?
       self[:time_duration]
     elsif self.exercise.has_sets?
       total = 0
-      self.exercise_set_realizations.all.each do |esr|
-        total+=esr.duration+esr.rest_after
+      if p.any?
+        self.exercise_set_realizations.reject{|a| a==p[0]}.each do |esr|
+          total+=esr.duration+esr.rest_after
+        end
+        total+=p[0].duration+p[0].rest_after
+      else
+        self.exercise_set_realizations.each do |esr|
+          total+=esr.duration+esr.rest_after
+        end
       end
       total
     end
@@ -54,7 +97,7 @@ class ExerciseRealization < ActiveRecord::Base
 
   # Returns realization start time in seconds
   def from
-    realizations_preceding = self.plan.exercise_realizations.rank(:order).take_while { |e| e.order < self.order }
+    realizations_preceding = self.plan.exercise_realizations.rank(:row_order).take_while { |e| e.row_order < self.row_order }
     time = 0
     realizations_preceding.each do |rp|
       time+=rp.duration+rp.rest_after
@@ -73,15 +116,20 @@ class ExerciseRealization < ActiveRecord::Base
   end
 
   # Validate if the sum of used time by realizations is <= the maximal available time (defined in TrainingLessonRealization)
-  #TODO fix this - can't obtain current updated value, it is loaded from DB instead, crucial for ExerciseSetRealizations
-  def fits_into_lesson
+  # @param p
+  #   Optional parameter p is used to get a modified set
+  # self.plan.exercise_realizations returns only persisted values (TODO why?),
+  # so the validation did not work for modified values, currently using this workaround with optional parameter p, see ExerciseRealization#duration
+  # It is bad design, but currently the easiest workaround
+  def fits_into_lesson(*p)
     unless self.plan.blank? || self.plan.training_lesson_realization.blank?
       total = 0
-      # Get current total duration (including rest and sets)
-      self.plan.exercise_realizations.reject{|a| a==self}.each do |er| # FIX FIX FIX FIX
+      # Get current total duration (including rest and sets), but without the modified values
+      self.plan.exercise_realizations.reject{|a| a==self}.each do |er|
         total += er.duration + er.rest_after
       end
-      total += duration+self[:rest_after] # FIX FIX FIX FIX
+      # If modified set was received, pass it to duration to check if the overall duration is OK
+      p.any? ? total += duration(p[0])+self[:rest_after] : total += duration+self[:rest_after]
       if total>self.plan.training_lesson_realization.lesson_length(:second)
         errors.add(:time_duration, I18n.t('exercise_realizations.error.doesnt_fit_into_lesson'))
         return false
@@ -114,26 +162,30 @@ class ExerciseRealization < ActiveRecord::Base
   private
     # Create and add all required exercise setups
     def set_required_realization_setups
-      self.exercise.exercise_setups.type('simple_setups').required.each do |es|
-        ExerciseRealizationSetup.create(:exercise_realization_id => self.id, :exercise_setup_code => es.code, :numeric_value => 0)
+      ActiveRecord::Base.transaction do
+        self.exercise.exercise_setups.type('simple_setups').required.each do |es|
+          ExerciseRealizationSetup.create(:exercise_realization_id => self.id, :exercise_setup_code => es.code, :numeric_value => 0)
+        end
       end
     end
 
     # Create and add one exercise set if exercise is ExerciseWithSets
     def set_exercise_set_if_required
-      if self.exercise.has_sets?
-        ExerciseSetRealization.create!(:exercise_realization_id=>self.id,:order=>0,:time_duration=>60)
+      if self.exercise.has_sets? && self.exercise_set_realizations.empty?
+        ExerciseSetRealization.create!(:exercise_realization_id=>self.id,:row_order=>0,:time_duration=>60)
       end
     end
 
     # Computes and saves time duration from given partial times
     def set_time_duration
-      unless self.exercise.has_sets?
-        self[:time_duration] = (@duration_partial_hours.to_i*3600+@duration_partial_minutes.to_i*60+@duration_partial_seconds.to_i)
+      unless self.exercise.has_sets? && (@duration_partial_hours.blank? && @duration_partial_minutes.blank? && @duration_partial_seconds.blank?)
+        self.time_duration = (@duration_partial_hours.to_i*3600+@duration_partial_minutes.to_i*60+@duration_partial_seconds.to_i)
       end
     end
 
     def set_rest_after
-      self[:rest_after] = (@rest_partial_minutes.to_i*60+@rest_partial_seconds.to_i)
+      unless @rest_partial_minutes.blank? && @rest_partial_seconds.blank?
+        self[:rest_after] = (@rest_partial_minutes.to_i*60+@rest_partial_seconds.to_i)
+      end
     end
 end

@@ -1,9 +1,8 @@
 class ExerciseSetRealizationSetupsController < ApplicationController
-  before_action :set_exercise_set_realization_setup, only: [:edit, :update]
+  before_action :set_exercise_set_realization_setup, only: [:edit, :update, :destroy]
 
   def new
     @exercise_set_realization_setup = ExerciseSetRealizationSetup.new(exercise_set_realization_setup_params)
-    puts @exercise_set_realization_setup.inspect
     render partial: "exercise_set_realization_setups/form", locals: {exercise_set_realization_setup: @exercise_set_realization_setup}
   end
 
@@ -34,7 +33,6 @@ class ExerciseSetRealizationSetupsController < ApplicationController
   end
 
   def destroy
-    @exercise_set_realization_setup = ExerciseSetRealizationSetup.find(params[:id])
     # If setup is required, forbid deletion
     @exercise_set_realization_setup.is_required?
     if @exercise_set_realization_setup.errors.any?
@@ -56,7 +54,7 @@ class ExerciseSetRealizationSetupsController < ApplicationController
     def set_exercise_set_realization_setup
       @exercise_set_realization_setup = ExerciseSetRealizationSetup.find(params[:id])
     end
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def exercise_set_realization_setup_params
       params.require(:exercise_set_realization_setup).permit(:exercise_setup_code, :exercise_set_realization_id, :numeric_value, :string_value, :note)
     end

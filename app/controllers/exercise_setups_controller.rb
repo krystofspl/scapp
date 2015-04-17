@@ -24,11 +24,11 @@ class ExerciseSetupsController < ApplicationController
 
     respond_to do |format|
       if @exercise_setup.save
-        format.html { redirect_to @exercise, notice: 'Exercise setup was successfully created.' }
+        format.html { redirect_to @exercise, notice: t('exercise_setup.dictionary.was_successfully_created') }
+        format.html { render action: 'exercises/show', status: :created, location: @exercise }
       else
-        format.html {
-          render action: 'new', :exercise_code => exercise_setup_params[:exercise_code], :exercise_version=> exercise_setup_params[:exercise_version]
-        }
+        format.html { render action: 'new', :exercise_code => exercise_setup_params[:exercise_code], :exercise_version=> exercise_setup_params[:exercise_version] }
+        format.json { render json: @exercise_setup.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -74,7 +74,7 @@ class ExerciseSetupsController < ApplicationController
       @exercise = @exercise_setup.exercise
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def exercise_setup_params
       params.require(:exercise_setup).permit(:code, :name, :description, :required, :exercise_setup_type_code, :unit_code, :exercise_code, :exercise_version, :type)
     end

@@ -1,0 +1,29 @@
+= simple_form_for(favorite_plan, :url => {controller: 'favorite_plans', action: 'create'}, remote: true, format: :json, method: :post) do |f|
+  .form-errors
+    =f.error_notification
+  .form-inputs
+    = f.input :name, input_html: {maxlength:255}
+    = f.input :note, as: :text
+    = f.input :plan_id, as: :hidden, value: params[:plan_id]
+
+  .form-actions
+    = link_to t('dictionary.cancel'), '#', class: 'btn btn-default btn-cancel'
+    = f.button :submit, class: "btn btn-primary"
+
+:javascript
+  $('abbr[title=required]').hide(); // temporary fix - required is shown everywhere by error
+  $(".btn-cancel").click(function(){
+
+  });
+  $('form').bind('ajax:success', function(){
+    $.ajax({
+      url : '#{url_for :controller => "favorite_plans", :action => "index"}',
+      data: {},
+      type: 'GET',
+      success: function(data){
+        // Refresh list
+        $('#favorite-plans-tab').click();
+      }
+    });
+
+  })

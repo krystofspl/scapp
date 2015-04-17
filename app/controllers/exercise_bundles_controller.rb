@@ -114,7 +114,7 @@ class ExerciseBundlesController < ApplicationController
       @exercise_bundle = ExerciseBundle.friendly.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def exercise_bundle_params
       params.require(:exercise_bundle).permit(:code, :name, :description, :description_long, :accessibility, :user_id)
     end

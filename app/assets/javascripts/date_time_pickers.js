@@ -1,18 +1,19 @@
-$(function() {
-    $('.datepicker').datetimepicker({
-        pickTime: false
+$(document).on('ready page:change', function() {
+    $(function () {
+        $('.datepicker').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
     });
-});
 
-$(function() {
-    $('.datetimepicker').datetimepicker({
-        pickSeconds: false
+    $(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'DD/MM/YYYY HH:mm'
+        });
     });
-});
 
-$(function() {
-    $('.timepicker').datetimepicker({
-        pickDate: false,
-        pickSeconds: false
+    $(function () {
+        $('.timepicker').datetimepicker({
+            format: 'HH:mm'
+        });
     });
 });

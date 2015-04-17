@@ -13,7 +13,7 @@ FriendlyId.defaults do |config|
   # ## Reserved Words
   #
   # Some words could conflict with Rails's routes when used as slugs, or are
-  # undesirable to allow as slugs. Edit this list as needed for your app.
+  # undesirable to allow as slugs. Edit this index as needed for your app.
   config.use :reserved
 
   config.reserved_words = %w(new edit detail index session login logout sign_in sign_up sign_out users stylesheets

@@ -21,6 +21,12 @@
           %i.fa.fa-pencil
           = t('training_realization.show.edit_training_lesson')
         = link_to t('training_realization.show.fill_attendance'), fill_training_lesson_realization_attendances_path(@training_lesson_realization), class: 'btn btn-info'
+        = link_to training_lesson_realization_exercise_realizations_path(@training_lesson_realization), class: 'btn btn-info' do
+          %i.fa.fa-list-alt
+          = t('exercise_realizations.dictionary.plans_specification')
+        = link_to list_summary_training_lesson_realization_exercise_realizations_path(@training_lesson_realization), class: 'btn btn-primary' do
+          %i.fa.fa-search
+          = t('plan.index.list_summary')
         = link_to close_training_lesson_realization_path(@training_lesson_realization), class: 'btn btn-warning' do
           %i.fa.fa-check
           = t('training_realization.show.close_lesson')
@@ -29,8 +35,6 @@
           = t('training_realization.show.cancel_lesson')
       = link_to new_measurement_vf_select_training_lesson_realization_variable_field_index_path(@training_lesson_realization), class: 'btn btn-success' do
         = t('training_realization.show.new_lesson_measurement')
-      = link_to training_lesson_realization_exercise_realizations_path(@training_lesson_realization), class: 'btn btn-warning' do
-        = t('exercise_realization.dictionary.plans_specification')
 
     - elsif @training_lesson_realization.closed?
       - # ordinary coach is not allowed to do it
@@ -38,12 +42,17 @@
         = link_to reopen_training_lesson_realization_path(@training_lesson_realization), class: 'btn btn-danger' do
           %i.fa.fa-exclamation-circle
           = t('training_realization.show.reopen_lesson')
+        = link_to list_summary_training_lesson_realization_exercise_realizations_path(@training_lesson_realization), class: 'btn btn-primary' do
+          %i.fa.fa-search
+          = t('plan.index.list_summary')
   - if is_player? && @training_lesson_realization.has_player?(current_user)
     - unless @training_lesson_realization.attendances.where(user: current_user, participation: [:signed, :unexcused]).any?
       = link_to t('training_realization.show.sign_in'), sign_in_training_lesson_realization_path, class: 'btn btn-success'
     - unless @training_lesson_realization.attendances.where(user: current_user, participation: :excused).any?
       = link_to t('training_realization.show.excuse'), excuse_training_lesson_realization_path, class: 'btn btn-warning'
-
+      = link_to list_summary_training_lesson_realization_exercise_realizations_path(@training_lesson_realization), class: 'btn btn-primary' do
+        %i.fa.fa-search
+        = t('plan.index.my_plan')
 
 #tlr-detail.box.box-info
   .box-header

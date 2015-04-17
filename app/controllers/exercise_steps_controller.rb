@@ -86,7 +86,7 @@ class ExerciseStepsController < ApplicationController
       @exercise_steps = ExerciseStep.rank(:row_order).where(:exercise_code => params[:exercise_code], :exercise_version => params[:exercise_version].nil? ? 1 : params[:exercise_version])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def exercise_step_params
       params.require(:exercise_step).permit(:exercise_step_id, :name, :description, :row_order_position, :exercise_code, :exercise_version)
     end

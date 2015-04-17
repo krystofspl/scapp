@@ -67,7 +67,7 @@ class VariableFieldSportsController < ApplicationController
       @variable_field_sport = VariableFieldSport.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def variable_field_sport_params
       params.require(:variable_field_sport).permit(:name)
     end

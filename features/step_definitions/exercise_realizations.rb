@@ -28,7 +28,7 @@ And(/^Following exercise realizations exist in the system$/) do |table|
     er = ExerciseRealization.new
     er.exercise = Exercise.friendly.find([r[:exercise],1])
     er.user_created = User.friendly.find(r[:user_created])
-    er.order = index
+    er.row_order = index
     er.plan = Plan.where(:user_partook => User.friendly.find(r[:user_partook]).id).first
     er.save!
   end

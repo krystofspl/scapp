@@ -17,7 +17,7 @@ $(function() {
         zIndex: 999999
     }).disableSelection();
     $(".box-header, .nav-tabs").css("cursor","move");
-    //jQuery UI sortable for the todo list
+    //jQuery UI sortable for the todo index
     $(".todo-list").sortable({
         placeholder: "sort-highlight",
         handle: ".handle",
@@ -293,7 +293,7 @@ $(function() {
         }
     });
 
-    /* The todo list plugin */
+    /* The todo index plugin */
     $(".todo-list").todolist({
         onCheck: function(ele) {
             //console.log("The element has been checked")

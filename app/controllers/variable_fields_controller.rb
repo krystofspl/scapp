@@ -375,7 +375,7 @@ class VariableFieldsController < ApplicationController
       @training_lesson_realization = TrainingLessonRealization.friendly.find(params[:training_lesson_realization_id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def variable_field_params
       params.require(:variable_field).permit(:name, :description, :unit, :higher_is_better, :is_numeric,
                                              :variable_field_category_id, :modification_confirmation)

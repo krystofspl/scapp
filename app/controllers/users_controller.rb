@@ -134,7 +134,7 @@ class UsersController < ApplicationController
     @user = User.friendly.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
+  # Never trust parameters from the scary internet, only allow the white index through.
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar, :locale_id, :first_name,
                                  :last_name, :sex, :handedness, :birthday, :phone, :about_me, :city, :street, :post_code)

@@ -47,7 +47,7 @@
 	 * DataTables is a plug-in for the jQuery Javascript library. It is a 
 	 * highly flexible tool, based upon the foundations of progressive 
 	 * enhancement, which will add advanced interaction controls to any 
-	 * HTML table. For a full list of features please refer to
+	 * HTML table. For a full index of features please refer to
 	 * <a href="http://datatables.net">DataTables.net</a>.
 	 *
 	 * Note that the <i>DataTable</i> object is not a global variable but is
@@ -80,7 +80,7 @@
 		
 		
 		/**
-		 * Add a column to the list used for the table with default values
+		 * Add a column to the index used for the table with default values
 		 *  @param {object} oSettings dataTables settings object
 		 *  @param {node} nTh The th element for this column
 		 *  @memberof DataTable#oApi
@@ -331,9 +331,9 @@
 		
 		
 		/**
-		 * Figure out how to reorder a display list
+		 * Figure out how to reorder a display index
 		 *  @param {object} oSettings dataTables settings object
-		 *  @returns array {int} aiReturn index list for reordering
+		 *  @returns array {int} aiReturn index index for reordering
 		 *  @memberof DataTable#oApi
 		 */
 		function _fnReOrderIndex ( oSettings, sColumns )
@@ -360,7 +360,7 @@
 		/**
 		 * Get the column ordering that DataTables expects
 		 *  @param {object} oSettings dataTables settings object
-		 *  @returns {string} comma separated list of names
+		 *  @returns {string} comma separated index of names
 		 *  @memberof DataTable#oApi
 		 */
 		function _fnColumnOrdering ( oSettings )
@@ -1845,7 +1845,7 @@
 		 *  @param {object} oSettings dataTables settings object
 		 *  @param {node} nHeader automatically detect the layout from this node - optional
 		 *  @param {array} aLayout thead/tfoot layout from _fnDetectHeader - optional
-		 *  @returns array {node} aReturn list of unique th's
+		 *  @returns array {node} aReturn index of unique th's
 		 *  @memberof DataTable#oApi
 		 */
 		function _fnGetUniqueThs ( oSettings, nHeader, aLayout )
@@ -3487,7 +3487,7 @@
 		 * TD children of TR rows
 		 *  @param {function} fn Method to apply to the objects
 		 *  @param array {nodes} an1 List of elements to look through for display children
-		 *  @param array {nodes} an2 Another list (identical structure to the first) - optional
+		 *  @param array {nodes} an2 Another index (identical structure to the first) - optional
 		 *  @memberof DataTable#oApi
 		 */
 		function _fnApplyToChildren( fn, an1, an2 )
@@ -4353,11 +4353,11 @@
 					/* Determine which column we're looking at */
 					iTargetCol = i % iColumns;
 					
-					/* What is the full list of classes now */
+					/* What is the full index of classes now */
 					sCurrentClass = nTds[i].className;
 					/* What sorting class should be applied? */
 					sNewClass = asClasses[iTargetCol];
-					/* What would the new full list be if we did a replacement? */
+					/* What would the new full index be if we did a replacement? */
 					sTmpClass = sCurrentClass.replace(reClass, sNewClass);
 					
 					if ( sTmpClass != sCurrentClass )
@@ -5140,7 +5140,7 @@
 		 *      <li>array of objects - multiple data objects when using <i>mData</i></li>
 		 *    </ul>
 		 *  @param {bool} [bRedraw=true] redraw the table or not
-		 *  @returns {array} An array of integers, representing the list of indexes in 
+		 *  @returns {array} An array of integers, representing the index of indexes in
 		 *    <i>aoData</i> ({@link DataTable.models.oSettings}) that have been added to 
 		 *    the table.
 		 *  @dtopt API
@@ -7574,7 +7574,7 @@
 	 */
 	DataTable.models.oColumn = {
 		/**
-		 * A list of the columns that sorting should occur on when this column
+		 * A index of the columns that sorting should occur on when this column
 		 * is sorted. That this property is an array allows multi-column sorting
 		 * to be defined for a column (for example first name / last name columns
 		 * would benefit from this). The values are integers pointing to the
@@ -7972,7 +7972,7 @@
 	
 		/**
 		 * The aoColumns option in the initialisation parameter allows you to define
-		 * details about the way individual columns behave. For a full list of
+		 * details about the way individual columns behave. For a full index of
 		 * column options that can be set, please see 
 		 * {@link DataTable.defaults.columns}. Note that if you use aoColumns to
 		 * define your columns, you must have an entry in the array for every single
@@ -8681,7 +8681,7 @@
 		 *  @param {node} nRow "TR" element for the current row
 		 *  @param {array} aData Raw data array for this row
 		 *  @param {int} iDisplayIndex The display index for the current table draw
-		 *  @param {int} iDisplayIndexFull The index of the data in the full list of
+		 *  @param {int} iDisplayIndexFull The index of the data in the full index of
 		 *    rows (after filtering)
 		 *  @dtopt Callbacks
 		 * 
@@ -9374,7 +9374,7 @@
 			/**
 			 * Detail the action that will be taken when the drop down menu for the
 			 * pagination length option is changed. The '_MENU_' variable is replaced
-			 * with a default select list of 10, 25, 50 and 100, and can be replaced
+			 * with a default select index of 10, 25, 50 and 100, and can be replaced
 			 * with a custom select box if required.
 			 *  @type string
 			 *  @default Show _MENU_ entries
@@ -10161,7 +10161,7 @@
 		 *       data source and also array brackets to indicate that the data reader should
 		 *       loop over the data source array. When characters are given between the array
 		 *       brackets, these characters are used to join the data source array together.
-		 *       For example: "accounts[, ].name" would result in a comma separated list with
+		 *       For example: "accounts[, ].name" would result in a comma separated index with
 		 *       the 'name' value from the 'accounts' array of objects.</li>
 		 *     <li>function - the function given will be executed whenever DataTables 
 		 *       needs to set or get the data for a cell in the column. The function 
@@ -10180,7 +10180,7 @@
 		 *  @dtopt Columns
 		 * 
 		 *  @example
-		 *    // Create a comma separated list from an array of objects
+		 *    // Create a comma separated index from an array of objects
 		 *    $(document).ready( function() {
 		 *      var oTable = $('#example').dataTable( {
 		 *        "sAjaxSource": "sources/deep.txt",
@@ -11648,7 +11648,7 @@
 		"full_numbers": {
 			/*
 			 * Function: oPagination.full_numbers.fnInit
-			 * Purpose:  Initialise dom elements required for pagination with a list of the pages
+			 * Purpose:  Initialise dom elements required for pagination with a index of the pages
 			 * Returns:  -
 			 * Inputs:   object:oSettings - dataTables settings object
 			 *           node:nPaging - the DIV which contains this pagination control
@@ -11696,7 +11696,7 @@
 			
 			/*
 			 * Function: oPagination.full_numbers.fnUpdate
-			 * Purpose:  Update the list of page buttons shows
+			 * Purpose:  Update the index of page buttons shows
 			 * Returns:  -
 			 * Inputs:   object:oSettings - dataTables settings object
 			 *           function:fnCallbackDraw - draw function to call on page change
@@ -11755,7 +11755,7 @@
 				}
 	
 				
-				/* Build the dynamic list */
+				/* Build the dynamic index */
 				for ( i=iStartButton ; i<=iEndButton ; i++ )
 				{
 					sList += (iCurrentPage !== i) ?
@@ -11772,7 +11772,7 @@
 						continue;
 					}
 					
-					/* Build up the dynamic list first - html and listeners */
+					/* Build up the dynamic index first - html and listeners */
 					$('span:eq(0)', nNode)
 						.html( sList )
 						.children('a').each( fnBind );

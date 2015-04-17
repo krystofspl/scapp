@@ -1,5 +1,5 @@
 class ExerciseRealizationSetupsController < ApplicationController
-  before_action :set_exercise_realization_setup, only: [:edit, :update]
+  before_action :set_exercise_realization_setup, only: [:edit, :update, :destroy]
 
   def new
     @exercise_realization_setup = ExerciseRealizationSetup.new(exercise_realization_setup_params)
@@ -32,12 +32,11 @@ class ExerciseRealizationSetupsController < ApplicationController
   end
 
   def destroy
-    @exercise_realization_setup = ExerciseRealizationSetup.find(params[:id])
-    # If setup is required, forbid deletion
-    @exercise_realization_setup.is_required?
-    if @exercise_realization_setup.errors.any?
+    # If setup is required, forbid deletion, can't be in model callback because of :dependent=>:destroy on realization
+    @exercise_realization_setup.is_required? # Adds errors to the instance
+    if @exercise_realization_setup.errors.any? # Check the errors
       @exercise_realization_setup.errors.full_messages.each do |err|
-        flash[:notice]=err
+        flash[:alert]=err
       end
       return
     end
@@ -52,10 +51,10 @@ class ExerciseRealizationSetupsController < ApplicationController
 
   private
     def set_exercise_realization_setup
-      @exercise_realization_setup = ExerciseRealizationSetup.find(exercise_realization_setup_params[:id])
+      @exercise_realization_setup = ExerciseRealizationSetup.find(params[:id])
     end
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def exercise_realization_setup_params
-      params.require(:exercise_realization_setup).permit(:id, :exercise_setup_code, :exercise_realization_id, :numeric_value, :string_value, :note)
+      params.require(:exercise_realization_setup).permit(:exercise_setup_code, :exercise_realization_id, :numeric_value, :string_value, :note)
     end
 end

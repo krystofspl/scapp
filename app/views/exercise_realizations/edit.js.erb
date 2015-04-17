@@ -1,11 +1,12 @@
 <% exercise_type=@exercise_realization.exercise.type %>
+var realizationSettings = $('#realization-settings');
 // Set content for realization settings
-$("#realization-settings")
+realizationSettings
         .html("<%= escape_javascript(render(:partial => "exercise_realizations/form.html.haml", :locals => {:exercise_realization => @exercise_realization})) %>")
         .data("exercise-realization-id","<%=@exercise_realization.id%>")
         .attr('data-realization-id', "<%=@exercise_realization.id%>");
 
-var exerciseRealizationId = $("#realization-settings").data("exercise-realization-id");
+var exerciseRealizationId = realizationSettings.data("exercise-realization-id");
 
 // EDIT SETUPS button trigger - load tab contents
 $('#realization-setups-tab-button').find('a').unbind().click(function(){

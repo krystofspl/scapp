@@ -24,6 +24,13 @@
               %tr
                 %th= t('exercise.show.exercise_setups_unit_name')
                 %td= exercise_measurement.unit.name+" ["+exercise_measurement.unit.abbreviation+"]"
+              - if exercise_measurement.exercise.has_sets?
+                %tr
+                  %th=t('dictionary.type')
+                  - if exercise_measurement.type=='ExerciseMeasurement'
+                    %td= t('exercise_measurement.dictionary.simple_measurement')
+                  - elsif exercise_measurement.type=='ExerciseSetMeasurement'
+                    %td= t('exercise_measurement.dictionary.set_measurement')
               %tr
                 %td{:colspan=>2}= sanitize exercise_measurement.description
         .box-footer
@@ -48,5 +55,7 @@
               = link_to '#', class: 'btn btn-danger btn-xs disabled' do
                 %i.fa.fa-times
                 = t('dictionary.delete')
-.text-center
-  = paginate @exercise_measurements, :param_name => :page_m
+#paginator-measurements.text-center
+
+:javascript
+  $('#paginator-measurements').html('#{escape_javascript(paginate(@exercise_measurements, :remote => true, :param_name=>:page_m, :params => {:controller => 'exercises', :action => 'filterrific_measurements'}))}');

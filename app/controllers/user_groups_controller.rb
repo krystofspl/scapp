@@ -152,7 +152,7 @@ class UserGroupsController < ApplicationController
       @user_group = UserGroup.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def user_group_params
       params.require(:user_group).permit(:name, :description, :long_description, :visibility)
     end

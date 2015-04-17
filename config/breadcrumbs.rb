@@ -537,6 +537,11 @@ crumb :regular_training_lesson_realizations_plans do |tlr|
   parent :regular_training_lesson_realizations_detail, tlr
 end
 
+crumb :regular_training_lesson_realizations_plans_summary do |tlr|
+  link t('breadcrumbs.regular_training_lesson_plans_summary')
+  parent :regular_training_lesson_realizations_detail, tlr
+end
+
 # If you want to split your breadcrumbs configuration over multiple files, you
 # can create a folder named `config/breadcrumbs` and put your configuration
 # files there. All *.rb files (e.g. `frontend.rb` or `products.rb`) in that

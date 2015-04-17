@@ -62,6 +62,24 @@ vfcs.each do |vfc|
   end
 end
 
+# UNITS ===============================================================================================================
+puts "\n== Přidávám základní jednotky =="
+units = [{name: 'Kilogram', abbreviation: 'kg', unit_type: 'decimal'},
+           {name: 'Mililitr', abbreviation: 'ml', unit_type: 'decimal'},
+           {name: 'Litr', abbreviation: 'l', unit_type: 'decimal'},
+           {name: 'Metr', abbreviation: 'm', unit_type: 'decimal'},
+           {name: 'Kilometr', abbreviation: 'km', unit_type: 'integer'},
+           {name: 'Sekunda', abbreviation: 's', unit_type: 'integer'},
+           {name: 'Jiné', abbreviation: '-', unit_type: 'string'}]
+units.each do |unit|
+  begin
+    Unit.create!(unit)
+    puts "INFO: Jednotka [#{unit[:name]}] úspěšně přidána.\n"
+  rescue Exception => e
+    puts "ERROR: Během přidávání jednotky [#{unit[:name]}] došlo k následující chybě: #{e.message}\n"
+  end
+end
+
 # VARIABLE FIELDS =====================================================================================================
 vfs = [{name: '60 metrů - dráha', description: '', unit: 's', higher_is_better: false, is_numeric: true, is_global: true, vfc_key: :speed},
       {name: '100 metrů - dráha', description: '', unit: 's', higher_is_better: false, is_numeric: true, is_global: true, vfc_key: :speed},

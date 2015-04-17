@@ -1,5 +1,5 @@
 class Unit < ActiveRecord::Base
-  UNIT_TYPES = [:integer, :decimal, :time]
+  UNIT_TYPES = [:integer, :decimal, :time, :string]
 
   self.primary_key = :code
   extend FriendlyId

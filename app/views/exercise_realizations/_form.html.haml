@@ -1,8 +1,8 @@
-= simple_form_for(exercise_realization, :url => {controller: 'exercise_realizations', action: 'update'}, remote: true, format: :json, method: :put, html: {id: exercise_realization.id}) do |f|
+= simple_form_for(exercise_realization, :url => {controller: 'exercise_realizations', action: 'update'}, remote: true, format: :json, method: :put) do |f|
   .form-errors
-  = f.error_notification
+    = f.error_notification
   .form-inputs
-    - unless exercise_realization.exercise.type=='ExerciseWithSets'
+    - unless exercise_realization.exercise.has_sets?
       .form-group
         .col-sm-12.no-padding-sides
           %strong=t('exercise_realizations.form.time_duration')
@@ -24,6 +24,7 @@
   .form-actions.col-sm-12.margin.text-right
     = link_to t('dictionary.cancel'), '#', class: 'btn btn-default btn-cancel'
     = f.button :submit, t('exercise_realizations.form.save_realization'), class: 'btn btn-primary'
+%br{:style=>'clear:both;'}
 
 :javascript
   $('abbr[title=required]').hide(); // temporary fix - required is shown everywhere by error
@@ -31,26 +32,8 @@
     switchExercisesSettingsPanesVisibility();
   });
   $('form')
-    .bind('ajax:complete', function (evt, xhr, status) {
-    })
     .bind('ajax:success', function (evt,xhr,status){
       refreshRealizationsInPlan(getPlanIdForRealization(#{@exercise_realization.id}));
       switchExercisesSettingsPanesVisibility();
     })
-    .bind("ajax:error", function (evt, xhr, status, error) {
-      var $form = $(this), errors, errorText;
-      try {
-        errors = $.parseJSON(xhr.responseText);
-      } catch (err) {
-        // If the responseText is not valid JSON (like if a 500 exception was thrown), populate errors with a generic error message.
-        errors = {message: "#{t('exercise_realizations.form.please_reload_try_again')}"};
-      }
-      // Build an unordered list from the list of errors
-      errorText = "#{t('dictionary.following_errors_occured_text_only')}<ul>";
-      for (error in errors) {
-        errorText += "<li>" + errors[error] + "</li> ";
-      }
-      errorText += "</ul>";
-      // Insert error list into form
-      $form.find('div.form-errors').html(errorText);
-    });
+    .bind("ajax:error", formErrorHandler());

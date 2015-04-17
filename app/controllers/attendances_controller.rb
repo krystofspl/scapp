@@ -319,7 +319,7 @@ class AttendancesController < ApplicationController
       @regular_training = RegularTraining.friendly.find(params[:regular_training_id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def attendance_params
       params.require(:attendance).permit(:participation, :price_without_tax, :user_email, :note)
     end

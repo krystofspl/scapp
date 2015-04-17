@@ -205,7 +205,7 @@ class UserRelationsController < ApplicationController
       @user_relation = UserRelation.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white index through.
     def user_relation_params
       params.require(:user_relation).permit(:relation, :from_user_status, :to_user_status)
     end

@@ -1,17 +1,18 @@
-$("#exercise-setups-available-wrapper").html("<%= escape_javascript(render partial: 'exercise_setups/list_small', locals: {:exercise_setups => @exercise_setups}) %>");
+var exerciseSetupsAvailableWrapper = $("#exercise-setups-available-wrapper");
+exerciseSetupsAvailableWrapper.html("<%= escape_javascript(render partial: 'exercise_setups/list_small', locals: {:exercise_setups => @exercise_setups}) %>");
 makeElementsSameHeight("#exercise-setups-available-wrapper .box-body");
 $('#paginator-setups').html('<%=escape_javascript(paginate(@exercise_setups, :remote => true, :param_name => :page_s, :params => {:controller => 'exercise_realizations', :action => 'list_exercise_setups'}).to_s)%>');
-$('#exercise-setups-available-wrapper li').disableSelection();
+exerciseSetupsAvailableWrapper.find('li').disableSelection();
 
 $(function() {
     // ADD EXERCISE REALIZATION SETUP
-    $('.btn-add').click(function(){
+    exerciseSetupsAvailableWrapper.find('.btn-add').click(function(){
         // Append cloned div to realization setups
         var clone = $(this).parent().clone();
         clone.find('.btn').remove();
         clone.find('div').removeClass().removeAttr('style');
         clone.removeAttr('style').removeClass().addClass('active-highlight');
-        $('#exercise-realization-setups-accordion').prepend(clone).accordion('destroy').accordion();
+        $('#exercise-realization-setups-accordion').prepend(clone);
         addedRealizationSetup = clone;
 
         // Show edit pane instead of available setups
