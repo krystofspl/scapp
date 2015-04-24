@@ -6,13 +6,7 @@ class ExercisesController < ApplicationController
   # GET /exercises.json
   def index
     authorize! :index, Exercise
-    @filterrific = initialize_filterrific(
-        Exercise,
-        params[:filterrific],
-        :select_options => {
-            sorted_by: Exercise.options_for_sorted_by
-        }
-    ) or return
+    filterrific_exercises or return
     @exercises = @filterrific.find.accessible(current_user).uniq.page(params[:page]).per(10)
   end
 
@@ -100,11 +94,31 @@ class ExercisesController < ApplicationController
   def user_exercises
     authorize! :user_exercises, Exercise
     @user = User.friendly.find(params[:user_id])
-    @exercises = Exercise.where(:user => @user).page(params[:page]).per(5)
-    render 'users/exercises/list'
+    filterrific_exercises or return
+    @exercises = @filterrific.find.where(:user => @user).page(params[:page]).per(10)
+    respond_to do |format|
+      format.html { render 'users/exercises/list' }
+      # JS requests are handled for filterrific
+      format.js { render 'user_exercises' }
+    end
   end
 
-  # Filterrific sub-filters
+  #### Filterrific sub-filters
+  # Init filterrific for Exercise entity
+  def filterrific_exercises
+    @filterrific = initialize_filterrific(
+        Exercise,
+        params[:filterrific],
+        :select_options => {
+            sorted_by: Exercise.options_for_sorted_by
+        }
+    ) or return
+    rescue ActiveRecord::RecordNotFound => e
+      # There is an issue with the persisted param_set. Reset it.
+      redirect_to(reset_filterrific_url(format: :js)) and return
+  end
+
+  # Init filterrific for ExerciseSetup entity
   def filterrific_setups
     fs_select_options = Hash.new
     fs_select_options[:sorted_by] = ExerciseSetup.options_for_sorted_by
@@ -114,15 +128,16 @@ class ExercisesController < ApplicationController
         params[:filterrific_setups],
         :select_options => fs_select_options
     ) or return
-    @exercise_setups = @filterrific_setups.find.for_exercise(@exercise).page(params[:page_s]).per(3)
     # Recover from invalid param sets, e.g., when a filter refers to the
     # database id of a record that doesn’t exist any more.
     # In this case we reset filterrific and discard all filter params.
+    @exercise_setups = @filterrific_setups.find.for_exercise(@exercise).page(params[:page_s]).per(3)
     rescue ActiveRecord::RecordNotFound => e
       # There is an issue with the persisted param_set. Reset it.
       redirect_to(reset_filterrific_url(format: :html)) and return
   end
 
+  # Init filterrific for ExerciseMeasurement entity
   def filterrific_measurements
     fm_select_options = Hash.new
     fm_select_options[:sorted_by] = ExerciseMeasurement.options_for_sorted_by
@@ -157,6 +172,7 @@ class ExercisesController < ApplicationController
       params.require(:exercise).permit(:code, :version, :name, :author_name, :description, :description_long, :sources, :youtube_url, :accessibility, :type, :user_id, :exercise_image_id)
     end
 
+    # Create ExerciseImage entity for each image from the form
     def upload_images
       if params[:images]
         params[:images].each { |image|

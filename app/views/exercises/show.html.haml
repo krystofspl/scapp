@@ -133,8 +133,8 @@
                         - if @exercise.has_sets?
                           .col-sm-3
                             = f.select(:type, @filterrific_setups.select_options[:type],{},{:class => 'form-control'})
-                        -#.col-sm-3.no-padding
-                        -#  = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
+                        .col-sm-3.no-padding
+                          = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
               .row
                 .col-sm-12
                   #exercise_setups_data

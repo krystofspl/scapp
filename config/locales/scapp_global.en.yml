@@ -423,6 +423,14 @@ en:
     scheduled_lesson_add_measurements_vf_select: *scheduled_lesson_add_measurements_vf_select
     scheduled_lesson_fill_measurement: &scheduled_lesson_fill_measurement Fill scheduled lesson measurement
 
+    exercises: "Exercises"
+    my_exercises: "My exercises"
+    new_exercise: "New exercise"
+    available_exercises: "Available exercises"
+    exercise_bundles: "Exercise bundles"
+    my_exercise_bundles: "My bundles"
+    available_exercise_bundles: "Available bundles"
+    new_exercise_bundle: "New bundle"
   template:
     main:
       home: *home
@@ -1275,6 +1283,7 @@ en:
       show_detailed_description: "Show detailed description"
       detailed_description: "Detailed description"
       exercise_setups_and_measurements: "Setups and Measurements"
+      view_my_exercises_only: "View my exercises only"
     index:
       exercises_list: "Exercises list"
       exercises: "Exercises"

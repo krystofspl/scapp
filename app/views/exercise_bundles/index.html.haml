@@ -5,7 +5,7 @@
 #action-box
   = link_to t('exercise_bundle.show.view_my_bundles'), user_exercise_bundles_path(current_user), class: 'btn btn-info'
   - if can? :create, ExerciseBundle
-    = link_to new_exercise_bundle_path, class: 'btn btn-info' do
+    = link_to new_exercise_bundle_path, class: 'btn btn-success' do
       %i.fa.fa-plus
       = t('exercise_bundle.new.new_bundle')
 

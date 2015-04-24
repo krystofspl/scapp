@@ -3,8 +3,10 @@
 - breadcrumb :exercises
 
 #action-box
+  = link_to t('exercise.show.view_my_exercises_only'), user_exercises_path(current_user), class: 'btn btn-info'
   - if can? :create, Exercise
-    = link_to new_exercise_path, class: 'btn btn-info' do
+    = link_to new_exercise_path, class: 'btn btn-success' do
+      %i.fa.fa-plus
       = t('exercise.new_exercise')
 
 .well.well-sm

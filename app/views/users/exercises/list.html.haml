@@ -5,7 +5,23 @@
 
 #action-box
   = link_to t('exercise.show.view_all_available_exercises'), exercises_path, class: 'btn btn-info'
-  = link_to new_exercise_path, class: 'btn btn-info' do
-    = t('exercise.new_exercise')
+  - if can? :create, Exercise
+    = link_to new_exercise_path, class: 'btn btn-success' do
+      %i.fa.fa-plus
+      = t('exercise.new_exercise')
 
-= render :template => 'exercises/_list_table.html.haml', :locale => @locale, locals: {:exercises => @exercises}
+.well.well-sm
+  .row
+    .col-sm-12
+      %h4=t('exercise.filter.filters')
+  .row
+    = form_for_filterrific(@filterrific) do |f|
+      .col-sm-3
+        = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
+      .col-sm-3
+        = f.select(:sorted_by, @filterrific.select_options[:sorted_by],{},{ :class => 'form-control'})
+      .col-sm-6
+        = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
+
+#filterrific_results
+  = render partial: 'exercises/list_table', locals: {:exercises => @exercises}

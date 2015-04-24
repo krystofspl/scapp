@@ -20,9 +20,7 @@ class Exercise < ActiveRecord::Base
     terms = terms.map { |e|
      (e.gsub('*', '%') + '%').gsub(/%+/, '%')
     }
-    # configure number of OR conditions for provision
-    # of interpolation arguments. Adjust this if you
-    # change the number of OR conditions.
+    # configure number of OR conditions for provision of interpolation arguments
     num_or_conds = 2
     where(
        terms.map { |term|
@@ -55,7 +53,7 @@ class Exercise < ActiveRecord::Base
     if user.is_admin?
       where(true)
     elsif user.is_coach?
-      where('accessibility=? OR user_id=?',:global,user)
+      where('accessibility=? OR user_id=?',:global,user.id)
     elsif user.is_player?
       joins({:exercise_realizations=>{:plan=>:user_partook}}).where('plans.user_partook_id=?',user.id)
     end

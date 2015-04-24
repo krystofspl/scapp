@@ -12,6 +12,7 @@ class ExerciseRealizationsController < ApplicationController
     list_exercises
   end
 
+  # Read-only list with all accessible plans
   def list_summary
     authorize! :list_plans, @training_lesson_realization
     @plans = @training_lesson_realization.plans.accessible(@training_lesson_realization,current_user)
@@ -113,18 +114,22 @@ class ExerciseRealizationsController < ApplicationController
 
   def list_exercise_realization_setups
     @exercise_realization_setups = @exercise_realization.exercise_realization_setups
+    # js.erb partial is rendered
   end
 
   def list_exercise_set_realizations
     @exercise_set_realizations = @exercise_realization.exercise_set_realizations.rank(:row_order)
+    # js.erb partial is rendered
   end
 
   def edit_setups
     list_exercise_setups
+    # js.erb partial is rendered
   end
 
   def edit_sets
     list_exercise_set_realizations
+    # js.erb partial is rendered
   end
 
   private
@@ -135,6 +140,7 @@ class ExerciseRealizationsController < ApplicationController
     def set_training_lesson_realization
       @training_lesson_realization = TrainingLessonRealization.friendly.find(params[:training_lesson_realization_id])
     end
+
     # Never trust parameters from the scary internet, only allow the white index through.
     def exercise_realization_params
       params.require(:exercise_realization).permit(:exercise_code, :exercise_version, :row_order_position, :plan_id,
@@ -144,6 +150,7 @@ class ExerciseRealizationsController < ApplicationController
                                                    :rest_partial_minutes, :rest_partial_seconds)
     end
 
+    #TODO this will be moved after plan is connected to attendance (planned fix)
     def create_plans_for_users
       @training_lesson_realization.attendances.each do |attendance|
         unless Plan.where(:training_lesson_realization_id => @training_lesson_realization.id).where(:user_partook => attendance.user).any?
@@ -153,6 +160,7 @@ class ExerciseRealizationsController < ApplicationController
       end
     end
 
+    # Redirect to TLR with error if it has been closed
     def check_lesson_closed
       @training_lesson_realization = TrainingLessonRealization.friendly.find(params[:training_lesson_realization_id])
       if @training_lesson_realization.closed?

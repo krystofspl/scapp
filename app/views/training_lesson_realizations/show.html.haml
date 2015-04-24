@@ -21,18 +21,18 @@
           %i.fa.fa-pencil
           = t('training_realization.show.edit_training_lesson')
         = link_to t('training_realization.show.fill_attendance'), fill_training_lesson_realization_attendances_path(@training_lesson_realization), class: 'btn btn-info'
-        = link_to training_lesson_realization_exercise_realizations_path(@training_lesson_realization), class: 'btn btn-info' do
-          %i.fa.fa-list-alt
-          = t('exercise_realizations.dictionary.plans_specification')
-        = link_to list_summary_training_lesson_realization_exercise_realizations_path(@training_lesson_realization), class: 'btn btn-primary' do
-          %i.fa.fa-search
-          = t('plan.index.list_summary')
         = link_to close_training_lesson_realization_path(@training_lesson_realization), class: 'btn btn-warning' do
           %i.fa.fa-check
           = t('training_realization.show.close_lesson')
         = link_to cancel_training_lesson_realization_path(@training_lesson_realization), class: 'btn btn-warning' do
           %i.fa.fa-times
           = t('training_realization.show.cancel_lesson')
+      = link_to training_lesson_realization_exercise_realizations_path(@training_lesson_realization), class: 'btn btn-info' do
+        %i.fa.fa-list-alt
+        = t('exercise_realizations.dictionary.plans_specification')
+      = link_to list_summary_training_lesson_realization_exercise_realizations_path(@training_lesson_realization), class: 'btn btn-primary' do
+        %i.fa.fa-search
+        = t('plan.index.list_summary')
       = link_to new_measurement_vf_select_training_lesson_realization_variable_field_index_path(@training_lesson_realization), class: 'btn btn-success' do
         = t('training_realization.show.new_lesson_measurement')
 

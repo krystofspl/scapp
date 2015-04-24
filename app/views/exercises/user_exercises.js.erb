@@ -1,0 +1,2 @@
+<% js = escape_javascript(render partial: 'exercises/list_table', locals: {:exercises => @exercises}) %>
+$("#filterrific_results").html("<%= js %>");
