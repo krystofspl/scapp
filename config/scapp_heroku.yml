@@ -1,7 +1,7 @@
 defaults: &defaults
   app:
-    name: 'ScApp v2'
-    host: 'localhost'
+    name: 'Scapp v2'
+    host: 'scapp2.herokuapp.com'
     port: 3000
     default_locale: 'en'
     email:

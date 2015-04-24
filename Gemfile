@@ -60,7 +60,11 @@ gem 'owlcarousel-rails', github: 'acrogenesis/owlcarousel-rails', branch: 'OwlCa
 # makes routes accessible in JS (url_for not sufficient sometimes)
 gem 'js-routes'
 
-gem 'rails_12factor', group: :production
+group :production do
+  # This gem enables serving assets in production and setting your logger to standard out,
+  # both of which are required to run a Rails 4 application on (heroku)
+  gem 'rails_12factor'
+end
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :mri_20, :rbx]
