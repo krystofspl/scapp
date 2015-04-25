@@ -1,12 +1,12 @@
 .col-sm-12.well.well-sm
   = form_for_filterrific filterrific, remote: true, url: {action: 'list_exercises'}, format: 'js' do |f|
     .form-group
-      .col-sm-4.no-padding-sides
+      .col-sm-6.no-padding-sides
         = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control input-sm', :placeholder => t('exercise.filter.search'))
-      .col-sm-4.no-padding-sides
+      .col-sm-6.no-padding-sides
         = f.select(:sorted_by, filterrific.select_options[:sorted_by],{},{ :class => 'form-control input-sm'})
-      .col-sm-4.no-padding-sides
-        = f.submit t('dictionary.filter'), class: 'btn btn-sm btn-default'
+      -#.col-sm-4.no-padding-sides
+      -#  = f.submit t('dictionary.filter'), class: 'btn btn-sm btn-default'
   #entries-info.col-sm-12.no-padding
     = render_filterrific_spinner
     = page_entries_info exercises

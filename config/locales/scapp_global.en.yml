@@ -230,6 +230,7 @@ en:
     all: "All"
     remaining_time: "Remaining"
     accessibility: "Accessibility"
+    name_thing: "Name"
   alerts:
     not_authorized: 'You do not have required permissions for this action.'
 
@@ -1287,7 +1288,7 @@ en:
     index:
       exercises_list: "Exercises list"
       exercises: "Exercises"
-    new_exercise: "New exercise"
+    new_exercise: "Add new exercise"
     successfully_removed: "Exercise successfully removed."
     simple_exercise: "Simple exercise"
     exercise_with_sets: "Exercise with sets"
@@ -1320,6 +1321,8 @@ en:
       exercise_sets: "Exercise sets"
       set: "set"
 
+    successfuly_created: "Exercise was successfully created."
+    successfully_updated: "Exercise successfully updated."
   private: "Private"
   global: "Global"
 
@@ -1410,6 +1413,9 @@ en:
       exercise_successfully_included: "Exercise was successfully included."
       exercise_successfully_removed: "Exercise was successfully removed."
 
+    successfully_created: "Exercise bundle was successfully created."
+    successfully_updated: "Exercise bundle was successfully updated."
+    successfully_deleted: "Exercise bundle was successfully deleted."
   unit:
     new:
       submit: "Add unit"

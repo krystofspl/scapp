@@ -15,12 +15,12 @@
       %h4=t('exercise.filter.filters')
   .row
     = form_for_filterrific(@filterrific) do |f|
-      .col-sm-3
-        = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
-      .col-sm-3
-        = f.select(:sorted_by, @filterrific.select_options[:sorted_by],{},{ :class => 'form-control'})
       .col-sm-6
-        = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
+        = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
+      .col-sm-6
+        = f.select(:sorted_by, @filterrific.select_options[:sorted_by],{},{ :class => 'form-control'})
+      -#.col-sm-6
+      -#  = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
 
 #filterrific_results
   = render partial: 'exercises/list_table', locals: {:exercises => @exercises}

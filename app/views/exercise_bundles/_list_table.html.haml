@@ -7,7 +7,7 @@
         %table.table#exercise_bundles
           %tbody
             %tr
-              %th= t('dictionary.name')
+              %th= t('dictionary.name_thing')
               %th= t('dictionary.description')
               %th= t('dictionary.accessibility')
               %th
@@ -22,6 +22,6 @@
               - if can? :edit, exercise_bundle
                 %td
                   = edit_button_bundle(exercise_bundle,t('dictionary.edit'))
-                %td= link_to t('dictionary.delete'), exercise_bundle, class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' }
+                %td= link_to t('dictionary.delete'), exercise_bundle, class: 'btn btn-danger', :method => :delete, :data => { :confirm => I18n.t('dictionary.are_you_sure') }
 
 = render 'exercise_bundles/warning'

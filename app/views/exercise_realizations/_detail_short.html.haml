@@ -30,7 +30,7 @@
         = " " + t('exercise_realizations.dictionary.setups')
   .btns-block
     = link_to t('dictionary.edit'), edit_training_lesson_realization_exercise_realization_path(:id => realization.id), :remote => true, class: 'btn btn-xs btn-warning btn-edit'
-    = link_to t('dictionary.delete'), training_lesson_realization_exercise_realization_path(:id => realization.id), class: 'btn btn-xs btn-danger btn-destroy', :method => :delete, :remote => true, :data => { :confirm => 'Are you sure?' }
+    = link_to t('dictionary.delete'), training_lesson_realization_exercise_realization_path(:id => realization.id), class: 'btn btn-xs btn-danger btn-destroy', :method => :delete, :remote => true, :data => { :confirm => I18n.t('dictionary.are_you_sure') }
 
 - unless realization.rest_after.blank? || realization.rest_after==0
   .box.box-body.realization-rest{style: 'min-height:'+rest_after_height.to_s+'px;'}

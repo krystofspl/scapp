@@ -18,7 +18,7 @@
       %td= payment.received_by
       %td= link_to 'Show', payment
       %td= link_to 'Edit', edit_payment_path(payment)
-      %td= link_to 'Destroy', payment, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= link_to 'Destroy', payment, :method => :delete, :data => { :confirm => I18n.t('dictionary.are_you_sure') }
 
 %br
 

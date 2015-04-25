@@ -47,7 +47,6 @@ Feature: Show exercise realizations
       | excprivate | test1        | test2        |
       | excglobal  | test1        | test3        |
 
-  @javascript
   Scenario: As a player I want to view my plan for a lesson
     Given I am logged in as User test2
     And I am at the "/scheduled_lessons/training-5-5-2050-13-00-14-00/" page
@@ -58,7 +57,6 @@ Feature: Show exercise realizations
     And I shouldn't see "link" containing "test3"
     And I should see "link" containing "excprivate"
 
-  @javascript
   Scenario: As a coach I want to view plans for players in my lesson
     Given I am logged in as User test1
     And I am at the "/scheduled_lessons/training-5-5-2050-13-00-14-00/" page

@@ -31,7 +31,7 @@
                   %td
                     - if unit.exercise_measurements.count == 0 && unit.exercise_setups.count == 0
                       = link_to t('dictionary.edit'), edit_unit_path(unit), class: 'btn btn-warning'
-                      = link_to t('dictionary.delete'), unit, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn btn-danger'
+                      = link_to t('dictionary.delete'), unit, :method => :delete, :data => { :confirm => I18n.t('dictionary.are_you_sure') }, class: 'btn btn-danger'
                     - else
                       = link_to t('dictionary.edit'), '#', class: 'btn btn-warning disabled'
                       = link_to t('dictionary.delete'), '#', class: 'btn btn-danger disabled'

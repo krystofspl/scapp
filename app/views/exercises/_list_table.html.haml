@@ -12,7 +12,7 @@
         %table.table#exercises
           %tbody
             %tr
-              %th= t('dictionary.name')
+              %th= t('dictionary.name_thing')
               %th= t('exercise.show.used')
               %th= t('dictionary.description')
               %th= t('dictionary.image')
@@ -31,10 +31,7 @@
                   - unless exercise.exercise_image.blank?
                     = image_tag exercise.exercise_image.image.small
                 %td
-                  - if !exercise.has_sets?
-                    = t('exercise.dictionary.simple_exercise')
-                  - elsif exercise.has_sets?
-                    = t('exercise.dictionary.exercise_with_sets')
+                  .label.label-info= exercise.type_to_s
                 %td
                   - if exercise.is_private?
                     %span.label.label-info
@@ -48,7 +45,7 @@
                 - if can? :destroy, exercise
                   %td
                     - if !exercise.is_in_use?
-                      = link_to t('dictionary.delete'), exercise_path(exercise), class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' }
+                      = link_to t('dictionary.delete'), exercise_path(exercise), class: 'btn btn-danger', :method => :delete, :data => { :confirm => I18n.t('dictionary.are_you_sure') }
                     - else
                       = link_to t('dictionary.delete'), "#", class: 'disabled btn btn-danger'
       .box-footer

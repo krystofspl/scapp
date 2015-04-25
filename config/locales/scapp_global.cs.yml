@@ -206,6 +206,24 @@ cs:
     count: Počet
     listing: Výpis
     following_errors_occured: "Vyskytly se následující chyby: %{errors}"
+    back: Zpět
+    cancel: Storno
+    remove: Odebrat
+    add: Přidat
+    include: Zahrnout
+    warning: Varování
+    close: Zavřít
+    continue: Pokračovat
+    abbreviation: Zkratka
+    detailed_description: "Podrobný popis"
+    image: Obrázek
+    submitting: Odesílání...
+    following_errors_occured_text_only: "Vyskytly se následující problémy:"
+    filter: Filtrovat
+    all: Vše
+    remaining_time: "Zbývající čas"
+    accessibility: Přístupnost
+    name_thing: "Název"
   alerts:
     not_authorized: "Nemáte požadovaná oprávnění pro tuto akci."
   breadcrumbs:
@@ -298,6 +316,30 @@ cs:
     set_user_roles: "Nastavit uživatelské role"
     scheduled_lesson_add_measurements_vf_select: "Výběr metriky"
     scheduled_lesson_fill_measurement: "Záznam měření metriky na tréninku"
+    exercise_detail: "Detail cviku"
+    exercises: Cviky
+    user_exercises: "Cviky uživatele"
+    exercise_bundle_detail: "Detail sady cviků"
+    edit_bundle_exercises: "Spravovat cviky"
+    exercise_bundles: "Sady cviků"
+    new_exercise_bundle: "Nová sada cviků"
+    edit_exercise_bundle: "Upravit sadu cviků"
+    user_exercise_bundles: "Sady cviků"
+    edit_exercise: "Upravit cvik"
+    new_exercise: "Nový cvik"
+    exercise_steps: "Kroky cviku"
+    edit_exercise_setup: "Upravit nastavení cviku"
+    clone_exercise_setup: "Klonovat nastavení cviku"
+    new_exercise_setup: "Nové nastavení cviku"
+    new_exercise_measurement: "Nové měření cviku"
+    edit_exercise_measurement: "Upravit měření cviku"
+    clone_exercise_measurement: "Klonovat měření cviku"
+    new_unit: "Nová jednotka"
+    units: Jednotky
+    edit_unit: "Upravit jednotku"
+    unit_detail: "Detail jednotky"
+    regular_training_lesson_plans: "Specifikace plánů"
+    regular_training_lesson_plans_summary: "Přehled plánů"
   nav:
     user: Uživatel
     users: Uživatelé
@@ -373,6 +415,14 @@ cs:
     set_user_roles: "Nastavit uživatelské role"
     scheduled_lesson_add_measurements_vf_select: "Výběr metriky"
     scheduled_lesson_fill_measurement: "Vyplnění měření na tréninkové hodině"
+    exercises: Cviky
+    my_exercises: "Mé cviky"
+    new_exercise: "Nový cvik"
+    available_exercises: "Dostupné cviky"
+    exercise_bundles: "Sady cviků"
+    my_exercise_bundles: "Mé sady"
+    available_exercise_bundles: "Dostupné sady"
+    new_exercise_bundle: "Nová sada"
   template:
     main:
       home: Domů
@@ -1151,7 +1201,7 @@ cs:
     calc_payment:
       hint: |
           Výchozí ceny jsou vypočteny na základě zvolené kalkulační strategii tréninkové hodiny. Navržené sumy lze samozřejmně upravit dle potřeby. Mějte však na paměti, že částku upravujete oproti klientovi známé strategii výpočtu ceny. Dělejte tak s rozvahou. Cenová bilance Vás informuje o ziskovosti / ztrátovosti tréninkové hodiny.
-
+          
           Pozor! Při každé úpravě docházky jsou ceny nově přepočítány. Ve sloupci "Předchozí cena" proto můžete vidět starou částku, kterou je možné opět použít kliknutím na její hodnotu.
       save_calculation: "Uložit rozpočet"
       name: Jméno
@@ -1167,3 +1217,257 @@ cs:
       not_found: "Potřebný soubor s nápovědou nebyl bohužel nalezen!"
     index:
       trainings: "Trénink, organizace tréninkové hodiny, tvorba docházky a kalkulace cen"
+  exercise:
+    show:
+      exercise_detail: "detail cviku"
+      detail: Detail
+      owner: Vlastník
+      accessibility: Přístupnost
+      description: Popis
+      exercise_setups: "Nastavení cviku"
+      exercise_setups_required: Vyžadováno
+      exercise_setups_unit_name: Jednotka
+      version: Verze
+      description_is_empty: "Tento cvik nemá popis."
+      exercise_measurements: "Měření cviku"
+      exercise_setups_name: Název
+      in_bundles: "V sadách"
+      exercise_setup_type: Typ
+      exercise_measurement_optimal_value: "Optimální hodnota"
+      sources: Zdroje
+      youtube_url: "Adresa videa"
+      author_name: "Jméno autora"
+      youtube_url_click: "Klikněte zde"
+      edit_exercise: "Upravit cvik"
+      destroy_exercise: "Odstranit cvik"
+      exercise_type: "Typ cviku"
+      used: Použito
+      user_exercises: "Cviky uživatele"
+      view_all_available_exercises: "Zobrazit všechny dostupné cviky"
+      add_measurement: "Přidat měření cviku"
+      add_setup: "Přidat nastavení cviku"
+      exercise_realizations: "Realizace cviku"
+      add_steps: "Přidat kroky"
+      exercise_steps_empty: "Tento cvik nemá žádné kroky."
+      show_detailed_description: "Zobrazit detailní popis"
+      detailed_description: "Detailní popis"
+      exercise_setups_and_measurements: "Nastavení a Měření"
+      view_my_exercises_only: "Zobrazit pouze mé cviky"
+    index:
+      exercises_list: "Seznam cviků"
+      exercises: Cviky
+    new_exercise: "Přidat nový cvik"
+    successfully_removed: "Cvik byl úspěšně odstraněn."
+    simple_exercise: "Jednoduchý cvik"
+    exercise_with_sets: "Cvik se sériemi"
+    new:
+      form_button_create: "Vytvořit cvik bez přidání detailů"
+      form_button_create_add_details: "Vytvořit cvik a přidat detaily"
+    edit:
+      edit: "Upravit cvik"
+      warning_message_body: "Tento cvik je již v nějaké realizaci. Nedoporučujeme provádět rozsáhlejší úpravy, jelikož úpravy se projeví ve všech realizacích. Pokud chcete opravit nějaký detail nebo udělat malou změnu, prosíme pokračujte v editaci, v opačném případě klikněte na Storno. Také máte možnost vytvořit novou verzi cviku (klonovat jej)."
+      warning_new_version_btn: "Vytvořit novou verzi"
+    clone:
+      clone: "Klonovat cvik"
+    filter:
+      name_asc: "Název ▲"
+      name_desc: "Název ▼"
+      reset: Resetovat
+      sort_by: "Řadit podle"
+      search: Hledat
+      created_at_asc: "Vytvořeno ▲"
+      created_at_desc: "Vytvořeno ▼"
+      realizations_asc: "Počet realizací ▲"
+      realizations_desc: "Počet realizací ▼"
+      filters: Filtry
+      submit: Filtrovat
+    dictionary:
+      simple_exercise: "Jednoduchý cvik"
+      exercise_with_sets: "Cvik se sériemi"
+      accessibility_private: Soukromý
+      accessibility_global: Veřejný
+      exercise_sets: Série
+      set: série
+    successfuly_created: "Cvik byl úspěšně vytvořen."
+    successfully_updated: "Cvik byl úspěšně upraven."
+  private: Soukromý
+  global: Veřejný
+  optimal_value:
+    higher: Vyšší
+    lower: Nižší
+  exercise_steps:
+    index: "Kroky cviku"
+    show_detailed_view: "Zobrazit detailní pohled"
+    list: "Seznam kroků"
+    add_new: "Přidat nový krok"
+    successfully_deleted: "Krok cviku byl úspěšně odstraněn."
+    successfully_updated: "Krok cviku byl úspěšně upraven."
+    successfully_added: "Krok cviku byl úspěšně přidán."
+    empty: "Cvik zatím nemá žádné kroky."
+    form_button_add_step: "Přidat krok"
+    form_button_update_step: "Upravit krok"
+    edit: "Upravit krok"
+  exercise_setup:
+    new:
+      add_setup: "Přidat krok"
+    delete:
+      successfully_removed: "Nastavení cviku bylo úspěšně odstraněno."
+    edit:
+      edit_setup: "Upravit nastavení cviku"
+      update_setup: "Upravit nastavení"
+    show:
+      used: Použito
+    clone:
+      button: Klonovat
+      add_setup: "Klonovat nastavení cviku"
+    simple_setup: "Nastavení pro celý cvik"
+    set_setup: "Nastavení pro sérii cviku"
+    dictionary:
+      exercise_setup_type: "Speciální typ"
+      setups: Nastavení
+      was_successfully_created: "Nastavení cviku bylo úspěšně vytvořeno."
+  exercise_measurement:
+    optimal_value_higher: "Vyšší je lepší"
+    optimal_value_lower: "Nižší je lepší"
+    new:
+      add_measurement: "Přidat měření"
+    delete:
+      successfully_removed: "Měření cviku bylo úspěšně odstraněno."
+    show:
+      used: Použito
+    clone:
+      add_setup: "Klonovat měření cviku"
+      button: Klonovat
+    edit:
+      edit_measurement: "Upravit měření cviku"
+      update_measurement: "Upravit měření"
+    dictionary:
+      was_successfully_created: "Měření cviku bylo úspěšně vytvořeno."
+      was_successfully_updated: "Měření cviku bylo úspěšně upraveno."
+      simple_measurement: "Měření celého cviku"
+      set_measurement: "Měření série"
+  exercise_bundle:
+    edit:
+      edit_bundle: "Upravit sadu cviků"
+      update_bundle: "Upravit sadu cviků"
+      warning_message_body: "Tato sada již obsahuje nějaké cviky, nedoporučujeme provádět rozsáhlé změny, jelikož změny se projeví pro všechny cviky v sadě."
+      warning_continue_btn: "Pokračovat a editovat"
+    new:
+      new_bundle: "Nová sada cviků"
+      create_bundle: "Vytvořit sadu cviků"
+    index:
+      exercise_bundles_list: "Seznam sad cviků"
+    show:
+      view_all_accessible_bundles: "Zobrazit všechny dostupné sady cviků"
+      bundle_detail: "Detail sady cviků"
+      details_heading: Detaily
+      description_is_empty: "Tato sada cviků nemá popis."
+      contains_exercises_nr: "Obsahuje cviky"
+      exercises_contained: "Cviky obsažené v sadě"
+      edit_bundle: "Upravit sadu cviků"
+      delete_bundle: "Odstranit sadu cviků"
+      edit_exercises: "Přidat / Odebrat cviky"
+      view_my_bundles: "Zobrazit mé sady cviků"
+      contains_no_exercises: "Tato sada zatím neobsahuje žádné cviky."
+      user_exercise_bundles: "Sady cviků uživatele"
+    edit_exercises:
+      edit_exercises: "Upravit cviky"
+      exercise_successfully_included: "Cvik byl úspěšně přidán."
+      exercise_successfully_removed: "Cvik byl úspěšně odebrán."
+    successfully_updated: "Sada cviků byla úspěšně upravena."
+    successfully_created: "Sada cviků byla úspěšně vytvořena."
+    successfully_deleted: "Sada cviků byla úspěšně odebrána."
+  unit:
+    new:
+      submit: "Přidat jednotku"
+    type:
+      integer: "Celé číslo"
+      decimal: "Desetinné číslo"
+      time: Čas
+    new_unit: "Nová jednotka"
+    edit_unit: "Upravit jednotku"
+    edit:
+      manage: "Spravovat jednotky"
+    label: Jednotka
+    index:
+      heading: "Seznam jednotek"
+  exercise_image:
+    exercise_image: "Obrázek cviku"
+    edit:
+      current_image: "Současný obrázek cviku"
+      current_images: "Současné obrázky"
+      upload_images: "Nahrát obrázky (výběr více)"
+    destroy:
+      destroy_image: "Odstranit obrázek"
+    exercise_step_images: "Obrázky kroků"
+    exercise_step_images_right: "Obrázky - správně"
+    exercise_step_images_wrong: "Obrázky - špatně"
+  exercise_realizations:
+    index:
+      exercise_realizations: "Realizace cviků"
+      heading: "Specifikace plánů"
+      back_to_lesson_realization: "Zpět na realizaci hodiny"
+      no_realizations_yet: "Zatím žádné realizace"
+    form:
+      please_reload_try_again: "Prosíme aktualizujte stránku a zkuste to znovu."
+      save_realization: "Uložit realizaci"
+      hours: Hodiny
+      minutes: Minuty
+      seconds: Vteřiny
+      time_duration: Trvání
+      rest_after: "Odpočinek po cviku"
+      heading: "Upravit realizaci"
+    error:
+      doesnt_fit_into_lesson: "Realizace je příliš dlouhá."
+      could_not_add: "Nastala chyba, nelze přidat realizaci."
+      lesson_has_been_closed: "Nelze dokončit akci, hodina již byla uzavřena."
+    dictionary:
+      rest_after: Odpočinek
+      setups: nastavení
+      setup: nastavení
+      set: série
+      sets: série
+      plan_is_full: "Plán je plný"
+      plans_specification: "Specifikace plánů"
+    edit:
+      available_unused_setups: "Dostupná nepoužitá nastavení"
+      used_setups: "Použitá nastavení"
+      edit_realization: "Upravit realizaci"
+      edit_setup: "Upravit nastavení"
+      edit_sets: "Upravit série"
+      add_new_set: "Přidat sérii"
+      edit_set: "Upravit sérii"
+      available_setups: "Dostupná nastavení"
+  exercise_realization_setups:
+    form:
+      heading: "Upravit nastavení"
+      save: Uložit
+    errors:
+      cannot_delete_required: "Nelze odstranit nastavení - je vyžadováno."
+      value_must_be_filled_in: "Buď číselná nebo textová hodnota musí být vyplněna"
+    dictionary:
+      no_setups_yet: "Zatím žádná nastavení."
+      no_available_setups: "Žádná dostupná nastavení."
+      has_no_setups: "Realizace nemá žádná nastavení."
+  exercise_set_realization:
+    form:
+      heading: "Upravit série"
+      save_set: "Uložit sérii"
+    error:
+      needs_to_have_one_set: "Realizace cviku musí mít alespoň jednu sérii."
+    dictionary:
+      contains_no_sets: "Realizace nemá žádné série."
+  plan:
+    index:
+      list_summary: "Souhrn plánů"
+      my_plan: "Moje plány"
+    dictionary:
+      plan_is_empty: "Plán je prázdný."
+      make_favorite: "Přidat mezi oblíbené"
+  favorite_plan:
+    index:
+      favorite_plans: "Oblíbené plány"
+      no_plans: "Nemáte žádné oblíbené plány."
+    error:
+      too_long_for_plan: "Plán nemůže být použit, je příliš dlouhý pro cílový plán."
+      could_not_add: "Nastala chyba, nelze zkopírovat plán."

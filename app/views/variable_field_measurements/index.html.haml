@@ -41,7 +41,7 @@
       %td= link_to t('vfm.index.show'), variable_field_measurement
       - if variable_field_measurement.measured_by == current_user || is_admin?
         %td= link_to t('vfm.index.edit'), edit_variable_field_measurement_path(variable_field_measurement)
-        %td= link_to t('vfm.index.delete'), variable_field_measurement, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td= link_to t('vfm.index.delete'), variable_field_measurement, :method => :delete, :data => { :confirm => I18n.t('dictionary.are_you_sure') }
       - else
         %td{colspan: 2}
 

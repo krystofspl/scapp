@@ -10,7 +10,7 @@
     %strong= t('exercise_realizations.edit.available_setups')
     .box.box-body
       #exercise-setups-available-form
-        = form_for_filterrific @filterrific_setups, remote: true, url: {action: 'list_exercise_setups'}, :as => :filterrific_setups, format: 'js' do |f|
+        = form_for_filterrific @filterrific_setups, url: {action: 'list_exercise_setups'}, :as => :filterrific_setups, format: 'js' do |f|
           .form-group
             .col-sm-4.no-padding-sides
               = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control input-sm', :placeholder => t('exercise.filter.search'))

@@ -7,7 +7,7 @@ class ExerciseRealizationsController < ApplicationController
   # Index action here is a page where realizations can be edited,
   # normal index is ExerciseRealizations#list_summary
   def index
-    authorize! :edit, @training_lesson_realization
+    authorize! :edit_plans, @training_lesson_realization
     create_plans_for_users #TODO Move this to where attendance is created
     list_exercises
   end
@@ -24,7 +24,7 @@ class ExerciseRealizationsController < ApplicationController
   end
 
   def create
-    authorize! :edit, @training_lesson_realization
+    authorize! :edit_plans, @training_lesson_realization
     @exercise_realization = ExerciseRealization.new(exercise_realization_params)
     @exercise_realization.user_created = current_user
     @exercise_realization.plan = Plan.find(exercise_realization_params[:plan_id])

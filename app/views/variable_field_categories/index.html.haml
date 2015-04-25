@@ -31,6 +31,6 @@
             \-
         %td= link_to t('dictionary.show'), variable_field_category
         %td= link_to t('dictionary.edit'), edit_variable_field_category_path(variable_field_category)
-        %td= link_to t('dictionary.delete'), variable_field_category, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td= link_to t('dictionary.delete'), variable_field_category, :method => :delete, :data => { :confirm => I18n.t('dictionary.are_you_sure') }
 
 =paginate @variable_field_categories, theme: 'twitter-bootstrap-3'

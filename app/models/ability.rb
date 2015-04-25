@@ -642,17 +642,18 @@ class Ability
 
     # @18.2 Create exercise realization
     can [:create], ExerciseRealization do |training_lesson_realization|
-      can? :edit, training_lesson_realization
+      training_lesson_realization.has_owner?(@user) || training_lesson_realization.has_coach?(@user)
     end
 
     # @18.3, @18.4 Edit, Destroy exercise realization
     can [:edit, :destroy], ExerciseRealization do |exercise_realization|
-      exercise_realization.user_created == @user
+      tlr = exercise_realization.plan.training_lesson_realization
+      tlr.has_owner?(@user) || tlr.has_coach?(@user)
     end
 
     # @18.5 Edit plan (index)
-    can [:index], ExerciseRealization do |training_lesson_realization|
-      can? :edit, training_lesson_realization
+    can [:edit_plans], TrainingLessonRealization do |training_lesson_realization|
+      training_lesson_realization.has_owner?(@user) || training_lesson_realization.has_coach?(@user)
     end
 
     # =============

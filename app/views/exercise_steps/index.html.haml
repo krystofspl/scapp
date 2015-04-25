@@ -16,7 +16,7 @@
               %table.table
                 %thead
                   %tr
-                    %th.col-sm-2= t('dictionary.name')
+                    %th.col-sm-2= t('dictionary.name_thing')
                     %th.col-sm-5= t('dictionary.description')
                     %th.col-sm-2= t('exercise_image.exercise_step_images_right')
                     %th.col-sm-2= t('exercise_image.exercise_step_images_wrong')
@@ -43,7 +43,7 @@
                           = link_to edit_exercise_step_path(:exercise_step_id => exercise_step.id), class: 'btn btn-warning btn-xs' do
                             %i.fa.fa-remove
                             = t('dictionary.edit')
-                          = link_to exercise_steps_path(:exercise_step_id => exercise_step.id), class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+                          = link_to exercise_steps_path(:exercise_step_id => exercise_step.id), class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => I18n.t('dictionary.are_you_sure') } do
                             %i.fa.fa-remove
                             = t('dictionary.delete')
                     - else

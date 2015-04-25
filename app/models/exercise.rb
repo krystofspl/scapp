@@ -75,7 +75,7 @@ class Exercise < ActiveRecord::Base
   validates :code, presence: true
   validates :version, presence: true
   validates :name, presence: true
-  #TODO nefunguje a hází validates :name, uniqueness: true, unless: :version>1
+  validates :name, uniqueness: true, unless: Proc.new { |ex| ex.version > 1 }
   validates :accessibility, inclusion: { in: ACCESSIBILITY }
 
   # =================== GETTERS / SETTERS ============================
@@ -92,6 +92,14 @@ class Exercise < ActiveRecord::Base
   #   @option :global
   def accessibility=(accessibility)
     write_attribute(:accessibility, accessibility.to_s) unless accessibility.blank?
+  end
+
+  def type_to_s
+    if self.has_sets?
+      I18n.t('exercise.dictionary.exercise_with_sets')
+    else
+      I18n.t('exercise.dictionary.simple_exercise')
+    end
   end
 
   # =================== METHODS ======================================
@@ -132,14 +140,17 @@ class Exercise < ActiveRecord::Base
     !self.exercise_realizations.empty?
   end
 
+  # Is exercise of type ExerciseWithSets?
   def has_sets?
     self.type=='ExerciseWithSets'
   end
 
+  # Is exercise accessibility private?
   def is_private?
     self.accessibility == :private
   end
 
+  # Is exercise accessibility global?
   def is_global?
     self.accessibility == :global
   end
@@ -169,7 +180,6 @@ class Exercise < ActiveRecord::Base
         [I18n.t('exercise.filter.created_at_desc'), 'created_at_desc'],
         #[I18n.t('exercise.filter.realizations_asc'), 'realizations_asc'],
         #[I18n.t('exercise.filter.realizations_desc'), 'realizations_desc'],
-
     ]
   end
 end

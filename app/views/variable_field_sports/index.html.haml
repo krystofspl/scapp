@@ -15,7 +15,7 @@
       %td= variable_field_sport.name
       %td= link_to 'Show', variable_field_sport
       %td= link_to 'Edit', edit_variable_field_sport_path(variable_field_sport)
-      %td= link_to 'Destroy', variable_field_sport, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= link_to 'Destroy', variable_field_sport, :method => :delete, :data => { :confirm => I18n.t('dictionary.are_you_sure') }
 
 %br
 

@@ -8,7 +8,7 @@
     - edit_link_text = raw("<i class='fa fa-pencil'></i>")+ " " + t('exercise.show.edit_exercise')
     = edit_button_exercise(@exercise, edit_link_text)
     - unless @exercise.is_in_use?
-      = link_to @exercise, :method => :delete, class: 'btn btn-danger', :data => { :confirm => 'Are you sure?' } do
+      = link_to @exercise, :method => :delete, class: 'btn btn-danger', :data => { :confirm => I18n.t('dictionary.are_you_sure') } do
         %i.fa.fa-times
         = t('exercise.show.destroy_exercise')
     - else
@@ -126,15 +126,15 @@
                         %h4=t('exercise.filter.filters')
                     .row
                       = form_for_filterrific @filterrific_setups, url: {action: 'filterrific_setups'}, :as => :filterrific_setups do |f|
-                        .col-sm-3
+                        .col-sm-6
                           = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
                         .col-sm-3
                           = f.select(:sorted_by, @filterrific_setups.select_options[:sorted_by],{},{:class => 'form-control'})
                         - if @exercise.has_sets?
                           .col-sm-3
                             = f.select(:type, @filterrific_setups.select_options[:type],{},{:class => 'form-control'})
-                        .col-sm-3.no-padding
-                          = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
+                        -#.col-sm-3.no-padding
+                        -#  = link_to(t('exercise.filter.reset'), reset_filterrific_url, {:class => 'btn btn-default'})
               .row
                 .col-sm-12
                   #exercise_setups_data
@@ -154,7 +154,7 @@
                         %h4=t('exercise.filter.filters')
                     .row
                       = form_for_filterrific @filterrific_measurements, url: {action: 'filterrific_measurements'}, :as => :filterrific_measurements do |f|
-                        .col-sm-3
+                        .col-sm-6
                           = f.text_field(:search_query, class: 'filterrific-periodically-observed form-control', :placeholder => t('exercise.filter.search'))
                         .col-sm-3
                           = f.select(:sorted_by, @filterrific_measurements.select_options[:sorted_by],{},{ :class => 'form-control'})
@@ -204,7 +204,7 @@
                   - if can? :add_steps, @exercise
                     %tr
                       %td
-                        = link_to exercise_steps_path(@exercise), class: 'btn btn-success btn-sm' do
+                        = link_to exercise_steps_path(@exercise.code, @exercise.version), class: 'btn btn-success btn-sm' do
                           %i.fa.fa-plus
                           = t('exercise.show.add_steps')
 

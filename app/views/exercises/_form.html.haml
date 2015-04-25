@@ -20,7 +20,7 @@
         %br
         = image_tag @exercise.exercise_image.image.medium
         %br
-        = link_to @exercise.exercise_image, :method => :delete, class: 'btn btn-danger', :data => { :confirm => 'Are you sure?' } do
+        = link_to @exercise.exercise_image, :method => :delete, class: 'btn btn-danger', :data => { :confirm => I18n.t('dictionary.are_you_sure') } do
           %i.fa.fa-times
           = t('exercise_image.destroy.destroy_image')
 

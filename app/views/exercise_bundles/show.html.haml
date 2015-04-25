@@ -7,7 +7,7 @@
   - if can? :edit, @exercise_bundle
     - edit_link_text = raw("<i class='fa fa-pencil'></i>")+ " " + t('exercise_bundle.show.edit_bundle')
     = edit_button_bundle(@exercise_bundle, edit_link_text)
-    = link_to @exercise_bundle, class: 'btn btn-danger', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+    = link_to @exercise_bundle, class: 'btn btn-danger', :method => :delete, :data => { :confirm => I18n.t('dictionary.are_you_sure') } do
       %i.fa.fa-times
       = t('exercise_bundle.show.delete_bundle')
 
@@ -70,7 +70,7 @@
           %table.table#exercises
             %tbody
               %tr
-                %th= t('dictionary.name')
+                %th= t('dictionary.name_thing')
                 %th= t('dictionary.description')
                 %th= t('dictionary.accessibility')
                 %th= t('exercise.show.exercise_type')

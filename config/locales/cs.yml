@@ -146,6 +146,21 @@ cs:
       create: Vytvořit %{model}
       submit: Uložit %{model}
       update: Aktualizovat %{model}
+    page_entries_info:
+      more_pages:
+        display_entries: Zobrazuji <b>%{first}&nbsp;-&nbsp;%{last}</b> z <b>%{total}</b> položek celkem
+      one_page:
+        display_entries:
+          one: Zobrazuji <b>%{count}</b> položku
+          other: Zobrazuji <b>%{count}</b> položek
+          zero: Žádný záznam nenalezen
+  views:
+    pagination:
+      first: "&laquo; První"
+      last: Poslední &raquo;
+      next: Další &rsaquo;
+      previous: "&lsaquo; Předchozí"
+      truncate: "&hellip;"
   number:
     currency:
       format:

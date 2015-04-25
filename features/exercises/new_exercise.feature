@@ -16,8 +16,8 @@ Feature: Add new exercise
   Scenario: As coach I can add a new private exercise
     Given I have "coach" role
     When I am at the "/users/test1/exercises" page
-    And I click "New exercise"
-    Then I should see "heading" containing "New exercise"
+    And I click "Add new exercise"
+    Then I should see "heading" containing "Add new exercise"
     And I shouldn't see "radio_button" containing "Private"
     And I shouldn't see "radio_button" containing "Global"
       # Pro coache bude "private" implicitni
@@ -32,8 +32,8 @@ Feature: Add new exercise
   Scenario: As admin I can add a new global exercise
     Given I have "admin" role
     When I am at the "/exercises" page
-    And I click "New exercise"
-    Then I should see "heading" containing "New exercise"
+    And I click "Add new exercise"
+    Then I should see "heading" containing "Add new exercise"
     And I should see "radio_button" containing "Private"
     And I should see "radio_button" containing "Global"
       # Pro admina bude "global" implicitni
