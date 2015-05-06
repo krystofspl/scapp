@@ -432,6 +432,7 @@ en:
     my_exercise_bundles: "My bundles"
     available_exercise_bundles: "Available bundles"
     new_exercise_bundle: "New bundle"
+    exercises_list: "Exercises list"
   template:
     main:
       home: *home
@@ -1331,7 +1332,9 @@ en:
     lower: "Lower"
 
   exercise_steps:
-    index: "Exercise steps"
+    index:
+      back_to_exercise: "Back to exercise"
+      heading: "Exercise steps"
     show_detailed_view: "Show detailed view"
     list: "Exercise steps list"
     add_new: "Add new exercise step"

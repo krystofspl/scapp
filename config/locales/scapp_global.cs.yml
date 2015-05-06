@@ -423,6 +423,7 @@ cs:
     my_exercise_bundles: "Mé sady"
     available_exercise_bundles: "Dostupné sady"
     new_exercise_bundle: "Nová sada"
+    exercises_list: "Seznam cviků"
   template:
     main:
       home: Domů
@@ -1296,7 +1297,9 @@ cs:
     higher: Vyšší
     lower: Nižší
   exercise_steps:
-    index: "Kroky cviku"
+    index:
+      back_to_exercise: "Zpět na cvik"
+      heading: "Kroky cviku"
     show_detailed_view: "Zobrazit detailní pohled"
     list: "Seznam kroků"
     add_new: "Přidat nový krok"

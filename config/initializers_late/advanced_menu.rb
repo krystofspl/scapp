@@ -44,14 +44,15 @@ AdvancedMenu::Menu.setup do |config|
   end
 
   config.add_heading(I18n.t('nav.exercises'), '#', nil, nil, nil, AdvancedMenu::ROLES, %w(fa fa-angle-double-right)) do |h|
-    h.add_link(I18n.t('nav.my_exercises'), "/users/{user_slug}/exercises", 'exercises', 'user_exercises', %w(fa fa-table))
-    h.add_link(I18n.t('nav.available_exercises'), "/exercises", 'exercises', 'index', %w(fa fa-table))
+    h.add_link(I18n.t('nav.my_exercises'), "/users/{user_slug}/exercises", 'exercises', 'user_exercises', %w(fa fa-table), [:coach, :admin])
+    h.add_link(I18n.t('nav.available_exercises'), "/exercises", 'exercises', 'index', %w(fa fa-table), [:coach, :admin])
     h.add_link(I18n.t('nav.new_exercise'), "/exercises/new", 'exercises', 'new', %w(fa fa-plus), [:coach, :admin])
+    h.add_link(I18n.t('nav.exercises_list'), "/exercises", 'exercises', 'index', %w(fa fa-table), [:player])
   end
 
-  config.add_heading(I18n.t('nav.exercise_bundles'), '#', nil, nil, nil, AdvancedMenu::ROLES, %w(fa fa-angle-double-right)) do |h|
-    h.add_link(I18n.t('nav.my_exercise_bundles'), "/users/{user_slug}/exercise_bundles", 'exercise_bundles', 'user_exercise_bundles', %w(fa fa-table))
-    h.add_link(I18n.t('nav.available_exercise_bundles'), "/exercise_bundles", 'exercise_bundles', 'index', %w(fa fa-table))
+  config.add_heading(I18n.t('nav.exercise_bundles'), '#', nil, nil, nil, [:coach, :admin], %w(fa fa-angle-double-right)) do |h|
+    h.add_link(I18n.t('nav.my_exercise_bundles'), "/users/{user_slug}/exercise_bundles", 'exercise_bundles', 'user_exercise_bundles', %w(fa fa-table), [:coach, :admin])
+    h.add_link(I18n.t('nav.available_exercise_bundles'), "/exercise_bundles", 'exercise_bundles', 'index', %w(fa fa-table), [:coach, :admin])
     h.add_link(I18n.t('nav.new_exercise_bundle'), "/exercise_bundles/new", 'exercise_bundles', 'new', %w(fa fa-plus), [:coach, :admin])
   end
 

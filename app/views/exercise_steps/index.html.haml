@@ -1,6 +1,10 @@
 - content_for :heading do
   = @exercise.name + ' - ' + t('exercise_steps.list')
 - breadcrumb :exercise_steps, @exercise
+#action-box
+  = link_to @exercise, class: 'btn btn-primary' do
+    %i.fa.fa-chevron-left
+    = t('exercise_steps.index.back_to_exercise')
 
 .row
   .col-sm-12
@@ -13,6 +17,7 @@
             - if @exercise_steps.empty?
               = t('exercise_steps.empty')
             - else
+              - can_edit = can? :edit_steps, @exercise
               %table.table
                 %thead
                   %tr
@@ -20,25 +25,27 @@
                     %th.col-sm-5= t('dictionary.description')
                     %th.col-sm-2= t('exercise_image.exercise_step_images_right')
                     %th.col-sm-2= t('exercise_image.exercise_step_images_wrong')
-                    %th.col-sm-1
+                    - if can_edit
+                      %th.col-sm-1
                 %tbody#sortable
                   - @exercise_steps.each do |exercise_step|
-                    - if can? :edit_steps, exercise_step.exercise
-                      %tr.item{:data => {'item-id' => exercise_step.id},:style=>'cursor:pointer;'}
-                        %td
+                    %tr.item{:data => {'item-id' => exercise_step.id},:style=> can_edit ? 'cursor:pointer;' : ''}
+                      %td
+                        - if can_edit
                           %span.fa.fa-arrows
-                          %strong= exercise_step.name
-                        %td= sanitize exercise_step.description
-                        %td
-                          %ul
-                          - exercise_step.exercise_images.right.each do |img|
-                            %li{style: 'display:inline-block'}
-                              = link_to image_tag(img.image.small), img.image.url
-                        %td
-                          %ul
-                          - exercise_step.exercise_images.wrong.each do |img|
-                            %li{style: 'display:inline-block'}
-                              = link_to image_tag(img.image.small), img.image.url
+                        %strong= exercise_step.name
+                      %td= sanitize exercise_step.description
+                      %td
+                        %ul
+                        - exercise_step.exercise_images.right.each do |img|
+                          %li{style: 'display:inline-block'}
+                            = link_to image_tag(img.image.small), img.image.url
+                      %td
+                        %ul
+                        - exercise_step.exercise_images.wrong.each do |img|
+                          %li{style: 'display:inline-block'}
+                            = link_to image_tag(img.image.small), img.image.url
+                      - if can_edit
                         %td
                           = link_to edit_exercise_step_path(:exercise_step_id => exercise_step.id), class: 'btn btn-warning btn-xs' do
                             %i.fa.fa-remove
@@ -46,12 +53,6 @@
                           = link_to exercise_steps_path(:exercise_step_id => exercise_step.id), class: 'btn btn-danger btn-xs', :method => :delete, :data => { :confirm => I18n.t('dictionary.are_you_sure') } do
                             %i.fa.fa-remove
                             = t('dictionary.delete')
-                    - else
-                      %tr.item
-                        %td
-                          %strong= exercise_step.name
-                        %td
-                          = sanitize exercise_step.description
 
 - if can? :add_steps, @exercise or can? :edit_steps, @exercise
   .row

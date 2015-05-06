@@ -341,10 +341,14 @@ class Ability
     # @16.2
     can [:show], Exercise do |exc|
       # Can view if partook in a realization
+      realization_exists = false
       Plan.where(:user_partook=>@user).each do |plan|
-        plan.exercise_realizations.where(:exercise=>exc).any?
+        if plan.exercise_realizations.where(:exercise=>exc).any?
+          realization_exists = true
+          break
+        end
       end
-      false
+      realization_exists
     end
 
     # =============

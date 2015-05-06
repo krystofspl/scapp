@@ -64,7 +64,11 @@
                     - else
                       %td
                         - @exercise.exercise_bundles.each do |exercise_bundle|
-                          %span.label.label-success=link_to exercise_bundle.name, exercise_bundle
+                          %span.label.label-success
+                            - if can? :show, exercise_bundle
+                              =link_to exercise_bundle.name, exercise_bundle
+                            - else
+                              = exercise_bundle.name
             .col-sm-5.no-padding
               %table#exercise_images.table.table-condensed
                 %thead
@@ -172,7 +176,7 @@
     .col-sm-12
     .box.box-primary
       .box-header
-        %h2.box-title= t('exercise_steps.index')
+        %h2.box-title= t('exercise_steps.index.heading')
       .box-body
         = '('
         = link_to t('exercise_steps.show_detailed_view'), exercise_steps_path(@exercise)

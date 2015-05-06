@@ -76,6 +76,8 @@ Feature: View exercises
     Then I should see "exc1" in table "exercises"
     And I shouldn't see "exc2" in the table "exercises"
     And I shouldn't see "exc5" in the table "exercises"
+    When I click "exc1"
+    Then I should see "heading" containing "exercise detail"
 
   Scenario: As coach I can view private exercises created by me on a single screen
     Given I am logged in as User test2

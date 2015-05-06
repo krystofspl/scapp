@@ -417,7 +417,7 @@ crumb :user_exercises do |user|
 end
 
 crumb :exercise_detail do |exercise|
-  link t('breadcrumbs.exercise_detail'), exercise
+  link exercise.to_s+' - '+t('breadcrumbs.exercise_detail'), exercise
   parent :exercises
 end
 
