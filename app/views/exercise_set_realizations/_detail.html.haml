@@ -5,7 +5,7 @@
   .exercise-set-realization-duration
     %span{:style=>'white-space: nowrap;'}
       - time_formatted(exercise_set_realization.from, exercise_set_realization.until)
-      =' ('+distance_of_time_in_words(exercise_set_realization.duration)+')'
+      =' ('+ApplicationHelper.distance_of_time_in_words_difference(exercise_set_realization.duration)+')'
     - setups_count = exercise_set_realization.exercise_set_realization_setups.count
     - if setups_count>0
       .label.label-primary
@@ -21,7 +21,7 @@
   - unless exercise_set_realization.rest_after.blank? || exercise_set_realization.rest_after == 0
     .exercise-set-realization-rest
       %p.no-margin
-        = t('exercise_realizations.dictionary.rest_after')+' ('+distance_of_time_in_words(exercise_set_realization.rest_after)+')'
+        = t('exercise_realizations.dictionary.rest_after')+' ('+ApplicationHelper.distance_of_time_in_words_difference(exercise_set_realization.rest_after)+')'
       %p.no-margin
         - time_formatted(exercise_set_realization.until,exercise_set_realization.until_with_rest_time)
 .btns-block

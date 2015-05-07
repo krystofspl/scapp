@@ -199,7 +199,7 @@ en:
     sign_in_time: &sign_in_time Sign in time
     excuse_time: &excuse_time Excuse time
     passed: &passed Passed
-    remain: &remain Remain
+    remain: &remain "In "
     before: &before Before
     rgb: &rgb Rgb
     change_date_range: &change_date_range Change date range

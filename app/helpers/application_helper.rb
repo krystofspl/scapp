@@ -77,17 +77,11 @@ module ApplicationHelper
     minutes = (seconds / 1.minute).round
     hours = (seconds / 1.hour).round(1)
     days = (seconds / 1.day).round(1)
-
     if seconds < 0
       ret = "<span class=\"label label-danger\">#{I18n.t('dictionary.passed')}</span>"
-    elsif seconds < 1.hour
-      ret = "<span class=\"label label-warning\">#{I18n.t('dictionary.remain')} #{I18n.t('times.minutes', count: minutes)}</span>"
-    elsif seconds < 1.day
-      ret = "<span class=\"label label-success\">#{I18n.t('dictionary.remain')} #{I18n.t('times.hours', count: hours)}</span>"
     else
-      ret = "<span class=\"label label-success\">#{I18n.t('dictionary.remain')} #{I18n.t('times.days', count: days)}</span>"
+      ret = "<span class=\"label label-success\">#{I18n.t('dictionary.remain')} #{distance_of_time_in_words_difference(seconds)}</span>"
     end
-
     ret
   end
 
@@ -129,6 +123,70 @@ module ApplicationHelper
     out += "<i class=\"fa fa-long-arrow-down\"></i>" if value < 0
     out += "<i class=\"fa fa-long-arrow-up\"></i>" if value > 0
     out += " #{text}</span>"
+  end
+
+  # Modified distance_of_time_in_words for some locales, used for "Remaining time: 1 hour", instead of the original "before 1 hour"
+  # Original-File: actionpack/lib/action_view/helpers/date_helper.rb, line 63
+  def self.distance_of_time_in_words_difference(from_time, to_time = 0, include_seconds = true, options = {})
+    from_time = from_time.to_time if from_time.respond_to?(:to_time)
+    to_time = to_time.to_time if to_time.respond_to?(:to_time)
+    distance_in_minutes = (((to_time - from_time).abs)/60).round
+    distance_in_seconds = ((to_time - from_time).abs).round
+
+    I18n.with_options :locale => options[:locale], :scope => 'datetime.distance_in_words_difference' do |locale|
+      case distance_in_minutes
+        when 0..1
+          return distance_in_minutes == 0 ?
+              locale.t('less_than_x_minutes.one') : locale.t('x_minutes.one') unless include_seconds
+
+          case distance_in_seconds
+            when 0..1   then locale.t 'x_seconds.one'
+            when 2..4   then locale.t 'x_seconds.few', :count => distance_in_seconds
+            when 5..25  then locale.t 'x_seconds.other', :count => distance_in_seconds
+            when 26..34 then locale.t 'half_a_minute'
+            when 35..50 then locale.t 'x_seconds.other', :count => distance_in_seconds
+            when 51..59 then locale.t 'less_than_x_minutes.one'
+            else             locale.t 'x_minutes.one'
+          end
+
+        when 2..4            then locale.t 'x_minutes.few', :count => distance_in_minutes
+        when 5..54           then locale.t 'x_minutes.other', :count => distance_in_minutes
+        when 55..59          then locale.t 'about_x_hours.one'
+        when 60              then locale.t 'x_hours.one'
+        when 61..90          then locale.t 'about_x_hours.one'
+        when 91..299         then locale.t 'about_x_hours.few', :count => (distance_in_minutes.to_f / 60.0).round
+        when 300..1439       then locale.t 'about_x_hours.other', :count => (distance_in_minutes.to_f / 60.0).round
+        when 1440..2529      then locale.t 'x_days.one'
+        when 2530..7199      then locale.t 'x_days.few', :count => (distance_in_minutes.to_f / 1440.0).round
+        when 7200..43199     then locale.t 'x_days.other', :count => (distance_in_minutes.to_f / 1440.0).round
+        when 43200..64799    then locale.t 'about_x_months.one'
+        when 64800..215999   then locale.t 'x_months.few', :count => (distance_in_minutes.to_f / 43200.0).round
+        when 86400..525599   then locale.t 'x_months.other', :count => (distance_in_minutes.to_f / 43200.0).round
+        else
+          distance_in_years           = distance_in_minutes / 525600
+          minute_offset_for_leap_year = (distance_in_years / 4) * 1440
+          remainder                   = ((distance_in_minutes - minute_offset_for_leap_year) % 525600)
+          if remainder < 131400
+            case distance_in_years
+              when 0..1 then locale.t 'about_x_years.one'
+              when 2..4 then locale.t 'about_x_years.few', :count => distance_in_years
+              else           locale.t 'about_x_years.other', :count => distance_in_years
+            end
+          elsif remainder < 394200
+            case distance_in_years
+              when 0..1 then locale.t 'over_x_years.one'
+              when 2..4 then locale.t 'over_x_years.few', :count => distance_in_years
+              else           locale.t 'over_x_years.other', :count => distance_in_years
+            end
+          else
+            case distance_in_years
+              when 0 then locale.t 'almost_x_years.one'
+              when 1..4 then locale.t 'almost_x_years.few', :count => distance_in_years+1
+              else           locale.t 'almost_x_years.other', :count => distance_in_years+1
+            end
+          end
+      end
+    end
   end
 
 end

@@ -24,7 +24,6 @@
               %tr
                 %td= link_to exercise.name+((exercise.version>1)?" ("+exercise.version.to_s+")":""), exercise_path(exercise)
                 %td
-                  -#TODO link_to (exercise_measurement.exercise_realizations.count.to_s+"x"), exercise_realizations_path(exercise)
                   !=ApplicationHelper.labelize_realizations exercise.exercise_realizations.count
                 %td= sanitize exercise.description
                 %td

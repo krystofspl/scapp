@@ -18,7 +18,7 @@
           .box.box-primary.col-sm-12.no-padding.no-margin
             %h4.box-title.margin
               - time_formatted(realization.from,realization.until)
-              =' ('+distance_of_time_in_words(realization.duration)+')'
+              =' ('+ApplicationHelper.distance_of_time_in_words_difference(realization.duration)+')'
               =' - '
               %strong= link_to realization.exercise, realization.exercise
             .box-body
@@ -76,7 +76,7 @@
                               .badge= (index+1).to_s+'. '+t('exercise.dictionary.set')
                             .col-sm-10.no-padding
                               - time_formatted(set_realization.from,set_realization.until)
-                              = ' ('+distance_of_time_in_words(set_realization.duration)+')'
+                              = ' ('+ApplicationHelper.distance_of_time_in_words_difference(set_realization.duration)+')'
                               %br
                               - unless set_realization.note.blank?
                                 %i.fa.fa-pencil-square-o
@@ -104,7 +104,7 @@
                           .col-sm-12.no-padding.no-margin.box
                             .box-body
                               - time_formatted(set_realization.until,set_realization.until_with_rest_time)
-                              = t('exercise_realizations.dictionary.rest_after')+' ('+distance_of_time_in_words(set_realization.rest_after)+')'
+                              = t('exercise_realizations.dictionary.rest_after')+' ('+ApplicationHelper.distance_of_time_in_words_difference(set_realization.rest_after)+')'
                     %br{:style=>'clear:both;'}
                 -# EXERCISE REALIZATION SETUPS
                 .col-sm-5.no-padding.no-margin
@@ -137,7 +137,7 @@
             .col-sm-12.box.box-default.no-margin{:style=>'margin-bottom: 30px;'}
               %h4.box-title
                 - time_formatted(realization.until,realization.until_with_rest_time)
-                = t('exercise_realizations.dictionary.rest_after')+' ('+distance_of_time_in_words(realization.rest_after)+')'
+                = t('exercise_realizations.dictionary.rest_after')+' ('+ApplicationHelper.distance_of_time_in_words_difference(realization.rest_after)+')'
               .box-body
           %br{:style=>'clear:both;'}
 %br{:style=>'clear:both;'}

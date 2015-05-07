@@ -35,13 +35,12 @@ class ExercisesController < ApplicationController
       if @exercise.save
         upload_images
         format.html {
-          #TODO zobrazit stranku s odkazy na úpravu detailů
-          if params[:commit] == "Create exercise without adding details"
-            redirect_to @exercise, notice: t('exercise.successfuly_created')
-          elsif params[:commit] == "Create exercise and add details"
+          if params[:commit] == t('exercise.new.form_button_create')
+            redirect_to exercises_path, notice: t('exercise.successfuly_created')
+          elsif params[:commit] == t('exercise.new.form_button_create_add_details')
             redirect_to @exercise, notice: t('exercise.successfuly_created')
           else
-            redirect_to exercises_path
+            redirect_to exercises_path, notice: t('exercise.successfuly_created')
           end
         }
         format.json { render action: 'show', status: :created, location: @exercise }

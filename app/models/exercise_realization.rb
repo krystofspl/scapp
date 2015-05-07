@@ -1,9 +1,9 @@
-# Order can only be updated with update_attribute :row_order_position,
-# this call saves the record to DB, beware of that when creating instances, etc.
-
 class ExerciseRealization < ActiveRecord::Base
   include RankedModel
+  # Order can only be updated with update_attribute :row_order_position,
+  # this call saves the record to DB, beware of that when creating instances, etc.
   ranks :row_order, :with_same => :plan_id
+
   before_validation do
     unless self.new_record?
       set_time_duration
@@ -14,6 +14,7 @@ class ExerciseRealization < ActiveRecord::Base
     set_required_realization_setups
     set_exercise_set_if_required
   end
+  # Allow virtual time attributes for duration and rest_after, total time in seconds is calculated from this before save
   attr_writer :duration_partial_hours, :duration_partial_minutes, :duration_partial_seconds, :rest_partial_minutes, :rest_partial_seconds
 
   # =================== ASSOCIATIONS =================================
@@ -28,13 +29,13 @@ class ExerciseRealization < ActiveRecord::Base
   # =================== VALIDATIONS ==================================
   validates :user_created, presence: true
   validates :plan_id, presence: true
-  validates :time_duration, numericality: {greater_than_or_equal_to: 1}
-  validates :time_duration, presence: true, unless: Proc.new { |realization| realization.exercise.has_sets? }
-  validates :rest_after, numericality: {greater_than_or_equal_to: 0}
+  validates :time_duration, numericality: {greater_than_or_equal_to: 1} # has to have a positive value, unless has sets
+  validates :time_duration, presence: true, unless: Proc.new { |realization| realization.exercise.has_sets? } # ignore if has sets
+  validates :rest_after, numericality: {greater_than_or_equal_to: 0} # optional, default 0
   validate :fits_into_lesson
 
   # =================== METHODS ======================================
-  # Returns cloned version of self
+  # Returns cloned version of self, a deep clone is made with associations
   def deep_clone(new_plan, new_position)
     # Do a deep clone
     er = self.dup
@@ -67,7 +68,8 @@ class ExerciseRealization < ActiveRecord::Base
     er
   end
 
-  # Return position based on row order (RankedModel)
+  # Return actual position within plan based on row order param (RankedModel)
+  # @return [integer] Position within plan
   def position
     self.plan.exercise_realizations.rank(:row_order).index(self)
   end
@@ -96,6 +98,7 @@ class ExerciseRealization < ActiveRecord::Base
   end
 
   # Returns realization start time in seconds
+  # @return [integer] ExerciseRealization start time in seconds
   def from
     realizations_preceding = self.plan.exercise_realizations.rank(:row_order).take_while { |e| e.row_order < self.row_order }
     time = 0
@@ -106,11 +109,13 @@ class ExerciseRealization < ActiveRecord::Base
   end
 
   # Returns realization end time in seconds WITHOUT rest time
+  # @return [integer] ExerciseRealization end time in seconds without rest after
   def until
     self.from+duration
   end
 
   # Returns realization end time in seconds WITH rest time
+  # @return [integer] ExerciseRealization end time in seconds with rest after
   def until_with_rest_time
     self.until+self.rest_after
   end
@@ -121,6 +126,7 @@ class ExerciseRealization < ActiveRecord::Base
   # self.plan.exercise_realizations returns only persisted values (TODO why?),
   # so the validation did not work for modified values, currently using this workaround with optional parameter p, see ExerciseRealization#duration
   # It is bad design, but currently the easiest workaround
+  # @return [boolean] Does edited realization fit into its plan?
   def fits_into_lesson(*p)
     unless self.plan.blank? || self.plan.training_lesson_realization.blank?
       total = 0
@@ -139,6 +145,7 @@ class ExerciseRealization < ActiveRecord::Base
   end
 
   # =================== GETTERS/SETTERS ===============================
+  # Getters for virtual duration/rest_after attributes
   def duration_partial_hours
     read_attribute(:time_duration)/3600
   end

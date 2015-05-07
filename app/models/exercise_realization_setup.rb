@@ -10,6 +10,8 @@ class ExerciseRealizationSetup < ActiveRecord::Base
   validates :numeric_value, numericality: true
 
   # =================== METHODS ==================================
+  # Return value with the correct type
+  # Integer/Decimal/String
   def value
     case self.exercise_setup.unit.unit_type
       when :integer

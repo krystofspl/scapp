@@ -622,7 +622,7 @@ class Ability
 
     # @17.2 ExerciseBundle detail
     can [:show], ExerciseBundle do |bundle|
-      bundle.user == @user || bundle.accessibility == :global
+      bundle.user == @user || bundle.is_global?
     end
 
     # @17.3 ExerciseBundles create
@@ -634,10 +634,10 @@ class Ability
     end
 
     # UserExerciseBundle
-    can [:user_exercise_bundles], ExerciseBundlesController if @request.params[:user_id] == @user.slug
+    can [:user_exercise_bundles], ExerciseBundle if @request.params[:user_id] == @user.slug
 
     # =============
-    # 18) ExerciseRealizations
+    # 18) ExerciseRealizations/Plans
     # =============
     # @18.1
     can [:list_plans], TrainingLessonRealization do |training_lesson_realization|
@@ -645,9 +645,10 @@ class Ability
     end
 
     # @18.2 Create exercise realization
-    can [:create], ExerciseRealization do |training_lesson_realization|
-      training_lesson_realization.has_owner?(@user) || training_lesson_realization.has_coach?(@user)
-    end
+    # ? NOT USED
+    # can [:create], ExerciseRealization do |training_lesson_realization|
+    #   training_lesson_realization.has_owner?(@user) || training_lesson_realization.has_coach?(@user)
+    # end
 
     # @18.3, @18.4 Edit, Destroy exercise realization
     can [:edit, :destroy], ExerciseRealization do |exercise_realization|
@@ -706,7 +707,7 @@ class Ability
     # =============
 
     # Exercise steps index
-    can [:index], ExerciseStep do |exercise|
+    can [:index_steps], Exercise do |exercise|
       can? :show, exercise
     end
 

@@ -77,7 +77,7 @@ class ExerciseBundlesController < ApplicationController
 
   # GET /users/test/exercise_bundles
   def user_exercise_bundles
-    authorize! :user_exercise_bundles, ExerciseBundlesController
+    authorize! :user_exercise_bundles, ExerciseBundle
     @user = User.friendly.find(params[:user_id])
     @exercise_bundles = ExerciseBundle.where(:user=>@user)
     render 'users/exercise_bundles/list'
@@ -92,6 +92,8 @@ class ExerciseBundlesController < ApplicationController
       @exercises = (Exercise.where(:accessibility => :global) + Exercise.where(:user => current_user)).uniq
     end
   end
+
+  ### MANAGE EXERCISES
 
   def add_exercise
     exercise = Exercise.friendly.find([params[:exercise_code],params[:exercise_version]])

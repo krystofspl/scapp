@@ -63,12 +63,11 @@ class Exercise < ActiveRecord::Base
   belongs_to :user
   has_many :exercise_bundle_exercises, :class_name => 'ExerciseBundleExercise', :foreign_key => [:exercise_code, :exercise_version]
   has_many :exercise_bundles, :through => :exercise_bundle_exercises
-  has_many :exercise_steps, :foreign_key => [:exercise_code, :exercise_version], :dependent => :delete_all
-  has_many :exercise_setups, :foreign_key => [:exercise_code, :exercise_version], :dependent => :delete_all
-  has_many :exercise_measurements, :foreign_key => [:exercise_code, :exercise_version], :dependent => :delete_all
+  has_many :exercise_steps, :foreign_key => [:exercise_code, :exercise_version], :dependent => :destroy
+  has_many :exercise_setups, :foreign_key => [:exercise_code, :exercise_version], :dependent => :destroy
+  has_many :exercise_measurements, :foreign_key => [:exercise_code, :exercise_version], :dependent => :destroy
   has_one :exercise_image, :foreign_key => [:exercise_code, :exercise_version], :dependent => :destroy
   accepts_nested_attributes_for :exercise_image, allow_destroy: true
-  # --- prototypes for v2
   has_many :exercise_realizations, :foreign_key => [:exercise_code, :exercise_version], :dependent => :restrict_with_error, :inverse_of => :exercise
 
   # =================== VALIDATIONS ==================================
@@ -136,36 +135,43 @@ class Exercise < ActiveRecord::Base
   end
 
   # Does the exercise have any realizations?
+  # @return [boolean]
   def is_in_use?
     !self.exercise_realizations.empty?
   end
 
   # Is exercise of type ExerciseWithSets?
+  # @return [boolean]
   def has_sets?
     self.type=='ExerciseWithSets'
   end
 
   # Is exercise accessibility private?
+  # @return [boolean]
   def is_private?
     self.accessibility == :private
   end
 
   # Is exercise accessibility global?
+  # @return [boolean]
   def is_global?
     self.accessibility == :global
   end
 
   # Return exercise_code(/version/) string
+  # @return [string]
   def relative_url
     read_attribute(:code) + ((read_attribute(:version).to_i>1) ? ("/v/"+read_attribute(:version).to_s) : "")
   end
 
-  # Override to_S and return name with version string
+  # Override to_s and return name with version string
+  # @return [string]
   def to_s
     read_attribute(:name) + ((read_attribute(:version).to_i>1) ? (" (v"+read_attribute(:version).to_s+")") : "")
   end
 
   # Return exercises/exercise_code(/version/) string
+  # @return [string]
   def url
     "/exercises/#{relative_url}"
   end

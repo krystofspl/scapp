@@ -60,8 +60,8 @@ class ExerciseMeasurement < ActiveRecord::Base
 
   # Scope for filtering by given exercise, it's used by Filterrific
   scope :for_exercise, lambda { |exercise|
-                       where('exercise_code=? AND exercise_version=?', exercise.code, exercise.version)
-                     }
+    where('exercise_code=? AND exercise_version=?', exercise.code, exercise.version)
+  }
 
   scope :required, -> {where(required: true)}
 
@@ -70,7 +70,6 @@ class ExerciseMeasurement < ActiveRecord::Base
   # =================== ASSOCIATIONS =================================
   belongs_to :unit, :foreign_key => :unit_code
   belongs_to :exercise, :foreign_key => [:exercise_code, :exercise_version]
-  # --- prototypes for v2
   has_many :exercise_realization_measurements, :foreign_key => :exercise_measurement_code
 
   # =================== VALIDATIONS ==================================

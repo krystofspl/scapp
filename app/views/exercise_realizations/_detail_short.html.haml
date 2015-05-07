@@ -9,7 +9,7 @@
     %span{:style=>'white-space: nowrap;'}
       - time_formatted(realization.from,realization.until)
   %p.no-margin
-    = distance_of_time_in_words(realization.duration)
+    = ApplicationHelper.distance_of_time_in_words_difference(realization.duration)
   -####### SETS COUNT
   - sets_count = realization.exercise_set_realizations.count
   - if sets_count > 0
@@ -34,7 +34,7 @@
 
 - unless realization.rest_after.blank? || realization.rest_after==0
   .box.box-body.realization-rest{style: 'min-height:'+rest_after_height.to_s+'px;'}
-    = t('exercise_realizations.dictionary.rest_after')+' ('+distance_of_time_in_words(realization.rest_after)+')'
+    = t('exercise_realizations.dictionary.rest_after')+' ('+ApplicationHelper.distance_of_time_in_words_difference(realization.rest_after)+')'
     %br
     - time_formatted(realization.until,realization.until_with_rest_time)
 

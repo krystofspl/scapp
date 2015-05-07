@@ -8,7 +8,7 @@
           %p.favorite-plan-header
             %i.fa.fa-plus-circle
             %strong= favorite_plan.name
-            ='('+distance_of_time_in_words(0,favorite_plan.plan.duration, :include_seconds=>true)+')'
+            ='('+ApplicationHelper.distance_of_time_in_words_difference(0,favorite_plan.plan.duration, :include_seconds=>true)+')'
           .favorite-plan-body{:style=>'display: none;'}
             %p.no-margin
               - unless favorite_plan.note.blank?
@@ -18,7 +18,7 @@
               - favorite_plan.plan.exercise_realizations.each do |er|
                 %li
                   = er.exercise.to_s
-                  = '('+distance_of_time_in_words(0,er.duration, :include_seconds=>true)+')'
+                  = '('+ApplicationHelper.distance_of_time_in_words_difference(0,er.duration, :include_seconds=>true)+')'
             = link_to t('dictionary.delete'), training_lesson_realization_favorite_plan_path(:id=>favorite_plan.id), class: 'btn btn-xs btn-danger btn-destroy', :method => :delete, :remote => true, :data => { :confirm => t('dictionary.are_you_sure') }
     .col-sm-12.text-center#paginator
   %br{:style=>'clear:both;'}

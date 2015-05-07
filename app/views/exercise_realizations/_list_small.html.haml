@@ -13,7 +13,7 @@
   %div{:class=> progress_bar_classes, :style=>'width: '+progress.to_s+'%;'}
     %span.col-sm-12.no-padding
       %i.fa.fa-clock-o
-      = t('dictionary.remaining_time')+': '+distance_of_time_in_words(plan.remaining_time) if progress!=100
+      = t('dictionary.remaining_time')+': '+ApplicationHelper.distance_of_time_in_words_difference(plan.remaining_time) if progress!=100
       = t('exercise_realizations.dictionary.plan_is_full') if progress==100
 
 

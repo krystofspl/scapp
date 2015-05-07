@@ -21,3 +21,54 @@
 
 en:
   hello: "Hello world"
+  datetime:
+    distance_in_words_difference:
+      x_seconds:
+        one: 1 second
+        few: ! '%{count} seconds'
+        other: ! '%{count} seconds'
+      less_than_x_seconds:
+        one: less than a second
+        few: ! 'less than %{count} second'
+        other: ! 'less than %{count} second'
+      x_minutes:
+        one: 1 minute
+        few: ! '%{count} minutes'
+        other: ! '%{count} minutes'
+      half_a_minute: half a minute
+      less_than_x_minutes:
+        one: less than a minute
+        few: ! 'less than %{count} minutes'
+        other: ! 'less than %{count} minutes'
+      x_hours:
+        one: 1 hour
+        few: ! '%{count} hours'
+        other: ! '%{count} hours'
+      about_x_hours:
+        one: about an hour
+        few: ! 'about %{count} hours'
+        other: ! 'about %{count} hours'
+      x_days:
+        one: 1 day
+        few: ! '%{count} days'
+        other: ! '%{count} days'
+      x_months:
+        one: 1 měsíc
+        few: ! '%{count} měsíce'
+        other: ! '%{count} měsíců'
+      about_x_months:
+        one: about a month
+        few: ! 'about %{count} months'
+        other: ! 'about %{count} months'
+      about_x_years:
+        one: about a year
+        few: ! 'about %{count} years'
+        other: ! 'about %{count} years'
+      almost_x_years:
+        one: almost a year
+        few: ! 'almost %{count} years'
+        other: ! 'almost %{count} years'
+      over_x_years:
+        one: over a year
+        few: ! 'over %{count} years'
+        other: ! 'over %{count} years'

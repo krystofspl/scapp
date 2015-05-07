@@ -38,7 +38,7 @@ class ExerciseSetup < ActiveRecord::Base
         # Simple sort on the name colums
         order("LOWER(exercise_setups.name) #{ direction }")
       when /^realizations_/
-        # Number of realizations of the exercise
+        # Number of realizations of the exercise, done with counter_cache on association
         order("exercise_realization_setups_count #{ direction }")
       else
         raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")

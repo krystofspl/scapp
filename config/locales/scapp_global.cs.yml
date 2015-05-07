@@ -192,7 +192,7 @@ cs:
     sign_in_time: "Čas přihlášení"
     excuse_time: "Čas omluvení"
     passed: Uskutečněno
-    remain: Zůstávají
+    remain: "Za "
     before: Před
     rgb: RGB
     change_date_range: "Upřesnit datum"

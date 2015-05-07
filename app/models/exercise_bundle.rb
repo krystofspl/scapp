@@ -31,4 +31,16 @@ class ExerciseBundle < ActiveRecord::Base
     write_attribute(:accessibility, accessibility.to_s) unless accessibility.blank?
   end
 
+  # =================== METHODS ======================================
+
+  # Is exercise bundle accessibility private?
+  def is_private?
+    self.accessibility == :private
+  end
+
+  # Is exercise bundle accessibility global?
+  def is_global?
+    self.accessibility == :global
+  end
+
 end

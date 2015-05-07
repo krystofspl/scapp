@@ -28,9 +28,7 @@
   });
   exerciseSetupsUsedWrapper.find(".btn-destroy").bind('ajax:success', function() {
     $(this).closest('li').fadeOut(1000, function(){
-      index
       getExerciseRealizationSetups();
-      index
       refreshRealizationsInPlan(getPlanIdForRealization($('#realization-settings').data('exercise-realization-id')));
     });
   });

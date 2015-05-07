@@ -64,11 +64,9 @@
                     - else
                       %td
                         - @exercise.exercise_bundles.each do |exercise_bundle|
-                          %span.label.label-success
-                            - if can? :show, exercise_bundle
-                              =link_to exercise_bundle.name, exercise_bundle
-                            - else
-                              = exercise_bundle.name
+                          - if can? :show, exercise_bundle
+                            %span.label.label-success
+                              = link_to exercise_bundle.name, exercise_bundle
             .col-sm-5.no-padding
               %table#exercise_images.table.table-condensed
                 %thead

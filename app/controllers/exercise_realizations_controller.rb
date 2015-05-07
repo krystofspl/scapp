@@ -90,6 +90,8 @@ class ExerciseRealizationsController < ApplicationController
     @exercises = @filterrific.find.accessible(current_user).uniq.page(params[:page]).per(3)
   end
 
+  ### LIST PARTIALS
+  
   # List exercise realizations
   def list_exercise_realizations
     render partial: 'exercise_realizations/list_small', locals: {plan: Plan.find(params[:plan_id])}
