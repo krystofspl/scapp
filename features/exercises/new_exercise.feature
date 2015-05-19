@@ -25,7 +25,7 @@ Feature: Add new exercise
     When I fill in all required fields for exercise
       | name     | description | type            |
       | exc1 abc | exc1 desc   | Simple exercise |
-    When I click "Create exercise without adding details"
+    When I click "Create exercise and add details"
     Then I should see "Exercise was successfully created." message
     And I should see "heading" containing "exc1 abc - exercise detail"
 
@@ -41,6 +41,6 @@ Feature: Add new exercise
     When I fill in all required fields for exercise
       | name     | description | type               |
       | exc2 abc | exc2 desc   | Exercise with sets |
-    When I click "Create exercise without adding details"
+    When I click "Create exercise and add details"
     Then I should see "Exercise was successfully created." message
     And I should see "heading" containing "exc2 abc - exercise detail"

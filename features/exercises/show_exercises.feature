@@ -4,7 +4,7 @@ Feature: View exercises
   As coach I can view my private exercises and global exercises
   # !!! nemusi se nutne jednat o globalni cvik vlastneny adminem - staci pouze priznak global
   # !!! je to z duvodu, ze admin nemusi v systemu zustat natrvalo jako administrator, muze spadnout napr. na couche
-  #(As player I can view exercise details only as a part of an exercise realization, I can't view exercise list)
+  #(As player I can view exercise details only as a part of an exercise realization, I can't view the whole exercise list)
 
   Background:
     Given User test1 exists
